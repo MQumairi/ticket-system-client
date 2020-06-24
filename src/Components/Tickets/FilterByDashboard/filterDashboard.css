@@ -2,4 +2,16 @@
 
 #FilterDashboard {
     background-color: var(--body-bg-color-1);
+    background-image: linear-gradient(to right, var(--body-bg-color-1), var(--body-bg-color-2));
+    margin-top: 20px;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid var(--body-border-color);
+    border-right: none;
+}
+
+.filterTitle {
+    margin: 0px;
+    color: var(--subheader-color);
 }

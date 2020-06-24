@@ -1,0 +1,24 @@
+import React from "react";
+import { Grid } from "semantic-ui-react";
+import StatusIcon from "./StatusIcon/SatusIcon";
+import './status.css';
+
+const Status = () => {
+  return (
+    <div>
+      <h4 className="filterTitle">Status</h4>
+      <Grid columns={2} className="styleGrid">
+        <Grid.Row className="styleRow">
+          <Grid.Column className="styleColumn"><StatusIcon content="Urgent"/></Grid.Column>
+          <Grid.Column className="styleColumn" ><StatusIcon content="Low"/></Grid.Column>
+        </Grid.Row>
+        <Grid.Row className="styleRow">
+          <Grid.Column className="styleColumn" ><StatusIcon content="Pending"/></Grid.Column>
+          <Grid.Column className="styleColumn" ><StatusIcon content="Done"/></Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </div>
+  );
+};
+
+export default Status;

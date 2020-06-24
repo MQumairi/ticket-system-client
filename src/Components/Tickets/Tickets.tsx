@@ -8,10 +8,10 @@ const Tickets = () => {
   return (
     <div>
       <Grid columns={2} id="ticketDashboardGrid">
-        <Grid.Column width={4} id="filterCol">
+        <Grid.Column width={3} id="filterCol">
           <FilterByDashboard />
         </Grid.Column>
-        <Grid.Column width={12} id="ticketsCol">
+        <Grid.Column width={13} id="ticketsCol">
           <TicketDashboard />
         </Grid.Column>
       </Grid>

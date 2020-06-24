@@ -1,0 +1,10 @@
+@import "../../../../../Assets/Styles/style.css";
+
+.ticketItem {
+    text-align: center;
+    background-color: var(--body-bg-color-3);
+    border: 1px solid var(--body-border-color);
+    border-radius: 20px;
+    padding: 0px 15px !important;
+    margin-top: 30px !important;
+}

@@ -1,6 +1,7 @@
 import React from 'react'
 import "./ticketDashboard.css"
 import { Grid } from 'semantic-ui-react'
+import TicketList from './TicketList/TicketList'
 
 const TicketDashboard = () => {
     return (
@@ -16,6 +17,7 @@ const TicketDashboard = () => {
                 <Grid.Column width={3} className="remove-padding table-header">Date</Grid.Column>
             </Grid>
             <hr/>
+            <TicketList/>
         </div>
     )
 }

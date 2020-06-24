@@ -1,15 +1,21 @@
 :root {
     /* Sizes */
-    --body-width: 80%;
+    --body-width: 70%;
 
     /* Colors */
     --primary-color: #B31E1E;
+    --primary-color-hover: #851616;
     --bg-color: #4C4B4B;
     --navbar-text: #FFF8F8;
 
     --body-bg-color-1: #FEFEFE;
     --body-bg-color-2: #F1F1F1;
-    --body-border-color: #D8D8D8;
+    --body-bg-color-3: #ebebeb;
+    --body-bg-color-4: #d6d6d6;
+
+    --body-border-color: #c5c5c5;
+
+    --subheader-color: #5e5e5e;
 }
 
 body {
@@ -18,4 +24,17 @@ body {
 
 .remove-padding {
     padding: 0px !important;
+}
+
+hr {
+    border-top: 1px solid var(--body-border-color);
+}
+
+.mainButton {
+    background-color: var(--primary-color) !important;
+    color: var(--navbar-text) !important;
+}
+
+.mainButton:hover {
+    background-color:var(--primary-color-hover)!important;
 }
