@@ -1,0 +1,6 @@
+@import "../../Assets/Styles/style.css";
+
+#mainContentBody {
+    margin: 0px auto;
+    width: var(--body-width);
+}

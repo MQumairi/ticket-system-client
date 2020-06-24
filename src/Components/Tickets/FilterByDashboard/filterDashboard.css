@@ -1,0 +1,5 @@
+@import "../../../Assets/Styles/style.css";
+
+#FilterDashboard {
+    background-color: var(--body-bg-color-1);
+}

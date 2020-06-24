@@ -1,0 +1,30 @@
+@import "../../Assets/Styles/style.css";
+
+.ui.inverted.segment {
+    background-color:var(--primary-color);
+    border-radius: 0px;
+    display: flex;
+}
+
+#navbarMeu {
+    width: var(--body-width);
+    display: flex;
+    margin: 0px auto;
+    align-items: center;
+}
+
+.logo {
+    color: var(--navbar-text);
+}
+
+.ui.inverted.secondary.menu {
+    color: var(--navbar-text);
+    font-family: 'Futura';
+    font-weight: bold;
+    font-size: 1.3em;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-grow: 1;
+    margin: 0px;
+}

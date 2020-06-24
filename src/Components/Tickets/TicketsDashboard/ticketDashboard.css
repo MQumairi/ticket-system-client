@@ -1,0 +1,19 @@
+@import "../../../Assets/Styles/style.css";
+
+#TicketDashboard {
+    background-color: var(--body-bg-color-2);
+    border: 1px solid var(--body-border-color);
+    background-image: linear-gradient(to right,var(--body-bg-color-1) , var(--body-bg-color-2));
+    border-radius: 10px;
+    padding: 25px 40px;
+}
+
+#ticketsHeader {
+    margin: 0px;
+    padding: 0px;
+    font-weight: bold;
+}
+
+.table-header {
+    text-align: center;
+}
