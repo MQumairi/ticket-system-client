@@ -1,5 +1,6 @@
 #ticketDashboardGrid {
     margin-top: 40px;
+    min-height: 650px;
 }
 
 #filterCol {

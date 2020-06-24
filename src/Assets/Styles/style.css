@@ -26,6 +26,14 @@ body {
     padding: 0px !important;
 }
 
+.fullWidth {
+    width: 100%;
+}
+
+.fullHeight {
+    height: 100%;
+}
+
 hr {
     border-top: 1px solid var(--body-border-color);
 }

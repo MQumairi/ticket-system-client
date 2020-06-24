@@ -1,0 +1,25 @@
+@import "../../Assets/Styles/style.css";
+
+#footerBar {
+    background-color: var(--primary-color);
+    width: 100%;
+    height: min-content;
+    color: var(--navbar-text);
+    margin-top: 70px;
+    flex-basis: auto;
+    flex-grow: 1;
+}
+
+#footerContent {
+    margin: 0px auto;
+    width: var(--body-width);
+    padding: 30px 0px;
+}
+
+#contactDetails {
+    text-align: center;
+}
+
+/* #contactDetails div {
+    margin-right: 50px;
+} */

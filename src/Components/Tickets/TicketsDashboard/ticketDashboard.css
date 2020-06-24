@@ -6,7 +6,7 @@
     background-image: linear-gradient(var(--body-bg-color-1) , var(--body-bg-color-2));
     border-radius: 10px;
     padding: 25px 40px;
-    min-height: 600px;
+    height: 100%;
 }
 
 #ticketsHeader {

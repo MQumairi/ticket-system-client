@@ -1,5 +1,11 @@
 @import "../../Assets/Styles/style.css";
 
+#App {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 #mainContentBody {
     margin: 0px auto;
     width: var(--body-width);

@@ -16,7 +16,7 @@ const FilterByDashboard = () => {
             <hr/>
             <Dates/>
             <hr/>
-            <Button className="mainButton">SELECT ALL</Button>
+            <Button className="mainButton fullWidth">SELECT ALL</Button>
         </div>
     )
 }
