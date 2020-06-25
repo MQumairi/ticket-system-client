@@ -17,25 +17,25 @@ const TicketList = () => {
         {
             author: "Bujigen",
             id: 303,
-            status: "Pending",
-            product: "AppleWorks 6",
-            title: "Document does not save",
+            status: "Urgent",
+            product: "macOS Leopard",
+            title: "Crash on startup at Night",
             date: "22/02/2020"
         },
         {
-            author: "Pablo",
+            author: "Sam",
             id: 621,
-            status: "Pending",
+            status: "Done",
             product: "AppleWorks 6",
-            title: "Document does not save",
+            title: "Require Refund",
             date: "22/02/2020"
         },
         {
             author: "Pablo",
             id: 905,
             status: "Pending",
-            product: "AppleWorks 6",
-            title: "Document does not save",
+            product: "AppleWorks 6.5",
+            title: "Update not instaling",
             date: "22/02/2020"
         }
     ];
