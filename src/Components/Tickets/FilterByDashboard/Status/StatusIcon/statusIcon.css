@@ -6,6 +6,9 @@
     padding: 5px;
     padding-right: 15px;
     display: flex;
+    width: 100%;
+    cursor: pointer;
+    border: none;
 }
 
 .circle-red {
@@ -39,10 +42,4 @@
 .statusContent {
     text-align: center;
     flex-grow: 1;
-}
-
-.no-style {
-    background-color: transparent !important;
-    padding: 0px !important;
-    width: 100% !important;
 }

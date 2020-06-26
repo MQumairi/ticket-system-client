@@ -1,23 +1,32 @@
-import React from 'react';
-import {IProduct} from '../../../../Models/product';
+import React, { useContext } from "react";
+import ProductStore from "../../../App/Store/productStore";
+import TicketStore from "../../../App/Store/ticketStore";
 import "./product.css";
 
-const products: IProduct[] = [
-    {id: 1, name: "Product 1"},
-    {id: 2, name: "Product 2"},
-    {id: 3, name: "Product 3"}
-];
-
 const Product = () => {
-    return (
-        <div>
-            <h4 className="filterTitle">Product</h4>
+  const productStore = useContext(ProductStore);
+  const { products } = productStore;
 
-            {products.map((product)=> {
-                return <div className="productItem" key={product.id}>{product.name}</div>
-            })}
-        </div>
-    )
-}
+  const ticketStore = useContext(TicketStore);
+  const { filterTicketsByProduct } = ticketStore;
 
-export default Product
+  return (
+    <div>
+      <h4 className="filterTitle">Product</h4>
+
+      {products.map((product) => {
+        return (
+          <button
+            onClick={() => filterTicketsByProduct(product.name)}
+            className="productItem"
+            key={product.id}
+          >
+            {product.name}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+export default Product;

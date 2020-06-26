@@ -3,22 +3,20 @@ import "./statusIcon.css";
 import TicketStore from "../../../../App/Store/ticketStore";
 import { Button } from "semantic-ui-react";
 
-
 interface IProps {
   content: string;
   clickAble: boolean;
 }
 
 const SatusIcon: React.FC<IProps> = (props) => {
-
   const store = useContext(TicketStore);
-  const { setTicketsStatus } = store;
+  const { filterTicketsByStatus } = store;
 
   const handleClick = () => {
-    if(props.clickAble) {
-      setTicketsStatus(props.content);
+    if (props.clickAble) {
+      filterTicketsByStatus(props.content);
     }
-  }
+  };
 
   const circleColor = () => {
     switch (props.content) {
@@ -35,24 +33,12 @@ const SatusIcon: React.FC<IProps> = (props) => {
     }
   };
 
-  if(props.clickAble) {
-
   return (
-    <Button className="no-style">
-    <div onClick={() => handleClick()} className="statusIcon">
+    <button onClick={() => handleClick()} className="statusIcon">
       <div className={circleColor()}></div>
       <div className="statusContent">{props.content}</div>
-    </div>
-    </Button>
+    </button>
   );
-  } else {
-    return (
-      <div onClick={() => handleClick()} className="statusIcon">
-      <div className={circleColor()}></div>
-      <div className="statusContent">{props.content}</div>
-    </div>
-    )
-  }
 };
 
 export default SatusIcon;

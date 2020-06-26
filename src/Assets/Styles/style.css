@@ -46,3 +46,11 @@ hr {
 .mainButton:hover {
     background-color:var(--primary-color-hover)!important;
 }
+
+.no-style {
+    background-color: transparent !important;
+    padding: 0px !important;
+    width: 100% !important;
+}
+
+button:focus {outline: var(--primary-color) thin dotted;}
