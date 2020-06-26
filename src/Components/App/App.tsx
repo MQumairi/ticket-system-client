@@ -5,6 +5,7 @@ import Tickets from '../Tickets/Tickets'
 import Footer from '../Footer/Footer'
 
 function App() {
+
   return (
     <div id="App">
       <Navbar/>

@@ -17,7 +17,7 @@ const Footer = () => {
               </p>
               <p>
                 In the backend, EntityFrameworkCore was used to map C# objects
-                to the PostGreSQL database. EntityFrameworkIdentity was used for
+                to the PostGreSQL database. ASP .NET Core Identity was used for
                 authentication and authorization. In the front end, Axios was
                 used to fetch from the API, and MobX for state management.
               </p>
