@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import "./statusIcon.css";
 import TicketStore from "../../../../App/Store/ticketStore";
-import { Button } from "semantic-ui-react";
 
 interface IProps {
   content: string;

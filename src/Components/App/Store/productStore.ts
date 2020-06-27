@@ -5,7 +5,7 @@
 // -- deconstruct the store
 // -- set the component as an observer by wraping when export with observer(componentName).
 
-import { observable, action } from "mobx";
+import { observable } from "mobx";
 import { createContext } from "react";
 import { IProduct } from "../../../Models/product";
 

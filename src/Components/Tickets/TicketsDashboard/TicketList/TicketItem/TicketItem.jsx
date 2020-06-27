@@ -12,7 +12,7 @@ const TicketItem = ({ ticket }) => {
   return (
     <Grid columns={6} className="ticketItem" stackable>
       <Grid.Column width={2}>
-        <div class="ticketAvatar" style={ticketAvatarStyle}></div>
+        <div className="ticketAvatar" style={ticketAvatarStyle}></div>
         {/* {ticket.author} */}
       </Grid.Column>
       <Grid.Column width={1}>

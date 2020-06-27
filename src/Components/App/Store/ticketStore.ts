@@ -10,7 +10,7 @@ class TicketStore {
       status: "Pending",
       product: "Product 1",
       title: "Document does not save",
-      date: "22/02/2020",
+      date: "2020-01-01",
     },
     {
       author: "Bujigen",
@@ -18,7 +18,7 @@ class TicketStore {
       status: "Urgent",
       product: "Product 3",
       title: "Crash on startup at Night",
-      date: "22/02/2020",
+      date: "2020-02-01",
     },
     {
       author: "Sam",
@@ -26,7 +26,7 @@ class TicketStore {
       status: "Done",
       product: "Product 1",
       title: "Require Refund",
-      date: "22/02/2020",
+      date: "2020-02-01",
     },
     {
       author: "Pablo",
@@ -34,11 +34,14 @@ class TicketStore {
       status: "Pending",
       product: "Product 2",
       title: "Update not instaling",
-      date: "22/02/2020",
+      date: "2020-12-01",
     },
   ];
 
   @observable filteredTickets: ITicket[] = [...this.tickets];
+
+  @observable fromDateFilter = "0001-01-01";
+  @observable toDateFilter = "9999-12-30";
 
   //ACTIONS
 
@@ -49,6 +52,26 @@ class TicketStore {
   @action filterTicketsByProduct = (product: string) => {
       this.filteredTickets = this.filterProduct(product, this.filteredTickets);
   };
+
+  @action changeFromDate = (date : string) => {
+    if(date === "") {
+      this.fromDateFilter = "9999-12-30";
+    } else {
+      this.fromDateFilter = date;
+    }
+    this.filteredTickets = this.tickets;
+    this.filteredTickets = this.filterDate(this.fromDateFilter, this.toDateFilter, this.filteredTickets);
+  }
+
+  @action changeToDate = (date : string) => {
+    if(date === "") {
+      this.toDateFilter = "9999-12-30";
+    } else {
+      this.toDateFilter = date;
+    }
+    this.filteredTickets = this.tickets;
+    this.filteredTickets = this.filterDate(this.fromDateFilter, this.toDateFilter, this.filteredTickets);
+  }
 
   @action selectAll = () => {
     this.filteredTickets = this.tickets;
@@ -68,6 +91,12 @@ class TicketStore {
       return ticket.product === product;
     });
   };
+
+  filterDate = (fromDate: string, toDate: string, arr: ITicket[]): ITicket[] => {
+    return arr.filter((ticket) => {
+      return (ticket.date >= fromDate && ticket.date <= toDate);
+    });
+  }
 }
 
 export default createContext(new TicketStore());
