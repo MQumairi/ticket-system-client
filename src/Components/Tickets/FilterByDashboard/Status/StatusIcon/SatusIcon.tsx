@@ -1,29 +1,41 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./statusIcon.css";
 import TicketStore from "../../../../App/Store/ticketStore";
 
 interface IProps {
   content: string;
   clickAble: boolean;
+  iconName?: string;
 }
 
 const SatusIcon: React.FC<IProps> = (props) => {
+  const [clicked, setClicked] = useState(false);
 
   const store = useContext(TicketStore);
   const { filterTicketsByStatus } = store;
 
-  const handleClick = () => {
+  const handleClick = (event: any) => {
     if (props.clickAble) {
       filterTicketsByStatus(props.content);
     }
+
+    if(event.currentTarget.name === props.iconName) {
+      setClicked(!clicked);
+    }
   };
 
-  let clickAbleStyle = {}
+  interface dynamicStyle {
+    [key: string]: any;
+  }
+
+  let clickAbleStyle: dynamicStyle = {};
 
   if (props.clickAble) {
-    clickAbleStyle = {
-      cursor: "pointer"
-    }
+    clickAbleStyle.cursor = "pointer";
+  }
+
+  if (clicked) {
+    clickAbleStyle.border = "solid 1px green";
   }
 
   const circleColor = () => {
@@ -42,7 +54,12 @@ const SatusIcon: React.FC<IProps> = (props) => {
   };
 
   return (
-    <button onClick={() => handleClick()} className="statusIcon" style={clickAbleStyle}>
+    <button
+      name={props.iconName}
+      onClick={(e) => handleClick(e)}
+      className="statusIcon"
+      style={clickAbleStyle}
+    >
       <div className={circleColor()}></div>
       <div className="statusContent">{props.content}</div>
     </button>
