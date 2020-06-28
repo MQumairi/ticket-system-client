@@ -8,6 +8,7 @@ interface IProps {
 }
 
 const SatusIcon: React.FC<IProps> = (props) => {
+
   const store = useContext(TicketStore);
   const { filterTicketsByStatus } = store;
 
@@ -16,6 +17,14 @@ const SatusIcon: React.FC<IProps> = (props) => {
       filterTicketsByStatus(props.content);
     }
   };
+
+  let clickAbleStyle = {}
+
+  if (props.clickAble) {
+    clickAbleStyle = {
+      cursor: "pointer"
+    }
+  }
 
   const circleColor = () => {
     switch (props.content) {
@@ -33,7 +42,7 @@ const SatusIcon: React.FC<IProps> = (props) => {
   };
 
   return (
-    <button onClick={() => handleClick()} className="statusIcon">
+    <button onClick={() => handleClick()} className="statusIcon" style={clickAbleStyle}>
       <div className={circleColor()}></div>
       <div className="statusContent">{props.content}</div>
     </button>

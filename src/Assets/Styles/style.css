@@ -54,3 +54,7 @@ hr {
 }
 
 button:focus {outline: var(--primary-color) thin dotted;}
+
+.clickable {
+    cursor: pointer;
+}
