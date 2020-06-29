@@ -11,18 +11,18 @@ const Status = () => {
       <Grid columns={2} className="styleGrid">
         <Grid.Row className="styleRow">
           <Grid.Column className="styleColumn">
-            <StatusIcon clickAble = {true} content="Urgent"/>
+            <StatusIcon iconName={"urgentIcon"} clickAble = {true} content="Urgent"/>
           </Grid.Column>
           <Grid.Column className="styleColumn">
-            <StatusIcon clickAble = {true} content="Low" />
+            <StatusIcon iconName={"lowIcon"} clickAble = {true} content="Low" />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row className="styleRow">
           <Grid.Column className="styleColumn">
-            <StatusIcon clickAble = {true} content="Pending" />
+            <StatusIcon iconName={"pendingIcon"} clickAble = {true} content="Pending" />
           </Grid.Column>
           <Grid.Column className="styleColumn">
-            <StatusIcon clickAble = {true} content="Done" />
+            <StatusIcon iconName={"doneIcon"} clickAble = {true} content="Done" />
           </Grid.Column>
         </Grid.Row>
       </Grid>

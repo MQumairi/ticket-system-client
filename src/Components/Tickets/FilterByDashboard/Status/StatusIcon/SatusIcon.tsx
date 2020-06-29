@@ -1,21 +1,62 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./statusIcon.css";
-import TicketStore from "../../../../App/Store/ticketStore";
+import FilterStore from "../../../../App/Store/filterStore";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
   content: string;
   clickAble: boolean;
+  iconName?: string;
 }
 
 const SatusIcon: React.FC<IProps> = (props) => {
-  const store = useContext(TicketStore);
-  const { filterTicketsByStatus } = store;
+  const [pressed, setPressed] = useState(false);
+
+  const store = useContext(FilterStore);
+  const {
+    filters,
+    filterTickets,
+    changeStatus
+  } = store;
+
+  const filtersDervied = {...filters}
+
+  useEffect(() => {
+    if (!filters.status.includes(props.content)) {
+      setPressed(false);
+    }
+  }, [filters, props.content]);
 
   const handleClick = () => {
     if (props.clickAble) {
-      filterTicketsByStatus(props.content);
+      if (!pressed) {
+        changeStatus(props.content, true);
+        filterTickets();
+      } else {
+        changeStatus(props.content, false);
+        filterTickets();
+      }
+      setPressed(!pressed);
+      console.log("Status: " + filtersDervied.status)
+      console.log("Products: " + filtersDervied.products)
+      console.log("Dates: " + filtersDervied.dates)
+
     }
   };
+
+  interface dynamicStyle {
+    [key: string]: any;
+  }
+
+  let clickAbleStyle: dynamicStyle = {};
+
+  if (props.clickAble) {
+    clickAbleStyle.cursor = "pointer";
+  }
+
+  if (pressed && filters.status.includes(props.content)) {
+    clickAbleStyle.border = "solid 2px green";
+  }
 
   const circleColor = () => {
     switch (props.content) {
@@ -33,11 +74,16 @@ const SatusIcon: React.FC<IProps> = (props) => {
   };
 
   return (
-    <button onClick={() => handleClick()} className="statusIcon">
+    <button
+      name={props.iconName}
+      onClick={() => handleClick()}
+      className="statusIcon"
+      style={clickAbleStyle}
+    >
       <div className={circleColor()}></div>
       <div className="statusContent">{props.content}</div>
     </button>
   );
 };
 
-export default SatusIcon;
+export default observer(SatusIcon);

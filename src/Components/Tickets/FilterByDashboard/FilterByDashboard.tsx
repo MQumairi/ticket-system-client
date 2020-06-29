@@ -4,11 +4,11 @@ import Status from "./Status/Status";
 import Product from "./Product/Product";
 import Dates from "./Dates/Dates";
 import { Button } from "semantic-ui-react";
-import TicketStore from "../../App/Store/ticketStore"
+import FilterStore from "../../App/Store/filterStore"
 
 const FilterByDashboard = () => {
 
-  const store = useContext(TicketStore);
+  const store = useContext(FilterStore);
   const { selectAll } = store;
   
   return (

@@ -2,11 +2,11 @@ import React, { useContext } from 'react'
 import TicketItem from './TicketItem/TicketItem'
 import {observer } from 'mobx-react-lite'
 import './ticketList.css';
-import TicketStore from '../../../App/Store/ticketStore'
+import FilterStore from '../../../App/Store/filterStore'
 
 const TicketList = () => {
 
-    const store = useContext(TicketStore);
+    const store = useContext(FilterStore);
     const {filteredTickets} = store;
 
     return (

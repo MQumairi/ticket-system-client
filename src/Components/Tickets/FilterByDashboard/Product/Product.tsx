@@ -1,14 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import ProductStore from "../../../App/Store/productStore";
-import TicketStore from "../../../App/Store/ticketStore";
+import ProductItem from "./ProductItem";
 import "./product.css";
 
 const Product = () => {
-  const productStore = useContext(ProductStore);
-  const { products } = productStore;
 
-  const ticketStore = useContext(TicketStore);
-  const { filterTicketsByProduct } = ticketStore;
+  const productStore = useContext(ProductStore.ProductContext);
+  const { products } = productStore;
 
   return (
     <div>
@@ -16,13 +14,7 @@ const Product = () => {
 
       {products.map((product) => {
         return (
-          <button
-            onClick={() => filterTicketsByProduct(product.name)}
-            className="productItem"
-            key={product.id}
-          >
-            {product.name}
-          </button>
+          <ProductItem name={product.name} id={product.id}></ProductItem>
         );
       })}
     </div>
