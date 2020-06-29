@@ -20,15 +20,13 @@ const SatusIcon: React.FC<IProps> = (props) => {
   } = store;
 
   useEffect(() => {
-    if(statusFilterPicked !== props.content) {
+    if (statusFilterPicked !== props.content) {
       setPressed(false);
     }
-    console.log("hi")
-  },  [statusFilterPicked, props.content]);
+  }, [statusFilterPicked, props.content]);
 
   const handleClick = () => {
     if (props.clickAble) {
-
       if (!pressed) {
         setStatusFilterPicked(props.content);
         filterTicketsByStatus(props.content);
@@ -36,12 +34,7 @@ const SatusIcon: React.FC<IProps> = (props) => {
         setStatusFilterPicked("");
         filterTicketsByStatus(props.content);
       }
-
       setPressed(!pressed);
-
-
-      console.log("Content? " + props.content);
-      console.log("Pressed? " + pressed);
     }
   };
 
