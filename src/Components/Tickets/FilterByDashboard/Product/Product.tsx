@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import ProductStore from "../../../App/Store/productStore";
-import TicketStore from "../../../App/Store/ticketStore";
+import FilterStore from "../../../App/Store/filterStore";
 import "./product.css";
 
 const Product = () => {
   const productStore = useContext(ProductStore);
   const { products } = productStore;
 
-  const ticketStore = useContext(TicketStore);
+  const ticketStore = useContext(FilterStore);
   const { filterTicketsByProduct } = ticketStore;
 
   return (

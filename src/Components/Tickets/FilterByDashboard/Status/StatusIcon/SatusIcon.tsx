@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./statusIcon.css";
-import TicketStore from "../../../../App/Store/ticketStore";
+import FilterStore from "../../../../App/Store/filterStore";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
   content: string;
@@ -9,18 +10,38 @@ interface IProps {
 }
 
 const SatusIcon: React.FC<IProps> = (props) => {
-  const [clicked, setClicked] = useState(false);
+  const [pressed, setPressed] = useState(false);
 
-  const store = useContext(TicketStore);
-  const { filterTicketsByStatus } = store;
+  const store = useContext(FilterStore);
+  const {
+    filterTicketsByStatus,
+    statusFilterPicked,
+    setStatusFilterPicked,
+  } = store;
 
-  const handleClick = (event: any) => {
-    if (props.clickAble) {
-      filterTicketsByStatus(props.content);
+  useEffect(() => {
+    if(statusFilterPicked !== props.content) {
+      setPressed(false);
     }
+    console.log("hi")
+  },  [statusFilterPicked, props.content]);
 
-    if(event.currentTarget.name === props.iconName) {
-      setClicked(!clicked);
+  const handleClick = () => {
+    if (props.clickAble) {
+
+      if (!pressed) {
+        setStatusFilterPicked(props.content);
+        filterTicketsByStatus(props.content);
+      } else {
+        setStatusFilterPicked("");
+        filterTicketsByStatus(props.content);
+      }
+
+      setPressed(!pressed);
+
+
+      console.log("Content? " + props.content);
+      console.log("Pressed? " + pressed);
     }
   };
 
@@ -34,8 +55,8 @@ const SatusIcon: React.FC<IProps> = (props) => {
     clickAbleStyle.cursor = "pointer";
   }
 
-  if (clicked) {
-    clickAbleStyle.border = "solid 1px green";
+  if (pressed && statusFilterPicked === props.content) {
+    clickAbleStyle.border = "solid 2px green";
   }
 
   const circleColor = () => {
@@ -56,7 +77,7 @@ const SatusIcon: React.FC<IProps> = (props) => {
   return (
     <button
       name={props.iconName}
-      onClick={(e) => handleClick(e)}
+      onClick={() => handleClick()}
       className="statusIcon"
       style={clickAbleStyle}
     >
@@ -66,4 +87,4 @@ const SatusIcon: React.FC<IProps> = (props) => {
   );
 };
 
-export default SatusIcon;
+export default observer(SatusIcon);

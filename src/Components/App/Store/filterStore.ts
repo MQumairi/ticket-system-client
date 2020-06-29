@@ -2,7 +2,7 @@ import { observable, action } from "mobx";
 import { createContext } from "react";
 import { ITicket } from "../../../Models/ticket";
 
-class TicketStore {
+class FilterStore {
   @observable tickets: ITicket[] = [
     {
       author: "Pablo",
@@ -36,6 +36,14 @@ class TicketStore {
       title: "Update not instaling",
       date: "2020-12-01",
     },
+    {
+      author: "Moj",
+      id: 1005,
+      status: "Low",
+      product: "Product 1",
+      title: "Activiation Key missing",
+      date: "2020-06-01",
+    },
   ];
 
   @observable filteredTickets: ITicket[] = [...this.tickets];
@@ -43,35 +51,53 @@ class TicketStore {
   @observable fromDateFilter = "0001-01-01";
   @observable toDateFilter = "9999-12-30";
 
+  @observable statusFilterPicked = "";
+
   //ACTIONS
 
   @action filterTicketsByStatus = (status: string) => {
-    this.filteredTickets = this.filterStatus(status, this.filteredTickets);
+    this.selectAll();
+    if (this.statusFilterPicked === status)
+      this.filteredTickets = this.filterStatus(status, this.filteredTickets);
+    console.log("-------------");
+    console.log("Status? " + this.statusFilterPicked);
+  };
+
+  @action setStatusFilterPicked = (status: string) => {
+    this.statusFilterPicked = status;
   };
 
   @action filterTicketsByProduct = (product: string) => {
-      this.filteredTickets = this.filterProduct(product, this.filteredTickets);
+    this.filteredTickets = this.filterProduct(product, this.filteredTickets);
   };
 
-  @action changeFromDate = (date : string) => {
-    if(date === "") {
+  @action changeFromDate = (date: string) => {
+    if (date === "") {
       this.fromDateFilter = "9999-12-30";
     } else {
       this.fromDateFilter = date;
     }
     this.filteredTickets = this.tickets;
-    this.filteredTickets = this.filterDate(this.fromDateFilter, this.toDateFilter, this.filteredTickets);
-  }
+    this.filteredTickets = this.filterDate(
+      this.fromDateFilter,
+      this.toDateFilter,
+      this.filteredTickets
+    );
+  };
 
-  @action changeToDate = (date : string) => {
-    if(date === "") {
+  @action changeToDate = (date: string) => {
+    if (date === "") {
       this.toDateFilter = "9999-12-30";
     } else {
       this.toDateFilter = date;
     }
     this.filteredTickets = this.tickets;
-    this.filteredTickets = this.filterDate(this.fromDateFilter, this.toDateFilter, this.filteredTickets);
-  }
+    this.filteredTickets = this.filterDate(
+      this.fromDateFilter,
+      this.toDateFilter,
+      this.filteredTickets
+    );
+  };
 
   @action selectAll = () => {
     this.filteredTickets = this.tickets;
@@ -92,11 +118,15 @@ class TicketStore {
     });
   };
 
-  filterDate = (fromDate: string, toDate: string, arr: ITicket[]): ITicket[] => {
+  filterDate = (
+    fromDate: string,
+    toDate: string,
+    arr: ITicket[]
+  ): ITicket[] => {
     return arr.filter((ticket) => {
-      return (ticket.date >= fromDate && ticket.date <= toDate);
+      return ticket.date >= fromDate && ticket.date <= toDate;
     });
-  }
+  };
 }
 
-export default createContext(new TicketStore());
+export default createContext(new FilterStore());

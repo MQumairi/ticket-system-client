@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { Input } from 'semantic-ui-react'
-import TicketStore from '../../../App/Store/ticketStore'
+import FilterStore from '../../../App/Store/filterStore'
 import './dates.css'
 
 const Dates = () => {
     
-    const ticketStore = useContext(TicketStore);
+    const ticketStore = useContext(FilterStore);
     const { changeFromDate, changeToDate } = ticketStore; 
 
     return (

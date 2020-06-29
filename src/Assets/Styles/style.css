@@ -53,7 +53,10 @@ hr {
     width: 100% !important;
 }
 
-button:focus {outline: var(--primary-color) thin dotted;}
+button:focus {
+    /* outline: var(--primary-color) thin dotted; */
+    outline: none;
+}
 
 .clickable {
     cursor: pointer;
