@@ -1,8 +1,13 @@
 import { observable, action, computed } from "mobx";
 import { createContext } from "react";
 import { ITicket } from "../../../Models/ticket";
+import ProductStore from "./productStore";
 
 class FilterStore {
+
+  private producStore = new ProductStore.ProductStore();
+  private productFilters = this.producStore.productNames;
+
   @observable tickets: ITicket[] = [
     {
       author: "Pablo",
@@ -103,6 +108,7 @@ class FilterStore {
   //ACTIONS
 
   @action filterTicketsByStatus = (status: string) => {
+    console.log(this.productFilters);
     if (this.defaultFilters) this.selectAll();
     if (this.statusFilterPicked === status)
       this.filteredTickets = this.filterStatus(status, this.filteredTickets);
@@ -113,8 +119,7 @@ class FilterStore {
   };
 
   @action filterTicketsByProduct = (product: string) => {
-    if (this.defaultFilters)
-      this.selectAll();
+    if (this.defaultFilters) this.selectAll();
     if (this.productFilterPicked === product)
       this.filteredTickets = this.filterProduct(product, this.filteredTickets);
   };

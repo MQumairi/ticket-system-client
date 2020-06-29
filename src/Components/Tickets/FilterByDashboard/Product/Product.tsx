@@ -5,7 +5,7 @@ import "./product.css";
 
 const Product = () => {
 
-  const productStore = useContext(ProductStore);
+  const productStore = useContext(ProductStore.ProductContext);
   const { products } = productStore;
 
   return (
