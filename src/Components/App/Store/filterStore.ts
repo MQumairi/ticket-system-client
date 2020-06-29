@@ -1,13 +1,16 @@
 import { observable, action, computed } from "mobx";
 import { createContext } from "react";
 import { ITicket } from "../../../Models/ticket";
-import ProductStore from "./productStore";
 
+interface filterObject {
+  status: string[];
+  products: string[];
+  dates: {
+    From: string;
+    To: string;
+  };
+}
 class FilterStore {
-
-  private producStore = new ProductStore.ProductStore();
-  private productFilters = this.producStore.productNames;
-
   @observable tickets: ITicket[] = [
     {
       author: "Pablo",
@@ -85,73 +88,44 @@ class FilterStore {
 
   @observable filteredTickets: ITicket[] = [...this.tickets];
 
-  @observable fromDateFilter = "0001-01-01";
-  @observable toDateFilter = "9999-12-30";
-
-  @observable statusFilterPicked = "";
-  @observable productFilterPicked = "";
-
-  @computed get defaultFilters() {
-    if (
-      this.statusFilterPicked === "" &&
-      this.productFilterPicked === "" &&
-      this.fromDateFilter === "0001-01-01" &&
-      this.toDateFilter === "9999-12-30"
-    ) {
-      console.log("It's true!");
-      return true;
-    }
-    console.log("false");
-    return false;
-  }
+  @observable filters: filterObject = {
+    status: [],
+    products: [],
+    dates: {
+      From: "0001-01-01",
+      To: "9999-12-30",
+    },
+  };
 
   //ACTIONS
+  @action filterTickets = () => {
+    //Reset
+    this.filteredTickets = this.tickets;
 
-  @action filterTicketsByStatus = (status: string) => {
-    console.log(this.productFilters);
-    if (this.defaultFilters) this.selectAll();
-    if (this.statusFilterPicked === status)
-      this.filteredTickets = this.filterStatus(status, this.filteredTickets);
-  };
-
-  @action setStatusFilterPicked = (status: string) => {
-    this.statusFilterPicked = status;
-  };
-
-  @action filterTicketsByProduct = (product: string) => {
-    if (this.defaultFilters) this.selectAll();
-    if (this.productFilterPicked === product)
-      this.filteredTickets = this.filterProduct(product, this.filteredTickets);
-  };
-
-  @action setProductFilterPicked = (product: string) => {
-    this.productFilterPicked = product;
-  };
-
-  @action changeFromDate = (date: string) => {
-    if (date === "") {
-      this.fromDateFilter = "9999-12-30";
-    } else {
-      this.fromDateFilter = date;
+    //Filter status
+    if (this.filters.status.length !== 0) {
+      this.filteredTickets = this.filterStatus(
+        this.filters.status,
+        this.filteredTickets
+      );
     }
-    if (this.defaultFilters) this.selectAll();
-    this.filteredTickets = this.filterDate(
-      this.fromDateFilter,
-      this.toDateFilter,
-      this.filteredTickets
-    );
+
+    if (this.filters.products.length !== 0) {
+      this.filters.products.forEach((product) => {
+        this.filteredTickets = this.filterProduct(
+          this.filters.products,
+          this.filteredTickets
+        );
+      });
+    }
+    //Filter dates
+    this.filterTicketsByDate();
   };
 
-  @action changeToDate = (date: string) => {
-    if (date === "") {
-      this.toDateFilter = "9999-12-30";
-    } else {
-      this.toDateFilter = date;
-    }
-    if (this.defaultFilters) this.selectAll();
+  @action filterTicketsByDate = () => {
     this.filteredTickets = this.filterDate(
-      this.fromDateFilter,
-      this.toDateFilter,
+      this.filters.dates.From,
+      this.filters.dates.To,
       this.filteredTickets
     );
   };
@@ -160,18 +134,48 @@ class FilterStore {
     this.filteredTickets = this.tickets;
   };
 
+  @action changeStatus = (status: string, toAdd: boolean) => {
+    if (toAdd) {
+      this.filters.status.push(status);
+    } else {
+      this.filters.status = this.filters.status.filter((statusToRemove) => {
+        return statusToRemove !== status;
+      });
+    }
+  };
+
+  @action changeProduct = (product: string, toAdd: boolean) => {
+    if (toAdd) {
+      this.filters.products.push(product);
+    } else {
+      this.filters.products = this.filters.products.filter(
+        (productToRemove) => {
+          return productToRemove !== product;
+        }
+      );
+    }
+  };
+
+  @action changeToDate = (date: string) => {
+    this.filters.dates.From = date;
+  };
+
+  @action changeFromDate = (date: string) => {
+    this.filters.dates.To = date;
+  };
+
   //HELPER FUNCTIONS
 
   //Takes a filter criterion, and filters "tickets"
-  filterStatus = (status: string, arr: ITicket[]): ITicket[] => {
+  filterStatus = (status: string[], arr: ITicket[]): ITicket[] => {
     return arr.filter((ticket) => {
-      return ticket.status === status;
+      return status.includes(ticket.status);
     });
   };
 
-  filterProduct = (product: string, arr: ITicket[]): ITicket[] => {
+  filterProduct = (product: string[], arr: ITicket[]): ITicket[] => {
     return arr.filter((ticket) => {
-      return ticket.product === product;
+      return product.includes(ticket.product);
     });
   };
 
@@ -187,3 +191,60 @@ class FilterStore {
 }
 
 export default createContext(new FilterStore());
+
+// @observable fromDateFilter = "0001-01-01";
+// @observable toDateFilter = "9999-12-30";
+
+// @observable statusFilterPicked = "";
+// @observable productFilterPicked = "";
+
+// @computed get defaultFilters() {
+//   if (
+//     this.statusFilterPicked === "" &&
+//     this.productFilterPicked === "" &&
+//     this.fromDateFilter === "0001-01-01" &&
+//     this.toDateFilter === "9999-12-30"
+//   ) {
+//     console.log("It's true!");
+//     return true;
+//   }
+//   console.log("false");
+//   return false;
+// }
+
+// @action filterTicketsByStatus = (status: string) => {
+//   console.log(this.productFilters);
+//   if (this.defaultFilters) this.selectAll();
+//   if (this.statusFilterPicked === status)
+//     this.filteredTickets = this.filterStatus(status, this.filteredTickets);
+// };
+
+// @action setStatusFilterPicked = (status: string) => {
+//   this.statusFilterPicked = status;
+// };
+
+// @action filterTicketsByProduct = (product: string) => {
+//   if (this.defaultFilters) this.selectAll();
+//   if (this.productFilterPicked === product)
+//     this.filteredTickets = this.filterProduct(product, this.filteredTickets);
+// };
+
+// @action setProductFilterPicked = (product: string) => {
+//   this.productFilterPicked = product;
+// };
+
+// @action changeFromDate = (date: string) => {
+//   if (date === "") {
+//     this.fromDateFilter = "9999-12-30";
+//   } else {
+//     this.fromDateFilter = date;
+//   }
+// };
+
+// @action changeToDate = (date: string) => {
+//   if (date === "") {
+//     this.toDateFilter = "9999-12-30";
+//   } else {
+//     this.toDateFilter = date;
+//   }
+// };

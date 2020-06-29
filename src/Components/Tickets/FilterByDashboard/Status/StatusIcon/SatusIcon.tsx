@@ -14,27 +14,33 @@ const SatusIcon: React.FC<IProps> = (props) => {
 
   const store = useContext(FilterStore);
   const {
-    filterTicketsByStatus,
-    statusFilterPicked,
-    setStatusFilterPicked,
+    filters,
+    filterTickets,
+    changeStatus
   } = store;
 
+  const filtersDervied = {...filters}
+
   useEffect(() => {
-    if (statusFilterPicked !== props.content) {
+    if (!filters.status.includes(props.content)) {
       setPressed(false);
     }
-  }, [statusFilterPicked, props.content]);
+  }, [filters, props.content]);
 
   const handleClick = () => {
     if (props.clickAble) {
       if (!pressed) {
-        setStatusFilterPicked(props.content);
-        filterTicketsByStatus(props.content);
+        changeStatus(props.content, true);
+        filterTickets();
       } else {
-        setStatusFilterPicked("");
-        filterTicketsByStatus(props.content);
+        changeStatus(props.content, false);
+        filterTickets();
       }
       setPressed(!pressed);
+      console.log("Status: " + filtersDervied.status)
+      console.log("Products: " + filtersDervied.products)
+      console.log("Dates: " + filtersDervied.dates)
+
     }
   };
 
@@ -48,7 +54,7 @@ const SatusIcon: React.FC<IProps> = (props) => {
     clickAbleStyle.cursor = "pointer";
   }
 
-  if (pressed && statusFilterPicked === props.content) {
+  if (pressed && filters.status.includes(props.content)) {
     clickAbleStyle.border = "solid 2px green";
   }
 

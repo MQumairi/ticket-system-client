@@ -12,29 +12,28 @@ interface IProps {
 const ProductItem: React.FC<IProps> = (props) => {
   const filterStore = useContext(FilterStore);
   const {
-    filterTicketsByProduct,
-    setProductFilterPicked,
-    productFilterPicked,
+    filters,
+    filterTickets,
+    changeProduct
   } = filterStore;
 
   const [pressed, setPressed] = useState(false);
 
   useEffect(() => {
-    if (productFilterPicked !== props.name) {
+    if (!filters.products.includes(props.name)) {
       setPressed(false);
     }
-  }, [productFilterPicked, props.name]);
+  }, [filters, props.name]);
 
   const handleClick = (event: any) => {
     if (!pressed) {
-      setProductFilterPicked(props.name);
-      filterTicketsByProduct(props.name);
+      changeProduct(props.name, true);
+      filterTickets();
     } else {
-      setProductFilterPicked("");
-      filterTicketsByProduct(props.name);
+      changeProduct(props.name, false);
+      filterTickets();
     }
     setPressed(!pressed);
-    console.log(props.name);
   };
 
   interface dynamicStyle {
@@ -43,7 +42,7 @@ const ProductItem: React.FC<IProps> = (props) => {
 
   let clickAbleStyle: dynamicStyle = {};
 
-  if (pressed && productFilterPicked === props.name) {
+  if (pressed && filters.products.includes(props.name)) {
     clickAbleStyle.border = "solid 2px green";
   }
 

@@ -1,10 +1,3 @@
-//Don't forget to:
-// -- install mobx and mobx-react-lite (the latter for observers)
-// -- use observables for states, and actions to mutate
-// -- useContext in relevant components
-// -- deconstruct the store
-// -- set the component as an observer by wraping when export with observer(componentName).
-
 import { observable, computed } from "mobx";
 import { createContext } from "react";
 import { IProduct } from "../../../Models/product";
