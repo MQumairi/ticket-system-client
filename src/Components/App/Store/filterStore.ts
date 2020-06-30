@@ -132,6 +132,14 @@ class FilterStore {
 
   @action selectAll = () => {
     this.filteredTickets = this.tickets;
+    this.filters = {
+      status: [],
+      products: [],
+      dates: {
+        From: "0001-01-01",
+        To: "9999-12-30",
+      },
+    }
   };
 
   @action changeStatus = (status: string, toAdd: boolean) => {
@@ -156,11 +164,17 @@ class FilterStore {
     }
   };
 
-  @action changeToDate = (date: string) => {
+  @action changeFromDate = (date: string) => {
+    if(date === "") {
+      this.filters.dates.From = "0001-01-01";
+    }
     this.filters.dates.From = date;
   };
 
-  @action changeFromDate = (date: string) => {
+  @action changeToDate = (date: string) => {
+    if(date === "") {
+      this.filters.dates.To = "9999-12-30";
+    }
     this.filters.dates.To = date;
   };
 
@@ -191,60 +205,3 @@ class FilterStore {
 }
 
 export default createContext(new FilterStore());
-
-// @observable fromDateFilter = "0001-01-01";
-// @observable toDateFilter = "9999-12-30";
-
-// @observable statusFilterPicked = "";
-// @observable productFilterPicked = "";
-
-// @computed get defaultFilters() {
-//   if (
-//     this.statusFilterPicked === "" &&
-//     this.productFilterPicked === "" &&
-//     this.fromDateFilter === "0001-01-01" &&
-//     this.toDateFilter === "9999-12-30"
-//   ) {
-//     console.log("It's true!");
-//     return true;
-//   }
-//   console.log("false");
-//   return false;
-// }
-
-// @action filterTicketsByStatus = (status: string) => {
-//   console.log(this.productFilters);
-//   if (this.defaultFilters) this.selectAll();
-//   if (this.statusFilterPicked === status)
-//     this.filteredTickets = this.filterStatus(status, this.filteredTickets);
-// };
-
-// @action setStatusFilterPicked = (status: string) => {
-//   this.statusFilterPicked = status;
-// };
-
-// @action filterTicketsByProduct = (product: string) => {
-//   if (this.defaultFilters) this.selectAll();
-//   if (this.productFilterPicked === product)
-//     this.filteredTickets = this.filterProduct(product, this.filteredTickets);
-// };
-
-// @action setProductFilterPicked = (product: string) => {
-//   this.productFilterPicked = product;
-// };
-
-// @action changeFromDate = (date: string) => {
-//   if (date === "") {
-//     this.fromDateFilter = "9999-12-30";
-//   } else {
-//     this.fromDateFilter = date;
-//   }
-// };
-
-// @action changeToDate = (date: string) => {
-//   if (date === "") {
-//     this.toDateFilter = "9999-12-30";
-//   } else {
-//     this.toDateFilter = date;
-//   }
-// };
