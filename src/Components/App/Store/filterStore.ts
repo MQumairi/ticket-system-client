@@ -17,6 +17,12 @@ interface IStatus {
   color: string;
 }
 
+interface IOption {
+  key: number,
+  text: string,
+  value: string
+}
+
 class FilterStore {
 
   @observable stati: IStatus[] = [
@@ -39,7 +45,7 @@ class FilterStore {
       id: 4,
       name: "Done",
       color: "#45B510",
-    },
+    }
   ];
 
   @observable tickets: ITicket[] = [
@@ -127,6 +133,21 @@ class FilterStore {
       To: "9999-12-30",
     },
   };
+
+  //COMPUTED
+  @computed get statusOptions() {
+    let returnArr: IOption[] = [];
+
+    this.stati.forEach((status) => {
+      returnArr.push({
+        key: status.id,
+        text: status.name,
+        value: status.name
+      })
+    })
+
+    return returnArr;
+  }
 
   //ACTIONS
   @action filterTickets = () => {

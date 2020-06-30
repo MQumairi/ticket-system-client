@@ -4,18 +4,15 @@ import { Button, Form } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import ProductContext from "../../Components/App/Store/productStore"
+import FilterStore from "../../Components/App/Store/filterStore"
 
 const TicketsNew = () => {
 
   const productStore = useContext(ProductContext.ProductContext);
   const {productOptions} = productStore;
 
-  const options = [
-    { key: "U", text: "Urgent", value: "urgent" },
-    { key: "L", text: "Low", value: "low" },
-    { key: "P", text: "Pending", value: "pending" },
-    { key: "D", text: "Done", value: "done" },
-  ];
+  const filterStore = useContext(FilterStore);
+  const { statusOptions } = filterStore;
 
   return (
     <div id="ticketsNewContianer">
@@ -36,7 +33,7 @@ const TicketsNew = () => {
             <Form.Select
               fluid
               label="Status"
-              options={options}
+              options={statusOptions}
               placeholder="Select Status"
             />
             <Form.Select
