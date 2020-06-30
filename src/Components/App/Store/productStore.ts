@@ -6,6 +6,12 @@ interface IProductNames {
   [key: string]: any;
 }
 
+interface IOption {
+  key: number,
+  text: string,
+  value: string
+}
+
 class ProductStore {
   @observable products: IProduct[] = [
     { id: 1, name: "Product 1" },
@@ -19,6 +25,21 @@ class ProductStore {
       productFilters[product.name] = false;
     });
     return productFilters;
+  }
+
+  @computed get productOptions() {
+
+    let returnArr: IOption[] = []
+
+    this.products.forEach((product) => {
+      returnArr.push({
+        key: product.id,
+        text: product.name,
+        value: product.name
+      });
+    });
+
+    return returnArr;
   }
 }
 

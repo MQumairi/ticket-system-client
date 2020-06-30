@@ -1,27 +1,29 @@
 import React from "react";
-import {Grid} from "semantic-ui-react";
+import {Grid, Button} from "semantic-ui-react";
 import "./ticketItem.css";
+import {ITicket} from "../../../../../Models/ticket"
 import StatusIcon from "../../../FilterByDashboard/Status/StatusIcon/SatusIcon"
 import avatar from "../../../../../Assets/Images/avatar.png"
+
+interface IProps {
+  ticket: ITicket;
+}
 
 const ticketAvatarStyle = {
   backgroundImage: "url(" + avatar + ")"
 }
 
-const TicketItem = ({ ticket }) => {
+const TicketItem: React.FC<IProps> = ({ ticket }) => {
   return (
     <Grid columns={6} className="ticketItem" stackable>
       <Grid.Column width={2}>
         <div className="ticketAvatar" style={ticketAvatarStyle}></div>
         {/* {ticket.author} */}
       </Grid.Column>
-      <Grid.Column width={1}>
-      {ticket.id}
-      </Grid.Column>
       <Grid.Column width={3}>
-        <div className="ticketStatusCol"><StatusIcon content={ticket.status}/></div>
+        <div className="ticketStatusCol"><StatusIcon clickAble={false} content={ticket.status}/></div>
       </Grid.Column>
-      <Grid.Column width={3}>
+      <Grid.Column width={2}>
       {ticket.product}
       </Grid.Column>
       <Grid.Column width={4}>
@@ -29,6 +31,9 @@ const TicketItem = ({ ticket }) => {
       </Grid.Column>
       <Grid.Column width={3}>
       {ticket.date}
+      </Grid.Column>
+      <Grid.Column width={1}>
+      <Button className="mainButton">View</Button>
       </Grid.Column>
     </Grid>
   );

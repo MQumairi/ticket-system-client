@@ -5,4 +5,5 @@ export interface ITicket {
     product: string;
     title: string;
     date: string;
+    description?: string;
 }

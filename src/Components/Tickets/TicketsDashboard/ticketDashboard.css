@@ -18,3 +18,11 @@
 .table-header {
     text-align: center;
 }
+
+.postTicketButton {
+    margin: 0px auto !important;
+    margin-top: 50px !important;
+    display: block !important;
+    min-width: 200px;
+    max-width: 300px;
+}

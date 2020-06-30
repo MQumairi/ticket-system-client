@@ -10,7 +10,38 @@ interface filterObject {
     To: string;
   };
 }
+
+interface IStatus {
+  id: number;
+  name: string;
+  color: string;
+}
+
 class FilterStore {
+  
+  @observable stati: IStatus[] = [
+    {
+      id: 1,
+      name: "Urgent",
+      color: "#d80000",
+    },
+    {
+      id: 2,
+      name: "Low",
+      color: "#e68a00",
+    },
+    {
+      id: 3,
+      name: "Pending",
+      color: "#f3cb16",
+    },
+    {
+      id: 4,
+      name: "Done",
+      color: "#45B510",
+    },
+  ];
+
   @observable tickets: ITicket[] = [
     {
       author: "Pablo",
@@ -139,7 +170,7 @@ class FilterStore {
         From: "0001-01-01",
         To: "9999-12-30",
       },
-    }
+    };
   };
 
   @action changeStatus = (status: string, toAdd: boolean) => {
@@ -165,17 +196,19 @@ class FilterStore {
   };
 
   @action changeFromDate = (date: string) => {
-    if(date === "") {
+    if (date === "") {
       this.filters.dates.From = "0001-01-01";
+    } else {
+      this.filters.dates.From = date;
     }
-    this.filters.dates.From = date;
   };
 
   @action changeToDate = (date: string) => {
-    if(date === "") {
+    if (date === "") {
       this.filters.dates.To = "9999-12-30";
+    } else {
+      this.filters.dates.To = date;
     }
-    this.filters.dates.To = date;
   };
 
   //HELPER FUNCTIONS

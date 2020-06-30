@@ -1,6 +1,7 @@
 :root {
     /* Sizes */
     --body-width: 70%;
+    min-height: 100vh;
 
     /* Colors */
     --primary-color: #B31E1E;
@@ -18,8 +19,17 @@
     --subheader-color: #5e5e5e;
 }
 
+
+html {
+    min-height:100%;
+    position: relative;
+    min-height: 100vh;
+}
+
 body {
     background-color: var(--bg-color);
+    height: 100%;
+    min-height: 100vh;
 }
 
 .remove-padding {
@@ -45,6 +55,10 @@ hr {
 
 .mainButton:hover {
     background-color:var(--primary-color-hover)!important;
+}
+
+.backButton {
+    height: min-content;
 }
 
 .no-style {
