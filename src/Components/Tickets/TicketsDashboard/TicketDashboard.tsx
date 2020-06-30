@@ -1,6 +1,6 @@
 import React from 'react'
 import "./ticketDashboard.css"
-import { Grid } from 'semantic-ui-react'
+import { Grid, Button } from 'semantic-ui-react'
 import TicketList from './TicketList/TicketList'
 
 const TicketDashboard = () => {
@@ -18,6 +18,7 @@ const TicketDashboard = () => {
             </Grid>
             <hr/>
             <TicketList/>
+            <Button className="mainButton postTicketButton">POST TICKET</Button>
         </div>
     )
 }
