@@ -16,7 +16,8 @@ const SatusIcon: React.FC<IProps> = (props) => {
   const {
     filters,
     filterTickets,
-    changeStatus
+    changeStatus,
+    stati
   } = store;
 
   const filtersDervied = {...filters}
@@ -52,6 +53,7 @@ const SatusIcon: React.FC<IProps> = (props) => {
 
   if (props.clickAble) {
     clickAbleStyle.cursor = "pointer";
+    clickAbleStyle.marginTop = "10px";
   }
 
   if (pressed && filters.status.includes(props.content)) {
@@ -59,18 +61,11 @@ const SatusIcon: React.FC<IProps> = (props) => {
   }
 
   const circleColor = () => {
-    switch (props.content) {
-      case "Urgent":
-        return "circle-red";
-      case "Low":
-        return "circle-orange";
-      case "Pending":
-        return "circle-yellow";
-      case "Done":
-        return "circle-green";
-      default:
-        return "circle-red";
-    }
+    let foundStatus = stati.find((status)=> {
+      return status.name === props.content;
+    });
+
+    return {backgroundColor: foundStatus?.color}
   };
 
   return (
@@ -80,7 +75,7 @@ const SatusIcon: React.FC<IProps> = (props) => {
       className="statusIcon"
       style={clickAbleStyle}
     >
-      <div className={circleColor()}></div>
+      <div className="circle" style={circleColor()}></div>
       <div className="statusContent">{props.content}</div>
     </button>
   );

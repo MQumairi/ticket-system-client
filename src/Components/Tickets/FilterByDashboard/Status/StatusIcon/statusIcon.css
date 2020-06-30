@@ -11,10 +11,9 @@
     border: none;
 }
 
-.circle-red {
+.circle {
     width: 20px;
     height: 20px;
-    background-color: #d80000;
     border-radius: 100%;
 }
 
