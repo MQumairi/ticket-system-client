@@ -1,20 +1,20 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import "./ticketsNew.css";
 import { Button, Form } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import ProductContext from "../../Components/App/Store/productStore"
 
 const TicketsNew = () => {
+
+  const productStore = useContext(ProductContext.ProductContext);
+  const {productOptions} = productStore;
+
   const options = [
     { key: "U", text: "Urgent", value: "urgent" },
     { key: "L", text: "Low", value: "low" },
     { key: "P", text: "Pending", value: "pending" },
     { key: "D", text: "Done", value: "done" },
-  ];
-
-  const products = [
-    { key: "1", text: "Product 1", value: "product 1" },
-    { key: "2", text: "Product 2", value: "product 2" },
-    { key: "3", text: "Product 3", value: "product 3" },
   ];
 
   return (
@@ -42,7 +42,7 @@ const TicketsNew = () => {
             <Form.Select
               fluid
               label="Product"
-              options={products}
+              options={productOptions}
               placeholder="Select Product"
             />
           </Form.Group>
@@ -60,4 +60,4 @@ const TicketsNew = () => {
   );
 };
 
-export default TicketsNew;
+export default observer(TicketsNew);
