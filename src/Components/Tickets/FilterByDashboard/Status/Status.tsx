@@ -1,30 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Grid } from "semantic-ui-react";
 import StatusIcon from "./StatusIcon/SatusIcon";
+import FilterStore from "../../../App/Store/filterStore";
 import "./status.css";
 
 const Status = () => {
+  const filterStore = useContext(FilterStore);
+  const { stati } = filterStore;
 
   return (
     <div>
       <h4 className="filterTitle">Status</h4>
       <Grid columns={2} className="styleGrid">
-        <Grid.Row className="styleRow">
+        {stati.map((status) => {
+          return (
           <Grid.Column className="styleColumn">
-            <StatusIcon iconName={"urgentIcon"} clickAble = {true} content="Urgent"/>
-          </Grid.Column>
-          <Grid.Column className="styleColumn">
-            <StatusIcon iconName={"lowIcon"} clickAble = {true} content="Low" />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row className="styleRow">
-          <Grid.Column className="styleColumn">
-            <StatusIcon iconName={"pendingIcon"} clickAble = {true} content="Pending" />
-          </Grid.Column>
-          <Grid.Column className="styleColumn">
-            <StatusIcon iconName={"doneIcon"} clickAble = {true} content="Done" />
-          </Grid.Column>
-        </Grid.Row>
+            <StatusIcon
+              iconName={"urgentIcon"}
+              clickAble={true}
+              content={status.name}
+            />
+          </Grid.Column>)
+        })}
       </Grid>
     </div>
   );

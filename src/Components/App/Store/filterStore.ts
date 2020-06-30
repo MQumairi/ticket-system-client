@@ -18,7 +18,7 @@ interface IStatus {
 }
 
 class FilterStore {
-  
+
   @observable stati: IStatus[] = [
     {
       id: 1,
