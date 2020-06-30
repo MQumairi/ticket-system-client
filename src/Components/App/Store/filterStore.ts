@@ -167,15 +167,17 @@ class FilterStore {
   @action changeFromDate = (date: string) => {
     if(date === "") {
       this.filters.dates.From = "0001-01-01";
+    } else {
+      this.filters.dates.From = date;
     }
-    this.filters.dates.From = date;
   };
 
   @action changeToDate = (date: string) => {
     if(date === "") {
       this.filters.dates.To = "9999-12-30";
+    } else {
+      this.filters.dates.To = date;
     }
-    this.filters.dates.To = date;
   };
 
   //HELPER FUNCTIONS
