@@ -2,6 +2,7 @@ import React from 'react'
 import "./ticketDashboard.css"
 import { Grid, Button } from 'semantic-ui-react'
 import TicketList from './TicketList/TicketList'
+import { Link } from 'react-router-dom'
 
 const TicketDashboard = () => {
     return (
@@ -18,7 +19,7 @@ const TicketDashboard = () => {
             </Grid>
             <hr/>
             <TicketList/>
-            <Button className="mainButton postTicketButton">POST TICKET</Button>
+            <Button as={Link} to="/tickets/new" className="mainButton postTicketButton">POST TICKET</Button>
         </div>
     )
 }
