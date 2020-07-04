@@ -27,7 +27,7 @@ export default class FilterStore {
 
   constructor(public rootStore: Store) {}
 
-  tickets = this.rootStore.ticketStore.tickets;
+  @observable tickets = this.rootStore.ticketStore.tickets;
 
   @observable filteredTickets: ITicket[] = [...this.tickets];
 

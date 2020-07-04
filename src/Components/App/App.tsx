@@ -12,7 +12,7 @@ function App() {
       <Navbar />
       <div id="mainContentBody">
         <Switch>
-          <Route exact path={["/", "/tickets"]} component={Tickets} />
+          <Route exact path={["/", "/tickets"]} component={Tickets}  key={Date.now()} />
           <Route
             path={["/postNewTicket", "/tickets/new"]}
             component={TicketsNew}

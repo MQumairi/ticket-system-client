@@ -32,8 +32,7 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
     }
 
     // addTicket(newTicket);
-    tickets.push(newTicket);
-    filteredTickets.push(newTicket);
+    addTicket(newTicket);
 
     //Printing to Console
     console.log("-------------")

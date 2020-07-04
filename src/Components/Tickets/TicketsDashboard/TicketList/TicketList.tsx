@@ -8,6 +8,7 @@ const TicketList = () => {
   const store = useContext(Store);
   const { filteredTickets, tickets } = store.filterStore;
   const { tickets: ticketspriv } = store.ticketStore;
+  const { selectAll } = store.filterStore;
 
   useEffect(() => {
     console.log("-------------");
@@ -16,7 +17,12 @@ const TicketList = () => {
     console.log(filteredTickets);
     console.log(ticketspriv);
     console.log("-------------");
-  }, [tickets, filteredTickets]);
+
+    // let location = useLocation();
+    // console.log(location.state.from.pathname)
+    selectAll();
+
+  });
 
   return (
     <div id="ticketList">
