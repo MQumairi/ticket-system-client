@@ -1,14 +1,14 @@
 import React, { useContext, useState } from "react";
 import "./ticketsNew.css";
 import { Button, Form } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import ProductContext from "../../Components/App/Store/productStore";
 import FilterStore from "../../Components/App/Store/filterStore";
 import { ITicket } from "../../Models/ticket";
 import TicketStore from "../App/Store/ticketStore"
 
-const TicketsNew = () => {
+const TicketsNew: React.FC<RouteComponentProps> = (props) => {
   const productStore = useContext(ProductContext.ProductContext);
   const { productOptions } = productStore;
 
@@ -45,6 +45,10 @@ const TicketsNew = () => {
 
     console.log(tickets)
     console.log(filteredTickets)
+
+    //Redirect
+    props.history.push("/tickets");
+    
   };
 
   return (
