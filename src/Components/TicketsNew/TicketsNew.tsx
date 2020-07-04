@@ -1,32 +1,23 @@
 import React, { useContext, useState } from "react";
-import "./ticketsNew.css";
 import { Button, Form } from "semantic-ui-react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import ProductContext from "../../Components/App/Store/productStore";
-import FilterStore from "../../Components/App/Store/filterStore";
 import { ITicket } from "../../Models/ticket";
-import TicketStore from "../App/Store/ticketStore"
+import Store from "../../Components/App/Store/rootStore";
+import "./ticketsNew.css";
 
 const TicketsNew: React.FC<RouteComponentProps> = (props) => {
-  const productStore = useContext(ProductContext.ProductContext);
-  const { productOptions } = productStore;
 
-  const filterStore = useContext(FilterStore);
-  const { statusOptions, filteredTickets } = filterStore;
-  
-  const ticketStore = useContext(TicketStore.TicketContext);
-  const { tickets, addTicket } = ticketStore;
+  const store = useContext(Store);
+  const { productOptions } = store.productStore;
+  const { statusOptions, filteredTickets, tickets } = store.filterStore;
+  const { tickets: ticketspriv, addTicket } = store.ticketStore;
 
   const [status, setSatus] = useState("");
   const [product, setProduct] = useState("");
 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    // console.log("Title: " + e.currentTarget.ticketTitle.value);
-    // console.log("Status: " + status);
-    // console.log("Product " + product);
-    // console.log("Description: " + e.currentTarget.ticketNewDesc.value);
 
     const today = new Date();
 
@@ -40,11 +31,17 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
       date: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
     }
 
-    addTicket(newTicket);
+    // addTicket(newTicket);
+    tickets.push(newTicket);
     filteredTickets.push(newTicket);
 
+    //Printing to Console
+    console.log("-------------")
+    console.log("From: TicketsNew.tsx")
     console.log(tickets)
     console.log(filteredTickets)
+    console.log(ticketspriv)
+    console.log("-------------")
 
     //Redirect
     props.history.push("/tickets");

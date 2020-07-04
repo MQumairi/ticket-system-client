@@ -1,8 +1,11 @@
-import { createContext } from "react";
 import { observable, action } from "mobx";
 import { ITicket } from "../../../Models/ticket";
+import {Store} from "./rootStore";
 
-class TicketStore {
+export default class TicketStore {
+
+  constructor(public rootStore: Store) {}
+  
   //Observables
   @observable tickets: ITicket[] = [
     {
@@ -84,10 +87,3 @@ class TicketStore {
     this.tickets.push(ticket);
   }
 }
-
-const TicketContext = createContext(new TicketStore());
-
-export default {
-  TicketContext,
-  TicketStore,
-};

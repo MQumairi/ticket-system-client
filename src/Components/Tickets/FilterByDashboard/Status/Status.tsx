@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { Grid } from "semantic-ui-react";
 import StatusIcon from "./StatusIcon/SatusIcon";
-import FilterStore from "../../../App/Store/filterStore";
+import Store from "../../../App/Store/rootStore";
 import "./status.css";
 
 const Status = () => {
-  const filterStore = useContext(FilterStore);
-  const { stati } = filterStore;
+  const store = useContext(Store);
+  const { stati } = store.filterStore;
 
   return (
     <div>

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import "./statusIcon.css";
-import FilterStore from "../../../../App/Store/filterStore";
+import Store from "../../../../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
 
 interface IProps {
@@ -12,13 +12,13 @@ interface IProps {
 const SatusIcon: React.FC<IProps> = (props) => {
   const [pressed, setPressed] = useState(false);
 
-  const store = useContext(FilterStore);
+  const store = useContext(Store);
   const {
     filters,
     filterTickets,
     changeStatus,
     stati
-  } = store;
+  } = store.filterStore;
 
   const filtersDervied = {...filters}
 
