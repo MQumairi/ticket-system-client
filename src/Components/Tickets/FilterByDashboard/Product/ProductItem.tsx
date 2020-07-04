@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import ProductStore from "../../../App/Store/productStore";
-import FilterStore from "../../../App/Store/filterStore";
+import Store from "../../../App/Store/rootStore";
 import "./product.css";
 import { observer } from "mobx-react-lite";
 
@@ -10,12 +9,13 @@ interface IProps {
 }
 
 const ProductItem: React.FC<IProps> = (props) => {
-  const filterStore = useContext(FilterStore);
+
+  const store = useContext(Store);
   const {
     filters,
     filterTickets,
     changeProduct
-  } = filterStore;
+  } = store.filterStore;
 
   const [pressed, setPressed] = useState(false);
 

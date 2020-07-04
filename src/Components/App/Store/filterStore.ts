@@ -1,7 +1,6 @@
-import { observable, action, computed, decorate } from "mobx";
-import { createContext } from "react";
+import { observable, action, computed } from "mobx";
 import { ITicket } from "../../../Models/ticket";
-import TicketStore from "./ticketStore";
+import { Store } from "./rootStore";
 
 interface filterObject {
   status: string[];
@@ -24,9 +23,22 @@ interface IOption {
   value: string;
 }
 
-class FilterStore {
-  private ticketStore = new TicketStore.TicketStore();
-  private tickets = this.ticketStore.tickets;
+export default class FilterStore {
+
+  constructor(public rootStore: Store) {}
+
+  tickets = this.rootStore.ticketStore.tickets;
+
+  @observable filteredTickets: ITicket[] = [...this.tickets];
+
+  @observable filters: filterObject = {
+    status: [],
+    products: [],
+    dates: {
+      From: "0001-01-01",
+      To: "9999-12-30",
+    },
+  };
 
   @observable stati: IStatus[] = [
     {
@@ -51,17 +63,6 @@ class FilterStore {
     },
   ];
 
-  @observable filteredTickets: ITicket[] = [...this.tickets];
-
-  @observable filters: filterObject = {
-    status: [],
-    products: [],
-    dates: {
-      From: "0001-01-01",
-      To: "9999-12-30",
-    },
-  };
-
   //COMPUTED
   @computed get statusOptions() {
     let returnArr: IOption[] = [];
@@ -79,6 +80,14 @@ class FilterStore {
 
   //ACTIONS
   @action filterTickets = () => {
+
+    //Print before filter 
+    console.log("-------------")
+    console.log("From: filterStore (pre filter)")
+    console.log(this.tickets)
+    console.log(this.filteredTickets)
+    console.log("-------------")
+
     //Reset
     this.filteredTickets = this.tickets;
 
@@ -100,6 +109,13 @@ class FilterStore {
     }
     //Filter dates
     this.filterTicketsByDate();
+
+    //Print after filter
+    console.log("-------------")
+    console.log("From: filterStore (post filter)")
+    console.log(this.tickets) //<------- Problem here!
+    console.log(this.filteredTickets)
+    console.log("-------------")
   };
 
   @action filterTicketsByDate = () => {
@@ -185,5 +201,3 @@ class FilterStore {
     });
   };
 }
-
-export default createContext(new FilterStore());

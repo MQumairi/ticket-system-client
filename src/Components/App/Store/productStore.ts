@@ -1,6 +1,7 @@
 import { observable, computed } from "mobx";
 import { createContext } from "react";
 import { IProduct } from "../../../Models/product";
+import { Store } from "./rootStore";
 
 interface IProductNames {
   [key: string]: any;
@@ -12,7 +13,10 @@ interface IOption {
   value: string
 }
 
-class ProductStore {
+export default class ProductStore {
+  
+  constructor(public rootStore: Store) {}
+
   @observable products: IProduct[] = [
     { id: 1, name: "Product 1" },
     { id: 2, name: "Product 2" },
@@ -42,10 +46,3 @@ class ProductStore {
     return returnArr;
   }
 }
-
-const ProductContext = createContext(new ProductStore());
-
-export default {
-  ProductContext,
-  ProductStore,
-};

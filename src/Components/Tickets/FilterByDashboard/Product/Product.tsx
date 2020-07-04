@@ -1,12 +1,12 @@
-import React, { useContext, useState } from "react";
-import ProductStore from "../../../App/Store/productStore";
+import React, { useContext } from "react";
+import Store from "../../../App/Store/rootStore";
 import ProductItem from "./ProductItem";
 import "./product.css";
 
 const Product = () => {
 
-  const productStore = useContext(ProductStore.ProductContext);
-  const { products } = productStore;
+  const store = useContext(Store);
+  const { products } = store.productStore;
 
   return (
     <div>
