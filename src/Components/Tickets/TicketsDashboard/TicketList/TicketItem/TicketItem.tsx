@@ -4,6 +4,7 @@ import "./ticketItem.css";
 import {ITicket} from "../../../../../Models/ticket"
 import StatusIcon from "../../../FilterByDashboard/Status/StatusIcon/SatusIcon"
 import avatar from "../../../../../Assets/Images/avatar.png"
+import { Link } from "react-router-dom";
 
 interface IProps {
   ticket: ITicket;
@@ -33,7 +34,7 @@ const TicketItem: React.FC<IProps> = ({ ticket }) => {
       {ticket.date}
       </Grid.Column>
       <Grid.Column width={1}>
-      <Button className="mainButton">View</Button>
+      <Button as={Link} to={"/tickets/" + ticket.id} className="mainButton">View</Button>
       </Grid.Column>
     </Grid>
   );

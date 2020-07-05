@@ -1,11 +1,10 @@
 import { observable, action } from "mobx";
 import { ITicket } from "../../../Models/ticket";
-import {Store} from "./rootStore";
+import { Store } from "./rootStore";
 
 export default class TicketStore {
-
   constructor(public rootStore: Store) {}
-  
+
   //Observables
   @observable tickets: ITicket[] = [
     {
@@ -85,5 +84,12 @@ export default class TicketStore {
   //Actions
   @action addTicket = (ticket: ITicket) => {
     this.tickets.push(ticket);
-  }
+  };
+
+  @action getTicket = (id: string) => {
+    let query = Number(id);
+    return this.tickets.find((ticket) => {
+      return ticket.id === query;
+    });
+  };
 }

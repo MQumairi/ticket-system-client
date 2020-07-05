@@ -6,23 +6,12 @@ import Store from "../../../App/Store/rootStore";
 
 const TicketList = () => {
   const store = useContext(Store);
-  const { filteredTickets, tickets } = store.filterStore;
-  const { tickets: ticketspriv } = store.ticketStore;
+  const { filteredTickets } = store.filterStore;
   const { selectAll } = store.filterStore;
 
   useEffect(() => {
-    console.log("-------------");
-    console.log("From: TicketList.tsx");
-    console.log(tickets);
-    console.log(filteredTickets);
-    console.log(ticketspriv);
-    console.log("-------------");
-
-    // let location = useLocation();
-    // console.log(location.state.from.pathname)
     selectAll();
-
-  });
+  }, [selectAll]);
 
   return (
     <div id="ticketList">
