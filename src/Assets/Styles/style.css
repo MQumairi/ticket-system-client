@@ -75,3 +75,12 @@ button:focus {
 .clickable {
     cursor: pointer;
 }
+
+.productButton {
+    background-color: var(--body-bg-color-4);
+    margin-top: 10px;
+    padding: 7px;
+    border-radius: 20px;
+    text-align: center;
+    border: none;
+}

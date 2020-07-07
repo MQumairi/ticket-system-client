@@ -78,6 +78,7 @@ export default class TicketStore {
       product: "Product 1",
       title: "Activiation Key missing",
       date: "2020-06-01",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima sunt magnam expedita. Libero voluptas, fugit possimus voluptatum porro neque molestiae aliquam. Voluptate aliquam culpa rerum necessitatibus vero expedita porro! Quam?"
     },
   ];
 
