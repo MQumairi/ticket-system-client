@@ -13,6 +13,7 @@ export default class CommentStore {
       date: "2020-12-01",
       description: "Working on it now",
       commentIds: [],
+      parentType: "ticket",
     },
     {
       id: 2,
@@ -20,13 +21,15 @@ export default class CommentStore {
       date: "2020-12-01",
       description: "Figured it out. Will be done by tomorrow.",
       commentIds: [3],
+      parentType: "ticket",
     },
     {
       id: 3,
-      authorId: 2,
+      authorId: 1,
       date: "2020-12-01",
       description: "Thanks Toshi",
       commentIds: [],
+      parentType: "comment",
     },
   ];
 
@@ -37,8 +40,8 @@ export default class CommentStore {
     });
   };
 
-  @action listComments = (ticket: ITicket, commentsArr: IComment[]) => {
-    ticket.commentIds.forEach((commentId) => {
+  @action listComments = (parent: ITicket | IComment, commentsArr: IComment[]) => {
+    parent.commentIds.forEach((commentId) => {
       commentsArr.push(this.getComment(commentId.toString())!);
     });
   };

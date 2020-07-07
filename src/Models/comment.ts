@@ -4,4 +4,5 @@ export interface IComment {
     date: string;
     description: string;
     commentIds: number[];
+    parentType: string;
 }
