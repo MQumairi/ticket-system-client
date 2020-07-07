@@ -36,7 +36,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const poster = getUser(currentTicket.authorId.toString());
 
   const revealReplyForm = () => {
-    if (replyPressed) return <CommentsNew parent={currentTicket} />;
+    if (replyPressed) return <CommentsNew parent={currentTicket} setReplyPressed={setReplyPressed} />;
   };
 
   const setReplyText = () => {

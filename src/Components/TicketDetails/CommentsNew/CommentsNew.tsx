@@ -6,12 +6,12 @@ import { ITicket } from "../../../Models/ticket";
 import Store from "../../App/Store/rootStore";
 
 interface IProps {
-  //List props here in the form:
-  //propName: propType;
   parent: ITicket | IComment;
+  // replyPressed: boolean;
+  setReplyPressed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CommentsNew: React.FC<IProps> = ({ parent }) => {
+const CommentsNew: React.FC<IProps> = ({ parent, setReplyPressed }) => {
 
   const store = useContext(Store);
   const { addCommnet } = store.commentStore;
@@ -36,6 +36,7 @@ const CommentsNew: React.FC<IProps> = ({ parent }) => {
     //Add comment 
     addCommnet(newComment);
     parent.commentIds.push(newComment.id);
+    setReplyPressed(false);
     
   };
 
