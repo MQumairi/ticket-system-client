@@ -1,0 +1,19 @@
+@import "../../../Assets/Styles/style.css";
+
+.commentFormContainer {
+    background-color: var(--body-bg-color-1);
+    margin-top: 10px;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid var(--body-border-color);
+}
+
+#commentForm {
+    width: 80%;
+}
+
+#commentDescriptionInput {
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+}

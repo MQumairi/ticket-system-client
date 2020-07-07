@@ -28,7 +28,8 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
       product: product,
       title: e.currentTarget.ticketTitle.value,
       description: e.currentTarget.ticketNewDesc.value,
-      date: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+      date: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate(),
+      commentIds: []
     }
 
     // addTicket(newTicket);

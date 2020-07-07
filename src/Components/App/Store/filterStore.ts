@@ -81,13 +81,6 @@ export default class FilterStore {
   //ACTIONS
   @action filterTickets = () => {
 
-    //Print before filter 
-    console.log("-------------")
-    console.log("From: filterStore (pre filter)")
-    console.log(this.tickets)
-    console.log(this.filteredTickets)
-    console.log("-------------")
-
     //Reset
     this.filteredTickets = this.tickets;
 
@@ -109,13 +102,6 @@ export default class FilterStore {
     }
     //Filter dates
     this.filterTicketsByDate();
-
-    //Print after filter
-    console.log("-------------")
-    console.log("From: filterStore (post filter)")
-    console.log(this.tickets) //<------- Problem here!
-    console.log(this.filteredTickets)
-    console.log("-------------")
   };
 
   @action filterTicketsByDate = () => {

@@ -7,6 +7,9 @@ import { Grid, Button } from "semantic-ui-react";
 import StatusIcon from "../Tickets/FilterByDashboard/Status/StatusIcon/SatusIcon";
 import Avatar from "../Users/Avatar/Avatar";
 import { observer } from "mobx-react-lite";
+import CommentsNew from "./CommentsNew/CommentsNew";
+import { IComment } from "../../Models/comment";
+import Comment from "./Comment/Comment";
 
 interface params {
   id: string;
@@ -16,6 +19,9 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const store = useContext(Store);
   const { getTicket } = store.ticketStore;
   const { getUser } = store.userStore;
+  const { getComment, listComments } = store.commentStore;
+
+  const [replyPressed, setReplyPressed] = useState(false);
 
   const [currentTicket, setCurrentTicket] = useState<ITicket | undefined>(
     undefined
@@ -28,6 +34,19 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   if (currentTicket === undefined) return <div>Error 404</div>;
 
   const poster = getUser(currentTicket.authorId.toString());
+
+  const revealReplyForm = () => {
+    if (replyPressed) return <CommentsNew />;
+  };
+
+  const setReplyText = () => {
+    if (replyPressed) return "Cancel";
+    return "Reply";
+  };
+
+  //Array for the comments on this ticket
+  let comments: IComment[] = [];
+  listComments(currentTicket, comments);
 
   return (
     <div id="ticketDetailsBody">
@@ -80,7 +99,12 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
         <Grid>
           <Grid.Row columns={3}>
             <Grid.Column width={12}>
-              <Button className="mainButton">Reply</Button>
+              <Button
+                className="mainButton"
+                onClick={() => setReplyPressed(!replyPressed)}
+              >
+                {setReplyText()}
+              </Button>
             </Grid.Column>
             <Grid.Column width={2}>
               <Button className="mainButton">Delete</Button>
@@ -91,6 +115,12 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
           </Grid.Row>
         </Grid>
       </div>
+      {revealReplyForm()}
+      {comments.map((comment) => {
+        return <div>
+          <Comment comment={comment}/>
+          </div>;
+      })}
     </div>
   );
 };
