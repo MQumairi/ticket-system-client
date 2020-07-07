@@ -19,7 +19,7 @@ const Comment: React.FC<IProps> = ({ comment }) => {
 
   const [replyPressed, setReplyPressed] = useState(false);
   const revealReplyForm = () => {
-    if (replyPressed) return <CommentsNew />;
+    if (replyPressed) return <CommentsNew parent={comment}/>;
   };
 
   const setReplyText = () => {

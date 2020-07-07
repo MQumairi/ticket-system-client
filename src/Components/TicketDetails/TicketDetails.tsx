@@ -19,7 +19,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const store = useContext(Store);
   const { getTicket } = store.ticketStore;
   const { getUser } = store.userStore;
-  const { getComment, listComments } = store.commentStore;
+  const { listComments } = store.commentStore;
 
   const [replyPressed, setReplyPressed] = useState(false);
 
@@ -36,7 +36,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const poster = getUser(currentTicket.authorId.toString());
 
   const revealReplyForm = () => {
-    if (replyPressed) return <CommentsNew />;
+    if (replyPressed) return <CommentsNew parent={currentTicket} />;
   };
 
   const setReplyText = () => {

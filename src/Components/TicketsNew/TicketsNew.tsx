@@ -35,14 +35,6 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
     // addTicket(newTicket);
     addTicket(newTicket);
 
-    //Printing to Console
-    console.log("-------------")
-    console.log("From: TicketsNew.tsx")
-    console.log(tickets)
-    console.log(filteredTickets)
-    console.log(ticketspriv)
-    console.log("-------------")
-
     //Redirect
     props.history.push("/tickets");
     

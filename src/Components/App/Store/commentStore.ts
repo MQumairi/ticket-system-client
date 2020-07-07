@@ -45,4 +45,8 @@ export default class CommentStore {
       commentsArr.push(this.getComment(commentId.toString())!);
     });
   };
+
+  @action addCommnet = (newComment: IComment) => {
+    this.commentList.push(newComment);
+  }
 }
