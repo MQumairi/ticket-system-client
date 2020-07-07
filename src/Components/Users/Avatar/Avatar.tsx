@@ -16,7 +16,7 @@ const Avatar: React.FC<IProps> = (props) => {
     backgroundImage: "url(" + getUser(props.userId)?.avatar + ")",
     width: props.diameter + "px",
     height: props.diameter + "px",
-    border: props.borderWidth + "px solid var(--body-bg-color-3)"
+    border: props.borderWidth + "px solid var(--body-bg-color-3)",
   };
 
   return (

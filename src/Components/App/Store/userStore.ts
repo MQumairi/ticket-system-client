@@ -15,6 +15,14 @@ export default class UserStore {
       rank: "System Admin",
       avatar: "https://images.unsplash.com/photo-1586297098710-0382a496c814?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3750&q=80",
     },
+    {
+      id: 2,
+      firstName: "Toshi",
+      lastName: "Toshi",
+      email: "tt@email.com",
+      rank: "Developer",
+      avatar: "https://images.unsplash.com/photo-1537815749002-de6a533c64db?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2045&q=80"
+    }
   ];
 
   @action getUser = (id: string) => {

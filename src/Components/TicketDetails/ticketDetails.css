@@ -21,3 +21,13 @@
     margin-top: -10px;
     color: var(--subheader-color);
 }
+
+.posterName {
+    color: var(--subheader-color);
+    margin-top: 10px !important;
+}
+
+.posterRank {
+    color: var(--subheader-color);
+    margin-top: -15px;
+}

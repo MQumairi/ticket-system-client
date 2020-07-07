@@ -5,6 +5,8 @@ import { RouteComponentProps, Link } from "react-router-dom";
 import "./ticketDetails.css";
 import { Grid, Button } from "semantic-ui-react";
 import StatusIcon from "../Tickets/FilterByDashboard/Status/StatusIcon/SatusIcon";
+import Avatar from "../Users/Avatar/Avatar";
+import { observer } from "mobx-react-lite";
 
 interface params {
   id: string;
@@ -13,6 +15,7 @@ interface params {
 const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const store = useContext(Store);
   const { getTicket } = store.ticketStore;
+  const { getUser } = store.userStore;
 
   const [currentTicket, setCurrentTicket] = useState<ITicket | undefined>(
     undefined
@@ -23,6 +26,8 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   }, [getTicket, match.params.id]);
 
   if (currentTicket === undefined) return <div>Error 404</div>;
+
+  const poster = getUser(currentTicket.authorId.toString());
 
   return (
     <div id="ticketDetailsBody">
@@ -48,9 +53,19 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
         <hr />
         {/* Body starts here */}
         <Grid id="ticketDetailsMainPostContent">
-          <Grid.Row columns={2}>
-            <Grid.Column width={12}>
-              <p>{currentTicket?.author}</p>
+          <Grid.Row columns={3}>
+            <Grid.Column width={2}>
+              <Avatar
+                userId={currentTicket.authorId.toString()}
+                diameter={80}
+                borderWidth={4}
+              />
+            </Grid.Column>
+            <Grid.Column width={10}>
+              <h2 className="posterName">
+                {poster?.firstName} {poster?.lastName}
+              </h2>
+              <h4 className="posterRank">{poster?.rank}</h4>
             </Grid.Column>
             <Grid.Column width={4}>
               <StatusIcon content={currentTicket.status} clickAble={false} />
@@ -63,15 +78,21 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
         </Grid>
         {/* Footer starts here */}
         <Grid>
-            <Grid.Row columns={3}>
-                <Grid.Column width={12}><Button className="mainButton">Reply</Button></Grid.Column>
-                <Grid.Column width={2}><Button className="mainButton">Delete</Button></Grid.Column>
-                <Grid.Column width={2}><Button className="mainButton">Edit</Button></Grid.Column>
-            </Grid.Row>
+          <Grid.Row columns={3}>
+            <Grid.Column width={12}>
+              <Button className="mainButton">Reply</Button>
+            </Grid.Column>
+            <Grid.Column width={2}>
+              <Button className="mainButton">Delete</Button>
+            </Grid.Column>
+            <Grid.Column width={2}>
+              <Button className="mainButton">Edit</Button>
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
       </div>
     </div>
   );
 };
 
-export default TicketDetails;
+export default observer(TicketDetails);

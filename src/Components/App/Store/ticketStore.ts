@@ -8,7 +8,7 @@ export default class TicketStore {
   //Observables
   @observable tickets: ITicket[] = [
     {
-      author: "Pablo",
+      authorId: 1,
       id: 265,
       status: "Pending",
       product: "Product 3",
@@ -16,7 +16,7 @@ export default class TicketStore {
       date: "2020-01-01",
     },
     {
-      author: "Bujigen",
+      authorId: 2,
       id: 303,
       status: "Done",
       product: "Product 2",
@@ -24,7 +24,7 @@ export default class TicketStore {
       date: "2020-02-01",
     },
     {
-      author: "Sam",
+      authorId: 2,
       id: 621,
       status: "Done",
       product: "Product 1",
@@ -32,7 +32,7 @@ export default class TicketStore {
       date: "2020-02-01",
     },
     {
-      author: "Pablo",
+      authorId: 1,
       id: 905,
       status: "Pending",
       product: "Product 2",
@@ -40,7 +40,7 @@ export default class TicketStore {
       date: "2020-12-01",
     },
     {
-      author: "Moj",
+      authorId: 1,
       id: 1005,
       status: "Low",
       product: "Product 1",
@@ -48,31 +48,7 @@ export default class TicketStore {
       date: "2020-06-01",
     },
     {
-      author: "Bujigen",
-      id: 892,
-      status: "Urgent",
-      product: "Product 3",
-      title: "Crash on startup at Night",
-      date: "2020-02-01",
-    },
-    {
-      author: "Sam",
-      id: 222,
-      status: "Done",
-      product: "Product 1",
-      title: "Require Refund",
-      date: "2020-02-01",
-    },
-    {
-      author: "Pablo",
-      id: 10,
-      status: "Pending",
-      product: "Product 2",
-      title: "Update not instaling",
-      date: "2020-12-01",
-    },
-    {
-      author: "Moj",
+      authorId: 1,
       id: 45,
       status: "Low",
       product: "Product 1",

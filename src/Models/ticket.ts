@@ -1,5 +1,5 @@
 export interface ITicket {
-    author: string;
+    authorId: number;
     id: number;
     status: string;
     product: string;

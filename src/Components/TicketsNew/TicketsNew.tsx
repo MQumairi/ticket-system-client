@@ -22,7 +22,7 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
     const today = new Date();
 
     let newTicket: ITicket = {
-      author: "Admin",
+      authorId: 1,
       id: Math.floor(Math.random() * 10000),
       status: status,
       product: product,
