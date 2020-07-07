@@ -1,9 +1,10 @@
 export interface ITicket {
-    author: string;
+    authorId: number;
     id: number;
     status: string;
     product: string;
     title: string;
     date: string;
-    description?: string;
+    description: string;
+    commentIds: number[];
 }

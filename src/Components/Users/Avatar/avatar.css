@@ -1,0 +1,13 @@
+@import '../../../Assets/Styles/style.css';
+
+.avatarStyle {
+    /* width: 60px; */
+    /* height: 60px; */
+    border-radius: 100%;
+    background-color: var(--primary-color);
+    /* border: 3px solid var(--body-bg-color-3); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: auto;
+}

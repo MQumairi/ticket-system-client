@@ -3,22 +3,18 @@ import {Grid, Button} from "semantic-ui-react";
 import "./ticketItem.css";
 import {ITicket} from "../../../../../Models/ticket"
 import StatusIcon from "../../../FilterByDashboard/Status/StatusIcon/SatusIcon"
-import avatar from "../../../../../Assets/Images/avatar.png"
+import { Link } from "react-router-dom";
+import Avatar from "../../../../Users/Avatar/Avatar";
 
 interface IProps {
   ticket: ITicket;
-}
-
-const ticketAvatarStyle = {
-  backgroundImage: "url(" + avatar + ")"
 }
 
 const TicketItem: React.FC<IProps> = ({ ticket }) => {
   return (
     <Grid columns={6} className="ticketItem" stackable>
       <Grid.Column width={2}>
-        <div className="ticketAvatar" style={ticketAvatarStyle}></div>
-        {/* {ticket.author} */}
+        <Avatar userId={ticket.authorId.toString()} diameter={50} borderWidth={0}/>
       </Grid.Column>
       <Grid.Column width={3}>
         <div className="ticketStatusCol"><StatusIcon clickAble={false} content={ticket.status}/></div>
@@ -33,7 +29,7 @@ const TicketItem: React.FC<IProps> = ({ ticket }) => {
       {ticket.date}
       </Grid.Column>
       <Grid.Column width={1}>
-      <Button className="mainButton">View</Button>
+      <Button as={Link} to={"/tickets/" + ticket.id} className="mainButton">View</Button>
       </Grid.Column>
     </Grid>
   );

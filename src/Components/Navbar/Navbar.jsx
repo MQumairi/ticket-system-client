@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { Menu, Segment } from "semantic-ui-react";
 import "./navbar.css";
-import avatar from "../../Assets/Images/avatar.png"
+import Avatar from "../Users/Avatar/Avatar";
 
 const Navbar = () => {
   const [activeItem, setActiveItem] = useState("Tickets");
 
   const handleItemClick = (e, { name }) => setActiveItem({ activeItem: name });
-
-  const avatarStyle = {
-    backgroundImage: "url(" + avatar + ")"
-  }
 
   return (
     <Segment inverted>
@@ -35,7 +31,7 @@ const Navbar = () => {
             onClick={handleItemClick}
           />
           <Menu.Item>
-              <div id="navAvatar" style={avatarStyle}/>
+              <Avatar userId={"1"} diameter={60} borderWidth={3}/>
           </Menu.Item>
         </Menu>
       </div>

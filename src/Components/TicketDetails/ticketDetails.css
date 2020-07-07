@@ -1,0 +1,33 @@
+@import "../../Assets/Styles/style.css";
+
+#ticketDetailsBody {
+    width: var(--body-width);
+    margin: 50px auto;
+}
+
+#ticketDetailsMainPost {
+    background-color: var(--body-bg-color-1);
+    margin: auto;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid var(--body-border-color);
+}
+
+#ticketDetailsMainPostContent {
+    padding: 0px 50px;
+}
+
+.postHeaderDate {
+    margin-top: -10px;
+    color: var(--subheader-color);
+}
+
+.posterName {
+    color: var(--subheader-color);
+    margin-top: 10px !important;
+}
+
+.posterRank {
+    color: var(--subheader-color);
+    margin-top: -15px;
+}

@@ -22,25 +22,18 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
     const today = new Date();
 
     let newTicket: ITicket = {
-      author: "Admin",
+      authorId: 1,
       id: Math.floor(Math.random() * 10000),
       status: status,
       product: product,
       title: e.currentTarget.ticketTitle.value,
       description: e.currentTarget.ticketNewDesc.value,
-      date: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+      date: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate(),
+      commentIds: []
     }
 
     // addTicket(newTicket);
     addTicket(newTicket);
-
-    //Printing to Console
-    console.log("-------------")
-    console.log("From: TicketsNew.tsx")
-    console.log(tickets)
-    console.log(filteredTickets)
-    console.log(ticketspriv)
-    console.log("-------------")
 
     //Redirect
     props.history.push("/tickets");
