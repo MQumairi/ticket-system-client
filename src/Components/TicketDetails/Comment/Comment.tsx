@@ -13,9 +13,6 @@ interface IProps {
 const Comment: React.FC<IProps> = ({ comment }) => {
   const store = useContext(Store);
   const { getUser } = store.userStore;
-  const { listComments } = store.commentStore;
-
-  const poster = getUser(comment.authorId.toString());
 
   const [replyPressed, setReplyPressed] = useState(false);
   const revealReplyForm = () => {
@@ -29,14 +26,13 @@ const Comment: React.FC<IProps> = ({ comment }) => {
 
   //Array for the comments on this ticket
   let subComments: IComment[] = [];
-  listComments(comment, subComments);
 
   return (
     <div>
       <div className="commentContainer">
         {/* Comment Header */}
         <div className="commentHeader">
-          <p className="postHeaderDate">{comment.date}</p>
+          <p className="postHeaderDate">Dummy date</p>
           <hr />
         </div>
         {/* Comment Body */}
@@ -44,17 +40,13 @@ const Comment: React.FC<IProps> = ({ comment }) => {
           <Grid>
             <Grid.Row columns={2}>
               <Grid.Column width={2}>
-                <Avatar
-                  userId={poster!.id.toString()}
-                  diameter={80}
-                  borderWidth={4}
-                />
+                Avatar goes here
               </Grid.Column>
               <Grid.Column width={14}>
                 <h2 className="posterName">
-                  {poster?.firstName} {poster?.lastName}
+                  Poster Username
                 </h2>
-                <h4 className="posterRank">{poster?.rank}</h4>
+                <h4 className="posterRank">Poster Rank</h4>
               </Grid.Column>
             </Grid.Row>
           </Grid>

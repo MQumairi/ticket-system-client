@@ -15,27 +15,20 @@ const CommentsNew: React.FC<IProps> = ({ parent, setReplyPressed }) => {
 
   const store = useContext(Store);
   const { addCommnet } = store.commentStore;
+  const {getUser} = store.userStore;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const today = new Date();
 
     let newComment: IComment = {
-      id: Math.floor(Math.random() * 10000),
       description: e.currentTarget.commentNewDesc.value,
-      date:
-        today.getFullYear() +
-        "-" +
-        (today.getMonth() + 1) +
-        "-" +
-        today.getDate(),
-      commentIds: [],
-      authorId: 1,
-      parentType: typeof parent
+      date_time: "2020-07-31T18:47:50.605697",
+      user: getUser("2980dd9d-26ad-46b3-baa9-01276ff20162")!,
+      parent_post_id: parent.post_id
     }
 
     //Add comment 
     addCommnet(newComment);
-    parent.commentIds.push(newComment.id);
     setReplyPressed(false);
     
   };

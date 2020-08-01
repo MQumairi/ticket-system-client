@@ -15,11 +15,10 @@ interface params {
   id: string;
 }
 
-const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
+const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match, history }) => {
   const store = useContext(Store);
-  const { getTicket } = store.ticketStore;
+  const { getTicket, deleteTicket, ticketsRegistry } = store.ticketStore;
   const { getUser } = store.userStore;
-  const { listComments } = store.commentStore;
 
   const [replyPressed, setReplyPressed] = useState(false);
 
@@ -33,7 +32,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
 
   if (currentTicket === undefined) return <div>Error 404</div>;
 
-  const poster = getUser(currentTicket.authorId.toString());
+  const poster = getUser("2980dd9d-26ad-46b3-baa9-01276ff20162");
 
   const revealReplyForm = () => {
     if (replyPressed) return <CommentsNew parent={currentTicket} setReplyPressed={setReplyPressed} />;
@@ -45,9 +44,18 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   };
 
   //Array for the comments on this ticket
-  let comments: IComment[] = [];
-  listComments(currentTicket, comments);
+  let comments: IComment[] = currentTicket.commnets;
 
+  //Delete ticket
+  const handleDelete = () => {
+    deleteTicket(currentTicket.post_id!);
+
+    console.log("----------------")
+    console.log("From TicketDetails's handleDelete")
+    console.log(ticketsRegistry.size);
+
+    history.push("/tickets");
+  }
   return (
     <div id="ticketDetailsBody">
       <div id="ticketDetailsMainPost">
@@ -56,7 +64,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
           <Grid.Row columns={2}>
             <Grid.Column>
               <h1>{currentTicket?.title}</h1>
-              <p className="postHeaderDate">{currentTicket.date}</p>
+              <p className="postHeaderDate">{currentTicket.date_time}</p>
             </Grid.Column>
             <Grid.Column>
               <Button
@@ -75,19 +83,19 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
           <Grid.Row columns={3}>
             <Grid.Column width={2}>
               <Avatar
-                userId={currentTicket.authorId.toString()}
+                avatar={currentTicket.user.avatar!}
                 diameter={80}
                 borderWidth={4}
               />
             </Grid.Column>
             <Grid.Column width={10}>
               <h2 className="posterName">
-                {poster?.firstName} {poster?.lastName}
+                {currentTicket.user.username}
               </h2>
-              <h4 className="posterRank">{poster?.rank}</h4>
+              <h4 className="posterRank">Rank Here</h4>
             </Grid.Column>
             <Grid.Column width={4}>
-              <StatusIcon content={currentTicket.status} clickAble={false} />
+              <StatusIcon content={currentTicket.status.status_text} clickAble={false} />
               <div className="productButton">{currentTicket.product}</div>
             </Grid.Column>
           </Grid.Row>
@@ -107,7 +115,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               </Button>
             </Grid.Column>
             <Grid.Column width={2}>
-              <Button className="mainButton">Delete</Button>
+              <Button className="mainButton" onClick={handleDelete}>Delete</Button>
             </Grid.Column>
             <Grid.Column width={2}>
               <Button className="mainButton">Edit</Button>

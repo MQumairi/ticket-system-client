@@ -14,7 +14,7 @@ const Product = () => {
 
       {products.map((product) => {
         return (
-          <ProductItem name={product.name} id={product.id}></ProductItem>
+          <ProductItem name={product.product_name} id={product.product_id!}></ProductItem>
         );
       })}
     </div>

@@ -10,8 +10,8 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
 
   const store = useContext(Store);
   const { productOptions } = store.productStore;
-  const { statusOptions, filteredTickets, tickets } = store.filterStore;
-  const { tickets: ticketspriv, addTicket } = store.ticketStore;
+  const { statusOptions } = store.filterStore;
+  // const { addTicket } = store.ticketStore;
 
   const [status, setSatus] = useState("");
   const [product, setProduct] = useState("");
@@ -21,19 +21,19 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
 
     const today = new Date();
 
-    let newTicket: ITicket = {
-      authorId: 1,
-      id: Math.floor(Math.random() * 10000),
-      status: status,
-      product: product,
-      title: e.currentTarget.ticketTitle.value,
-      description: e.currentTarget.ticketNewDesc.value,
-      date: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate(),
-      commentIds: []
-    }
+    // let newTicket: ITicket = {
+    //   authorId: 1,
+    //   id: Math.floor(Math.random() * 10000),
+    //   status: status,
+    //   product: product,
+    //   title: e.currentTarget.ticketTitle.value,
+    //   description: e.currentTarget.ticketNewDesc.value,
+    //   date: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate(),
+    //   commentIds: []
+    // }
 
     // addTicket(newTicket);
-    addTicket(newTicket);
+    // addTicket(newTicket);
 
     //Redirect
     props.history.push("/tickets");
@@ -63,7 +63,7 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
               placeholder="Select Status"
               onChange={(e, { value }) => {
                 if(typeof(value) === "string") {
-                  setSatus(value);
+                  // setSatus(value);
                 }
               }}
             />

@@ -1,4 +1,6 @@
 export interface IProduct {
-    id: number;
-    name: string;
+  product_id?: number;
+  product_name: string;
+  version: string;
+  product_image: string;
 }

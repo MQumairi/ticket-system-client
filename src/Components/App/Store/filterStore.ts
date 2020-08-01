@@ -27,9 +27,10 @@ export default class FilterStore {
 
   constructor(public rootStore: Store) {}
 
-  @observable tickets = this.rootStore.ticketStore.tickets;
+  @observable ticketsRegistry = this.rootStore.ticketStore.ticketsRegistry;
 
-  @observable filteredTickets: ITicket[] = [...this.tickets];
+  // @observable filteredTickets: ITicket[] = [...this.tickets];
+  @observable filteredTickets: Map<number, ITicket> = {...this.ticketsRegistry};
 
   @observable filters: filterObject = {
     status: [],
@@ -82,21 +83,19 @@ export default class FilterStore {
   @action filterTickets = () => {
 
     //Reset
-    this.filteredTickets = this.tickets;
+    this.filteredTickets = this.ticketsRegistry;
 
     //Filter status
     if (this.filters.status.length !== 0) {
-      this.filteredTickets = this.filterStatus(
+      this.filterStatus(
         this.filters.status,
-        this.filteredTickets
       );
     }
 
     if (this.filters.products.length !== 0) {
       this.filters.products.forEach((product) => {
-        this.filteredTickets = this.filterProduct(
+        this.filterProduct(
           this.filters.products,
-          this.filteredTickets
         );
       });
     }
@@ -105,15 +104,21 @@ export default class FilterStore {
   };
 
   @action filterTicketsByDate = () => {
-    this.filteredTickets = this.filterDate(
+    this.filterDate(
       this.filters.dates.From,
       this.filters.dates.To,
-      this.filteredTickets
     );
   };
 
   @action selectAll = () => {
-    this.filteredTickets = this.tickets;
+
+    console.log("----------------")
+    console.log("From Filter Store's (Tickets, before)")
+    console.log(this.ticketsRegistry.size);
+    console.log("From Filter Store's (filteredTickets, before)")
+    console.log(this.filteredTickets.size);
+
+    this.filteredTickets = this.ticketsRegistry;
     this.filters = {
       status: [],
       products: [],
@@ -122,6 +127,12 @@ export default class FilterStore {
         To: "9999-12-30",
       },
     };
+
+    console.log("----------------")
+    console.log("From Filter Store's (Tickets, after)")
+    console.log(this.ticketsRegistry.size);
+    console.log("From Filter Store's (filteredTickets, after)")
+    console.log(this.filteredTickets.size);
   };
 
   @action changeStatus = (status: string, toAdd: boolean) => {
@@ -165,25 +176,24 @@ export default class FilterStore {
   //HELPER FUNCTIONS
 
   //Takes a filter criterion, and filters "tickets"
-  filterStatus = (status: string[], arr: ITicket[]): ITicket[] => {
-    return arr.filter((ticket) => {
-      return status.includes(ticket.status);
-    });
+  filterStatus = (status: string[]) => {
+    this.ticketsRegistry.forEach((ticket) => {
+      if(!status.includes(ticket.status.status_text)) this.ticketsRegistry.delete(ticket.post_id!);
+    })
   };
 
-  filterProduct = (product: string[], arr: ITicket[]): ITicket[] => {
-    return arr.filter((ticket) => {
-      return product.includes(ticket.product);
-    });
+  filterProduct = (product: string[]) => {
+    this.ticketsRegistry.forEach((ticket) => {
+      if(!product.includes(ticket.product.product_name)) this.ticketsRegistry.delete(ticket.post_id!);
+    })
   };
 
   filterDate = (
     fromDate: string,
     toDate: string,
-    arr: ITicket[]
-  ): ITicket[] => {
-    return arr.filter((ticket) => {
-      return ticket.date >= fromDate && ticket.date <= toDate;
-    });
+  ) => {
+    this.ticketsRegistry.forEach((ticket) => {
+      if(!(ticket.date_time >= fromDate && ticket.date_time <= toDate)) this.ticketsRegistry.delete(ticket.post_id!)
+    })
   };
 }

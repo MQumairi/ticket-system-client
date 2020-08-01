@@ -6,17 +6,20 @@ import Store from "../../../App/Store/rootStore";
 
 const TicketList = () => {
   const store = useContext(Store);
-  const { filteredTickets } = store.filterStore;
-  const { selectAll } = store.filterStore;
+  const { filteredTickets, selectAll } = store.filterStore;
+  const { loadTickets } = store.ticketStore;
 
   useEffect(() => {
+    loadTickets();
+    console.log(filteredTickets);
     selectAll();
-  }, [selectAll]);
+  }, [loadTickets]);
 
   return (
     <div id="ticketList">
-      {filteredTickets.map((ticket) => {
-        return <TicketItem key={ticket.id} ticket={ticket} />;
+      {Array.from(filteredTickets).map(([numer, ticket]) => {
+        console.log(ticket.title);
+        return <TicketItem key={ticket.post_id} ticket={ticket} />;
       })}
     </div>
   );
