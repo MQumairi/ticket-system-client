@@ -7,8 +7,6 @@ export default class TicketStore {
   constructor(public rootStore: Store) {}
 
   //Observables
-  @observable tickets: ITicket[] = [];
-
   @observable ticketsRegistry = new Map<number, ITicket>();
 
   //Actions
@@ -21,12 +19,6 @@ export default class TicketStore {
     } catch (e) {
       console.log(e);
     }
-  };
-
-  @action buildTicketsRegistry = () => {
-    this.tickets.forEach((ticket) => {
-      this.ticketsRegistry.set(ticket.post_id!, ticket);
-    });
   };
 
   @action addTicket = async (ticket: ITicket) => {

@@ -17,8 +17,9 @@ const SatusIcon: React.FC<IProps> = (props) => {
     filters,
     filterTickets,
     changeStatus,
-    stati
   } = store.filterStore;
+
+  const {statuses} = store.statusStore;
 
   const filtersDervied = {...filters}
 
@@ -61,11 +62,11 @@ const SatusIcon: React.FC<IProps> = (props) => {
   }
 
   const circleColor = () => {
-    let foundStatus = stati.find((status)=> {
-      return status.name === props.content;
+    let foundStatus = statuses.find((status)=> {
+      return status.status_text === props.content;
     });
 
-    return {backgroundColor: foundStatus?.color}
+    return {backgroundColor: foundStatus?.status_color}
   };
 
   return (

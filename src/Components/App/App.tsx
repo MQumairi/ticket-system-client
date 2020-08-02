@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import Navbar from "../Navbar/Navbar";
 import "./App.css";
 import Tickets from "../Tickets/Tickets";
@@ -7,13 +7,18 @@ import TicketDetails from "../TicketDetails/TicketDetails";
 import Footer from "../Footer/Footer";
 import { Route, Switch } from "react-router-dom";
 import axios from "axios";
+import Store from "./Store/rootStore";
 
 function App() {
+
+  const store = useContext(Store);
+  const { loadTickets } = store.ticketStore;
+  const { loadStatuses, statuses } = store.statusStore;
+
   useEffect(() => {
-    axios.get<any>("http://localhost:5000/api/tickets").then((response) => {
-      console.log(response.data);
-    });
-  }, []);
+    loadTickets();
+    loadStatuses();
+  }, [loadTickets, loadStatuses]);
 
   return (
     <div id="App">

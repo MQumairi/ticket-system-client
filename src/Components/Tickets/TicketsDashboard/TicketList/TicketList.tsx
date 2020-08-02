@@ -10,15 +10,12 @@ const TicketList = () => {
   const { loadTickets } = store.ticketStore;
 
   useEffect(() => {
-    loadTickets();
-    console.log(filteredTickets);
     selectAll();
   }, [loadTickets]);
 
   return (
     <div id="ticketList">
       {Array.from(filteredTickets).map(([numer, ticket]) => {
-        console.log(ticket.title);
         return <TicketItem key={ticket.post_id} ticket={ticket} />;
       })}
     </div>

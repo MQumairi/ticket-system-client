@@ -1,6 +1,7 @@
 import { observable, action, computed } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
+import { IStatus } from "../../../Models/status";
 
 interface filterObject {
   status: string[];
@@ -9,12 +10,6 @@ interface filterObject {
     From: string;
     To: string;
   };
-}
-
-interface IStatus {
-  id: number;
-  name: string;
-  color: string;
 }
 
 interface IOption {
@@ -27,11 +22,15 @@ export default class FilterStore {
 
   constructor(public rootStore: Store) {}
 
+  //Getting the ticket registery from the ticketStore
   @observable ticketsRegistry = this.rootStore.ticketStore.ticketsRegistry;
+  //Getting the statuses from the statusStore
+  @observable statuses = this.rootStore.statusStore.statuses;
 
-  // @observable filteredTickets: ITicket[] = [...this.tickets];
+  //Copying it into filtered tickets
   @observable filteredTickets: Map<number, ITicket> = {...this.ticketsRegistry};
 
+  //Initializing a filterobject. This will store active filters.
   @observable filters: filterObject = {
     status: [],
     products: [],
@@ -39,40 +38,17 @@ export default class FilterStore {
       From: "0001-01-01",
       To: "9999-12-30",
     },
-  };
-
-  @observable stati: IStatus[] = [
-    {
-      id: 1,
-      name: "Urgent",
-      color: "#d80000",
-    },
-    {
-      id: 2,
-      name: "Low",
-      color: "#e68a00",
-    },
-    {
-      id: 3,
-      name: "Pending",
-      color: "#f3cb16",
-    },
-    {
-      id: 4,
-      name: "Done",
-      color: "#45B510",
-    },
-  ];
+  }
 
   //COMPUTED
   @computed get statusOptions() {
     let returnArr: IOption[] = [];
 
-    this.stati.forEach((status) => {
+    this.statuses.forEach((status) => {
       returnArr.push({
-        key: status.id,
-        text: status.name,
-        value: status.name,
+        key: status.status_id!,
+        text: status.status_text,
+        value: status.status_text,
       });
     });
 
@@ -83,7 +59,7 @@ export default class FilterStore {
   @action filterTickets = () => {
 
     //Reset
-    this.filteredTickets = this.ticketsRegistry;
+    this.filteredTickets = {...this.ticketsRegistry};
 
     //Filter status
     if (this.filters.status.length !== 0) {
@@ -111,13 +87,10 @@ export default class FilterStore {
   };
 
   @action selectAll = () => {
-
-    console.log("----------------")
-    console.log("From Filter Store's (Tickets, before)")
-    console.log(this.ticketsRegistry.size);
-    console.log("From Filter Store's (filteredTickets, before)")
+    console.log("From select all");
     console.log(this.filteredTickets.size);
-
+    console.log(this.ticketsRegistry.size);
+    
     this.filteredTickets = this.ticketsRegistry;
     this.filters = {
       status: [],
@@ -128,11 +101,10 @@ export default class FilterStore {
       },
     };
 
-    console.log("----------------")
-    console.log("From Filter Store's (Tickets, after)")
-    console.log(this.ticketsRegistry.size);
-    console.log("From Filter Store's (filteredTickets, after)")
+    console.log("From select all");
     console.log(this.filteredTickets.size);
+    console.log(this.ticketsRegistry.size);
+
   };
 
   @action changeStatus = (status: string, toAdd: boolean) => {
