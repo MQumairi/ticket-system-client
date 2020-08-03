@@ -6,10 +6,13 @@ interface filterObject {
   status: string[];
   products: string[];
   dates: {
-    From: string;
-    To: string;
+    From: number;
+    To: number;
   };
 }
+
+const minDate = Date.parse("0001-01-01");
+const maxDate = Date.parse("9999-12-30");
 
 export default class FilterStore {
   constructor(public rootStore: Store) {}
@@ -31,8 +34,8 @@ export default class FilterStore {
     status: [],
     products: [],
     dates: {
-      From: "0001-01-01",
-      To: "9999-12-30",
+      From: minDate,
+      To: maxDate,
     },
   };
 
@@ -80,8 +83,8 @@ export default class FilterStore {
       status: [],
       products: [],
       dates: {
-        From: "0001-01-01",
-        To: "9999-12-30",
+        From: minDate,
+        To: maxDate,
       },
     };
   };
@@ -108,17 +111,17 @@ export default class FilterStore {
     }
   };
 
-  @action changeFromDate = (date: string) => {
-    if (date === "") {
-      this.filters.dates.From = "0001-01-01";
+  @action changeFromDate = (date: number) => {
+    if (date === null) {
+      this.filters.dates.From = minDate;
     } else {
       this.filters.dates.From = date;
     }
   };
 
-  @action changeToDate = (date: string) => {
-    if (date === "") {
-      this.filters.dates.To = "9999-12-30";
+  @action changeToDate = (date: number) => {
+    if (date === null) {
+      this.filters.dates.To = maxDate;
     } else {
       this.filters.dates.To = date;
     }
@@ -141,9 +144,10 @@ export default class FilterStore {
     });
   };
 
-  filterDate = (fromDate: string, toDate: string) => {
+  filterDate = (fromDate: number, toDate: number) => {
     this.filteredTickets.forEach((ticket) => {
-      if(!(ticket.date_time >= fromDate && ticket.date_time <= toDate)) this.filteredTickets.delete(ticket.post_id!)
+      let ticketDate = Date.parse(ticket.date_time);
+      if(!(ticketDate >= fromDate && ticketDate <= toDate)) this.filteredTickets.delete(ticket.post_id!)
     });
   };
 }

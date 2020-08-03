@@ -2,6 +2,9 @@ import { observable, action } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
 import { Tickets } from "../../../API/agent";
+import { format } from 'date-fns'
+
+
 
 export default class TicketStore {
   constructor(public rootStore: Store) {}
@@ -14,6 +17,8 @@ export default class TicketStore {
     try {
       const loadedTickets = await Tickets.list();
       loadedTickets.forEach((ticket) => {
+        let ticketDate = Date.parse(ticket.date_time);
+        ticket.display_date = format(ticketDate, "dd/MM/yyyy");
         this.ticketsRegistry.set(ticket.post_id!, ticket);
       });
     } catch (e) {

@@ -19,10 +19,6 @@ const SatusIcon: React.FC<IProps> = (props) => {
     changeStatus,
   } = store.filterStore;
 
-  const {statuses} = store.statusStore;
-
-  const filtersDervied = {...filters}
-
   useEffect(() => {
     if (!filters.status.includes(props.status.status_text)) {
       setPressed(false);

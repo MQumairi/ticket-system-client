@@ -6,6 +6,7 @@ import { IStatus } from "./status";
 export interface ITicket {
   post_id?: number;
   date_time: string;
+  display_date?: string;
   description: string;
   user: IUser;
   title: string;
