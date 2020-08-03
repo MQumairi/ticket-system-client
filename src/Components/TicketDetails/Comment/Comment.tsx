@@ -1,25 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { IComment } from "../../../Models/comment";
 import "./comment.css";
 import { Button, Grid } from "semantic-ui-react";
-import Store from "../../App/Store/rootStore";
-import Avatar from "../../Users/Avatar/Avatar";
 import CommentsNew from "../CommentsNew/CommentsNew";
+import Avatar from "../../Users/Avatar/Avatar";
 
 interface IProps {
   comment: IComment;
 }
 
 const Comment: React.FC<IProps> = ({ comment }) => {
-  const store = useContext(Store);
-  const { getUser } = store.userStore;
-  const { listComments } = store.commentStore;
-
-  const poster = getUser(comment.authorId.toString());
+  // const store = useContext(Store);
+  // const { getUser } = store.userStore;
 
   const [replyPressed, setReplyPressed] = useState(false);
   const revealReplyForm = () => {
-    if (replyPressed) return <CommentsNew parent={comment} setReplyPressed={setReplyPressed}/>;
+    if (replyPressed)
+      return <CommentsNew parent={comment} setReplyPressed={setReplyPressed} />;
   };
 
   const setReplyText = () => {
@@ -29,14 +26,13 @@ const Comment: React.FC<IProps> = ({ comment }) => {
 
   //Array for the comments on this ticket
   let subComments: IComment[] = [];
-  listComments(comment, subComments);
 
   return (
     <div>
       <div className="commentContainer">
         {/* Comment Header */}
         <div className="commentHeader">
-          <p className="postHeaderDate">{comment.date}</p>
+          <p className="postHeaderDate">{comment.display_date}</p>
           <hr />
         </div>
         {/* Comment Body */}
@@ -45,16 +41,14 @@ const Comment: React.FC<IProps> = ({ comment }) => {
             <Grid.Row columns={2}>
               <Grid.Column width={2}>
                 <Avatar
-                  userId={poster!.id.toString()}
+                  avatar={comment.user.avatar}
                   diameter={80}
                   borderWidth={4}
                 />
               </Grid.Column>
               <Grid.Column width={14}>
-                <h2 className="posterName">
-                  {poster?.firstName} {poster?.lastName}
-                </h2>
-                <h4 className="posterRank">{poster?.rank}</h4>
+                <h2 className="posterName">{comment.user.username}</h2>
+                <h4 className="posterRank">Poster Rank</h4>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -82,9 +76,11 @@ const Comment: React.FC<IProps> = ({ comment }) => {
       </div>
       {revealReplyForm()}
       {subComments.map((comment) => {
-        return <div>
-          <Comment comment={comment}/>
-          </div>;
+        return (
+          <div>
+            <Comment comment={comment} />
+          </div>
+        );
       })}
     </div>
   );

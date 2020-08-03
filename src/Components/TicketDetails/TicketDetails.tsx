@@ -15,38 +15,34 @@ interface params {
   id: string;
 }
 
-const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
+const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match, history }) => {
+
+  //Import ticket store
   const store = useContext(Store);
-  const { getTicket } = store.ticketStore;
-  const { getUser } = store.userStore;
-  const { listComments } = store.commentStore;
+  const { ticketsRegistry, currentTicket, getTicket, deleteTicket } = store.ticketStore;
 
   const [replyPressed, setReplyPressed] = useState(false);
 
-  const [currentTicket, setCurrentTicket] = useState<ITicket | undefined>(
-    undefined
-  );
 
   useEffect(() => {
-    setCurrentTicket(getTicket(match.params.id));
+    getTicket(match.params.id);
   }, [getTicket, match.params.id]);
 
-  if (currentTicket === undefined) return <div>Error 404</div>;
+  if (currentTicket === null) return <div>Error 404</div>;
 
-  const poster = getUser(currentTicket.authorId.toString());
-
-  const revealReplyForm = () => {
-    if (replyPressed) return <CommentsNew parent={currentTicket} setReplyPressed={setReplyPressed} />;
-  };
+  // const revealReplyForm = () => {
+  //   if (replyPressed) return <CommentsNew parent={currentTicket} setReplyPressed={setReplyPressed} />;
+  // };
 
   const setReplyText = () => {
     if (replyPressed) return "Cancel";
     return "Reply";
   };
 
-  //Array for the comments on this ticket
-  let comments: IComment[] = [];
-  listComments(currentTicket, comments);
+  //Delete ticket
+  const handleDelete = () => {
+    console.log("from handle delete");
+  }
 
   return (
     <div id="ticketDetailsBody">
@@ -55,8 +51,8 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
         <Grid>
           <Grid.Row columns={2}>
             <Grid.Column>
-              <h1>{currentTicket?.title}</h1>
-              <p className="postHeaderDate">{currentTicket.date}</p>
+              <h1>{currentTicket.title}</h1>
+              <p className="postHeaderDate">{currentTicket.display_date}</p>
             </Grid.Column>
             <Grid.Column>
               <Button
@@ -75,24 +71,24 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
           <Grid.Row columns={3}>
             <Grid.Column width={2}>
               <Avatar
-                userId={currentTicket.authorId.toString()}
+                avatar={currentTicket.user.avatar!}
                 diameter={80}
                 borderWidth={4}
               />
             </Grid.Column>
             <Grid.Column width={10}>
               <h2 className="posterName">
-                {poster?.firstName} {poster?.lastName}
+                {currentTicket.user.username}
               </h2>
-              <h4 className="posterRank">{poster?.rank}</h4>
+              <h4 className="posterRank">Rank Here</h4>
             </Grid.Column>
             <Grid.Column width={4}>
-              <StatusIcon content={currentTicket.status} clickAble={false} />
-              <div className="productButton">{currentTicket.product}</div>
+              <StatusIcon status={currentTicket.status} clickAble={false} />
+              <div className="productButton">{currentTicket.product.product_name}</div>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
-            <p>{currentTicket?.description}</p>
+            <p>{currentTicket.description}</p>
           </Grid.Row>
         </Grid>
         {/* Footer starts here */}
@@ -107,7 +103,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               </Button>
             </Grid.Column>
             <Grid.Column width={2}>
-              <Button className="mainButton">Delete</Button>
+              <Button className="mainButton" onClick={handleDelete}>Delete</Button>
             </Grid.Column>
             <Grid.Column width={2}>
               <Button className="mainButton">Edit</Button>
@@ -115,8 +111,8 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
           </Grid.Row>
         </Grid>
       </div>
-      {revealReplyForm()}
-      {comments.map((comment) => {
+      {/* {revealReplyForm()} */}
+      {currentTicket.comments.map((comment) => {
         return <div>
           <Comment comment={comment}/>
           </div>;

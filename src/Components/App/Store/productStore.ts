@@ -1,6 +1,7 @@
-import { observable, computed } from "mobx";
+import { observable, computed, action } from "mobx";
 import { IProduct } from "../../../Models/product";
 import { Store } from "./rootStore";
+import { Products } from "../../../API/agent";
 
 interface IProductNames {
   [key: string]: any;
@@ -16,16 +17,21 @@ export default class ProductStore {
   
   constructor(public rootStore: Store) {}
 
-  @observable products: IProduct[] = [
-    { id: 1, name: "Product 1" },
-    { id: 2, name: "Product 2" },
-    { id: 3, name: "Product 3" },
-  ];
+  @observable products: IProduct[] = [];
+
+  @action loadProducts = async () => {
+    try {
+      this.products = await Products.list();
+    }
+    catch(e) {
+      console.log(e);
+    }
+  }
 
   @computed get productNames() {
     let productFilters: IProductNames = {};
     this.products.forEach((product) => {
-      productFilters[product.name] = false;
+      productFilters[product.product_name] = false;
     });
     return productFilters;
   }
@@ -36,9 +42,9 @@ export default class ProductStore {
 
     this.products.forEach((product) => {
       returnArr.push({
-        key: product.id,
-        text: product.name,
-        value: product.name
+        key: product.product_id!,
+        text: product.product_name,
+        value: product.product_name
       });
     });
 

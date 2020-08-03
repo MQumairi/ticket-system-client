@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Store from "../../../App/Store/rootStore";
 import ProductItem from "./ProductItem";
 import "./product.css";
+import { observer } from "mobx-react-lite";
 
 const Product = () => {
 
@@ -14,11 +15,11 @@ const Product = () => {
 
       {products.map((product) => {
         return (
-          <ProductItem name={product.name} id={product.id}></ProductItem>
+          <ProductItem key={product.product_id} name={product.product_name} id={product.product_id!}></ProductItem>
         );
       })}
     </div>
   );
 };
 
-export default Product;
+export default observer(Product);

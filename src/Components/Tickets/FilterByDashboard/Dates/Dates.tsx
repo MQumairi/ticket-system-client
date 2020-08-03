@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Input } from "semantic-ui-react";
 import Store from "../../../App/Store/rootStore";
+// import { format } from 'date-fns'
 import "./dates.css";
 
 const Dates = () => {
@@ -8,12 +9,14 @@ const Dates = () => {
   const {changeFromDate, changeToDate, filterTickets} = store.filterStore;
 
   const handleChangeFrom = (e: React.ChangeEvent<HTMLInputElement>) => {
-    changeFromDate(e.target.value);
+    let fromDate = Date.parse(e.target.value);
+    changeFromDate(fromDate);
     filterTickets();
   };
 
   const handleChangeTo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    changeToDate(e.target.value);
+    let toDate = Date.parse(e.target.value);
+    changeToDate(toDate);
     filterTickets();
   };
 

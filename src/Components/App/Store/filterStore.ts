@@ -6,120 +6,85 @@ interface filterObject {
   status: string[];
   products: string[];
   dates: {
-    From: string;
-    To: string;
+    From: number;
+    To: number;
   };
 }
 
-interface IStatus {
-  id: number;
-  name: string;
-  color: string;
-}
-
-interface IOption {
-  key: number;
-  text: string;
-  value: string;
-}
+const minDate = Date.parse("0001-01-01");
+const maxDate = Date.parse("9999-12-30");
 
 export default class FilterStore {
-
   constructor(public rootStore: Store) {}
 
-  @observable tickets = this.rootStore.ticketStore.tickets;
+  //IMPORTS FROM OTHER STORES
 
-  @observable filteredTickets: ITicket[] = [...this.tickets];
+  //Getting the ticketRegistery from the ticketStore
+  @computed get ticketsRegistry() {
+    return observable.map(this.rootStore.ticketStore.ticketsRegistry);
+  } 
 
+  //Getting the statuses from the statusStore
+  @observable statuses = this.rootStore.statusStore.statuses;
+
+  //LOGIC
+
+  //Initialize a filterobject. This will store active filters.
   @observable filters: filterObject = {
     status: [],
     products: [],
     dates: {
-      From: "0001-01-01",
-      To: "9999-12-30",
+      From: minDate,
+      To: maxDate,
     },
   };
 
-  @observable stati: IStatus[] = [
-    {
-      id: 1,
-      name: "Urgent",
-      color: "#d80000",
-    },
-    {
-      id: 2,
-      name: "Low",
-      color: "#e68a00",
-    },
-    {
-      id: 3,
-      name: "Pending",
-      color: "#f3cb16",
-    },
-    {
-      id: 4,
-      name: "Done",
-      color: "#45B510",
-    },
-  ];
+  //Intiialize filitered tickets, a MAP of ITickets
+  @observable filteredTickets: Map<number, ITicket> = new Map<number, ITicket>();
 
-  //COMPUTED
-  @computed get statusOptions() {
-    let returnArr: IOption[] = [];
+  //Copy ticketsRegistry into filteredTickets
+  @action loadFilteredTickets = (tickets: Map<number, ITicket>) => {
+    let ticketsToReturn: Map<number, ITicket> = new Map<number, ITicket>();
+    ticketsToReturn = observable.map().merge(this.ticketsRegistry);
+    this.filteredTickets = ticketsToReturn;
+  };
 
-    this.stati.forEach((status) => {
-      returnArr.push({
-        key: status.id,
-        text: status.name,
-        value: status.name,
-      });
-    });
-
-    return returnArr;
-  }
-
-  //ACTIONS
+  //The main method that filters the filteredTickets object.
   @action filterTickets = () => {
-
-    //Reset
-    this.filteredTickets = this.tickets;
+    //When run, first copy ticketsRegistry into filteredTickets again, resetig the object.
+    this.loadFilteredTickets(this.ticketsRegistry);
 
     //Filter status
     if (this.filters.status.length !== 0) {
-      this.filteredTickets = this.filterStatus(
-        this.filters.status,
-        this.filteredTickets
-      );
+      this.filterStatus(this.filters.status);
     }
 
+    //Filter products
     if (this.filters.products.length !== 0) {
       this.filters.products.forEach((product) => {
-        this.filteredTickets = this.filterProduct(
-          this.filters.products,
-          this.filteredTickets
-        );
+        this.filterProduct(this.filters.products);
       });
     }
+
     //Filter dates
     this.filterTicketsByDate();
   };
 
   @action filterTicketsByDate = () => {
-    this.filteredTickets = this.filterDate(
-      this.filters.dates.From,
-      this.filters.dates.To,
-      this.filteredTickets
-    );
+    this.filterDate(this.filters.dates.From, this.filters.dates.To);
   };
 
   @action selectAll = () => {
-    this.filteredTickets = this.tickets;
+    console.log('select all clicked')
+    console.log(this.ticketsRegistry.size)
+    console.log(this.filteredTickets.size)
+    this.loadFilteredTickets(this.ticketsRegistry);
     this.filters = {
       status: [],
       products: [],
       dates: {
-        From: "0001-01-01",
-        To: "9999-12-30",
+        From: minDate,
+        To: maxDate,
       },
     };
   };
@@ -146,17 +111,17 @@ export default class FilterStore {
     }
   };
 
-  @action changeFromDate = (date: string) => {
-    if (date === "") {
-      this.filters.dates.From = "0001-01-01";
+  @action changeFromDate = (date: number) => {
+    if (date === null) {
+      this.filters.dates.From = minDate;
     } else {
       this.filters.dates.From = date;
     }
   };
 
-  @action changeToDate = (date: string) => {
-    if (date === "") {
-      this.filters.dates.To = "9999-12-30";
+  @action changeToDate = (date: number) => {
+    if (date === null) {
+      this.filters.dates.To = maxDate;
     } else {
       this.filters.dates.To = date;
     }
@@ -165,25 +130,24 @@ export default class FilterStore {
   //HELPER FUNCTIONS
 
   //Takes a filter criterion, and filters "tickets"
-  filterStatus = (status: string[], arr: ITicket[]): ITicket[] => {
-    return arr.filter((ticket) => {
-      return status.includes(ticket.status);
+  filterStatus = (status: string[]) => {
+    this.filteredTickets.forEach((ticket) => {
+      if (!status.includes(ticket.status.status_text))
+        this.filteredTickets.delete(ticket.post_id!);
     });
   };
 
-  filterProduct = (product: string[], arr: ITicket[]): ITicket[] => {
-    return arr.filter((ticket) => {
-      return product.includes(ticket.product);
+  filterProduct = (product: string[]) => {
+    this.filteredTickets.forEach((ticket) => {
+      if (!product.includes(ticket.product.product_name))
+        this.filteredTickets.delete(ticket.post_id!);
     });
   };
 
-  filterDate = (
-    fromDate: string,
-    toDate: string,
-    arr: ITicket[]
-  ): ITicket[] => {
-    return arr.filter((ticket) => {
-      return ticket.date >= fromDate && ticket.date <= toDate;
+  filterDate = (fromDate: number, toDate: number) => {
+    this.filteredTickets.forEach((ticket) => {
+      let ticketDate = Date.parse(ticket.date_time);
+      if(!(ticketDate >= fromDate && ticketDate <= toDate)) this.filteredTickets.delete(ticket.post_id!)
     });
   };
 }
