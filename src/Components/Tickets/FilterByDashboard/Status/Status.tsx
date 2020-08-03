@@ -15,11 +15,10 @@ const Status = () => {
       <Grid columns={2} className="styleGrid">
         {statuses.map((status) => {
           return (
-            <Grid.Column className="styleColumn">
+            <Grid.Column key={status.status_id} className="styleColumn">
               <StatusIcon
-                iconName={"urgentIcon"}
                 clickAble={true}
-                content={status.status_text}
+                status={status}
               />
             </Grid.Column>
           );

@@ -94,7 +94,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match, history }
               <h4 className="posterRank">Rank Here</h4>
             </Grid.Column>
             <Grid.Column width={4}>
-              <StatusIcon content={currentTicket.status.status_text} clickAble={false} />
+              <StatusIcon status={currentTicket.status} clickAble={false} />
               <div className="productButton">{currentTicket.product}</div>
             </Grid.Column>
           </Grid.Row>

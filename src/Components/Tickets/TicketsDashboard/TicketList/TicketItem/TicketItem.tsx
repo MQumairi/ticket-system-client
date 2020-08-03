@@ -18,7 +18,7 @@ const TicketItem: React.FC<IProps> = ({ ticket }) => {
       </Grid.Column>
       <Grid.Column width={3}>
         <div className="ticketStatusCol">
-          <StatusIcon clickAble={false} content={ticket.status.status_text} />
+          <StatusIcon clickAble={false} status={ticket.status} />
         </div>
       </Grid.Column>
       <Grid.Column width={2}>{ticket.product.product_name}</Grid.Column>

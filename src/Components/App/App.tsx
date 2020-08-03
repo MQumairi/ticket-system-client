@@ -13,11 +13,13 @@ function App() {
   const store = useContext(Store);
   const { loadTickets } = store.ticketStore;
   const { loadStatuses } = store.statusStore;
+  const { loadProducts } = store.productStore;
 
   useEffect(() => {
     loadTickets();
     loadStatuses();
-  }, [loadTickets, loadStatuses]);
+    loadProducts();
+  }, [loadTickets, loadStatuses, loadProducts]);
 
   return (
     <div id="App">

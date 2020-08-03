@@ -62,7 +62,7 @@ export default class FilterStore {
         this.filterProduct(this.filters.products);
       });
     }
-    
+
     //Filter dates
     this.filterTicketsByDate();
   };
@@ -128,7 +128,6 @@ export default class FilterStore {
 
   //Takes a filter criterion, and filters "tickets"
   filterStatus = (status: string[]) => {
-    console.log(this.filteredTickets.size);
     this.filteredTickets.forEach((ticket) => {
       if (!status.includes(ticket.status.status_text))
         this.filteredTickets.delete(ticket.post_id!);
