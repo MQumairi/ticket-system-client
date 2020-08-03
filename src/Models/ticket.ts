@@ -12,5 +12,5 @@ export interface ITicket {
   title: string;
   product: IProduct;
   status: IStatus;
-  commnets: IComment[];
+  comments: IComment[];
 }

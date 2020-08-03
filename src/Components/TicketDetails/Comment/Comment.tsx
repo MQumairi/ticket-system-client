@@ -3,6 +3,7 @@ import { IComment } from "../../../Models/comment";
 import "./comment.css";
 import { Button, Grid } from "semantic-ui-react";
 import CommentsNew from "../CommentsNew/CommentsNew";
+import Avatar from "../../Users/Avatar/Avatar";
 
 interface IProps {
   comment: IComment;
@@ -14,7 +15,8 @@ const Comment: React.FC<IProps> = ({ comment }) => {
 
   const [replyPressed, setReplyPressed] = useState(false);
   const revealReplyForm = () => {
-    if (replyPressed) return <CommentsNew parent={comment} setReplyPressed={setReplyPressed}/>;
+    if (replyPressed)
+      return <CommentsNew parent={comment} setReplyPressed={setReplyPressed} />;
   };
 
   const setReplyText = () => {
@@ -30,7 +32,7 @@ const Comment: React.FC<IProps> = ({ comment }) => {
       <div className="commentContainer">
         {/* Comment Header */}
         <div className="commentHeader">
-          <p className="postHeaderDate">Dummy date</p>
+          <p className="postHeaderDate">{comment.display_date}</p>
           <hr />
         </div>
         {/* Comment Body */}
@@ -38,12 +40,14 @@ const Comment: React.FC<IProps> = ({ comment }) => {
           <Grid>
             <Grid.Row columns={2}>
               <Grid.Column width={2}>
-                Avatar goes here
+                <Avatar
+                  avatar={comment.user.avatar}
+                  diameter={80}
+                  borderWidth={4}
+                />
               </Grid.Column>
               <Grid.Column width={14}>
-                <h2 className="posterName">
-                  Poster Username
-                </h2>
+                <h2 className="posterName">{comment.user.username}</h2>
                 <h4 className="posterRank">Poster Rank</h4>
               </Grid.Column>
             </Grid.Row>
@@ -72,9 +76,11 @@ const Comment: React.FC<IProps> = ({ comment }) => {
       </div>
       {revealReplyForm()}
       {subComments.map((comment) => {
-        return <div>
-          <Comment comment={comment}/>
-          </div>;
+        return (
+          <div>
+            <Comment comment={comment} />
+          </div>
+        );
       })}
     </div>
   );

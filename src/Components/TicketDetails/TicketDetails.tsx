@@ -16,45 +16,34 @@ interface params {
 }
 
 const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match, history }) => {
+
+  //Import ticket store
   const store = useContext(Store);
-  const { getTicket, deleteTicket, ticketsRegistry } = store.ticketStore;
+  const { ticketsRegistry, currentTicket, getTicket, deleteTicket } = store.ticketStore;
 
   const [replyPressed, setReplyPressed] = useState(false);
 
-  const [currentTicket, setCurrentTicket] = useState<ITicket | undefined>(
-    undefined
-  );
 
   useEffect(() => {
-    setCurrentTicket(getTicket(match.params.id));
+    getTicket(match.params.id);
   }, [getTicket, match.params.id]);
 
-  if (currentTicket === undefined) return <div>Error 404</div>;
+  if (currentTicket === null) return <div>Error 404</div>;
 
-  // const poster = getUser("2980dd9d-26ad-46b3-baa9-01276ff20162");
-
-  const revealReplyForm = () => {
-    if (replyPressed) return <CommentsNew parent={currentTicket} setReplyPressed={setReplyPressed} />;
-  };
+  // const revealReplyForm = () => {
+  //   if (replyPressed) return <CommentsNew parent={currentTicket} setReplyPressed={setReplyPressed} />;
+  // };
 
   const setReplyText = () => {
     if (replyPressed) return "Cancel";
     return "Reply";
   };
 
-  //Array for the comments on this ticket
-  let comments: IComment[] = currentTicket.commnets;
-
   //Delete ticket
   const handleDelete = () => {
-    deleteTicket(currentTicket.post_id!);
-
-    console.log("----------------")
-    console.log("From TicketDetails's handleDelete")
-    console.log(ticketsRegistry.size);
-
-    history.push("/tickets");
+    console.log("from handle delete");
   }
+
   return (
     <div id="ticketDetailsBody">
       <div id="ticketDetailsMainPost">
@@ -62,8 +51,8 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match, history }
         <Grid>
           <Grid.Row columns={2}>
             <Grid.Column>
-              <h1>{currentTicket?.title}</h1>
-              <p className="postHeaderDate">{currentTicket.date_time}</p>
+              <h1>{currentTicket.title}</h1>
+              <p className="postHeaderDate">{currentTicket.display_date}</p>
             </Grid.Column>
             <Grid.Column>
               <Button
@@ -95,11 +84,11 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match, history }
             </Grid.Column>
             <Grid.Column width={4}>
               <StatusIcon status={currentTicket.status} clickAble={false} />
-              <div className="productButton">{currentTicket.product}</div>
+              <div className="productButton">{currentTicket.product.product_name}</div>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
-            <p>{currentTicket?.description}</p>
+            <p>{currentTicket.description}</p>
           </Grid.Row>
         </Grid>
         {/* Footer starts here */}
@@ -122,8 +111,8 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match, history }
           </Grid.Row>
         </Grid>
       </div>
-      {revealReplyForm()}
-      {comments.map((comment) => {
+      {/* {revealReplyForm()} */}
+      {currentTicket.comments.map((comment) => {
         return <div>
           <Comment comment={comment}/>
           </div>;

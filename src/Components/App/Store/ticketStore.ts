@@ -2,17 +2,16 @@ import { observable, action } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
 import { Tickets } from "../../../API/agent";
-import { format } from 'date-fns'
-
-
+import { format } from "date-fns";
+import { IComment } from "../../../Models/comment";
 
 export default class TicketStore {
   constructor(public rootStore: Store) {}
 
-  //Observables
+  //Initialize the Ticket Registry
   @observable ticketsRegistry = new Map<number, ITicket>();
 
-  //Actions
+  //Load tickets from API to Registry
   @action loadTickets = async () => {
     try {
       const loadedTickets = await Tickets.list();
@@ -26,6 +25,28 @@ export default class TicketStore {
     }
   };
 
+  //Initialize the current ticket
+  @observable currentTicket: ITicket | null = null;
+
+  //Load a ticket by ID from the API, and set it to currentTicket
+  @action getTicket = async (id: string) => {
+    try {
+      let loadedTicket = await Tickets.details(id);
+      let ticketDate = Date.parse(loadedTicket.date_time);
+      loadedTicket.display_date = format(ticketDate, "dd/MM/yyyy");
+
+      loadedTicket.comments.forEach((comment: IComment) => {
+        let commentDate = Date.parse(comment.date_time);
+        comment.display_date = format(commentDate, "dd/MM/yyyy");
+      })
+
+      this.currentTicket = loadedTicket;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Rest
   @action addTicket = async (ticket: ITicket) => {
     try {
       await Tickets.create(ticket);
@@ -35,17 +56,7 @@ export default class TicketStore {
     }
   };
 
-  @action getTicket = (id: string) => {
-    let query = Number(id);
-    return this.ticketsRegistry.get(query);
-  };
-
-  @action deleteTicket = (id: number) => {
-    this.ticketsRegistry.delete(id);
-
-    //Printing
-    console.log("----------------");
-    console.log("From Ticket Store's deleteTicket");
-    console.log(this.ticketsRegistry.size);
+  @action deleteTicket = (id: string) => {
+    console.log("Don't forget to implement delete");
   };
 }
