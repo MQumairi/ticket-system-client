@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Grid } from "semantic-ui-react";
 import StatusIcon from "./StatusIcon/SatusIcon";
 import Store from "../../../App/Store/rootStore";

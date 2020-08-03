@@ -18,7 +18,6 @@ interface params {
 const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match, history }) => {
   const store = useContext(Store);
   const { getTicket, deleteTicket, ticketsRegistry } = store.ticketStore;
-  const { getUser } = store.userStore;
 
   const [replyPressed, setReplyPressed] = useState(false);
 
@@ -32,7 +31,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match, history }
 
   if (currentTicket === undefined) return <div>Error 404</div>;
 
-  const poster = getUser("2980dd9d-26ad-46b3-baa9-01276ff20162");
+  // const poster = getUser("2980dd9d-26ad-46b3-baa9-01276ff20162");
 
   const revealReplyForm = () => {
     if (replyPressed) return <CommentsNew parent={currentTicket} setReplyPressed={setReplyPressed} />;

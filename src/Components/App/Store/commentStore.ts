@@ -1,7 +1,6 @@
 import { IComment } from "../../../Models/comment";
 import { Store } from "./rootStore";
-import { observable, action } from "mobx";
-import { ITicket } from "../../../Models/ticket";
+import { action } from "mobx";
 import { Comments } from "../../../API/agent";
 
 export default class CommentStore {

@@ -1,7 +1,6 @@
 import { observable, action, computed } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
-import { IStatus } from "../../../Models/status";
 
 interface filterObject {
   status: string[];
@@ -12,25 +11,22 @@ interface filterObject {
   };
 }
 
-interface IOption {
-  key: number;
-  text: string;
-  value: string;
-}
-
 export default class FilterStore {
-
   constructor(public rootStore: Store) {}
 
-  //Getting the ticket registery from the ticketStore
-  @observable ticketsRegistry = this.rootStore.ticketStore.ticketsRegistry;
+  //IMPORTS FROM OTHER STORES
+
+  //Getting the ticketRegistery from the ticketStore
+  @computed get ticketsRegistry() {
+    return observable.map(this.rootStore.ticketStore.ticketsRegistry);
+  } 
+
   //Getting the statuses from the statusStore
   @observable statuses = this.rootStore.statusStore.statuses;
 
-  //Copying it into filtered tickets
-  @observable filteredTickets: Map<number, ITicket> = {...this.ticketsRegistry};
+  //LOGIC
 
-  //Initializing a filterobject. This will store active filters.
+  //Initialize a filterobject. This will store active filters.
   @observable filters: filterObject = {
     status: [],
     products: [],
@@ -38,60 +34,48 @@ export default class FilterStore {
       From: "0001-01-01",
       To: "9999-12-30",
     },
-  }
+  };
 
-  //COMPUTED
-  @computed get statusOptions() {
-    let returnArr: IOption[] = [];
+  //Intiialize filitered tickets, a MAP of ITickets
+  @observable filteredTickets: Map<number, ITicket> = new Map<number, ITicket>();
 
-    this.statuses.forEach((status) => {
-      returnArr.push({
-        key: status.status_id!,
-        text: status.status_text,
-        value: status.status_text,
-      });
-    });
+  //Copy ticketsRegistry into filteredTickets
+  @action loadFilteredTickets = (tickets: Map<number, ITicket>) => {
+    let ticketsToReturn: Map<number, ITicket> = new Map<number, ITicket>();
+    ticketsToReturn = observable.map().merge(this.ticketsRegistry);
+    this.filteredTickets = ticketsToReturn;
+  };
 
-    return returnArr;
-  }
-
-  //ACTIONS
+  //The main method that filters the filteredTickets object.
   @action filterTickets = () => {
-
-    //Reset
-    this.filteredTickets = {...this.ticketsRegistry};
+    //When run, first copy ticketsRegistry into filteredTickets again, resetig the object.
+    this.loadFilteredTickets(this.ticketsRegistry);
 
     //Filter status
     if (this.filters.status.length !== 0) {
-      this.filterStatus(
-        this.filters.status,
-      );
+      this.filterStatus(this.filters.status);
     }
 
+    //Filter products
     if (this.filters.products.length !== 0) {
       this.filters.products.forEach((product) => {
-        this.filterProduct(
-          this.filters.products,
-        );
+        this.filterProduct(this.filters.products);
       });
     }
+    
     //Filter dates
     this.filterTicketsByDate();
   };
 
   @action filterTicketsByDate = () => {
-    this.filterDate(
-      this.filters.dates.From,
-      this.filters.dates.To,
-    );
+    this.filterDate(this.filters.dates.From, this.filters.dates.To);
   };
 
   @action selectAll = () => {
-    console.log("From select all");
-    console.log(this.filteredTickets.size);
-    console.log(this.ticketsRegistry.size);
-    
-    this.filteredTickets = this.ticketsRegistry;
+    console.log('select all clicked')
+    console.log(this.ticketsRegistry.size)
+    console.log(this.filteredTickets.size)
+    this.loadFilteredTickets(this.ticketsRegistry);
     this.filters = {
       status: [],
       products: [],
@@ -100,11 +84,6 @@ export default class FilterStore {
         To: "9999-12-30",
       },
     };
-
-    console.log("From select all");
-    console.log(this.filteredTickets.size);
-    console.log(this.ticketsRegistry.size);
-
   };
 
   @action changeStatus = (status: string, toAdd: boolean) => {
@@ -149,23 +128,23 @@ export default class FilterStore {
 
   //Takes a filter criterion, and filters "tickets"
   filterStatus = (status: string[]) => {
-    this.ticketsRegistry.forEach((ticket) => {
-      if(!status.includes(ticket.status.status_text)) this.ticketsRegistry.delete(ticket.post_id!);
-    })
+    console.log(this.filteredTickets.size);
+    this.filteredTickets.forEach((ticket) => {
+      if (!status.includes(ticket.status.status_text))
+        this.filteredTickets.delete(ticket.post_id!);
+    });
   };
 
   filterProduct = (product: string[]) => {
-    this.ticketsRegistry.forEach((ticket) => {
-      if(!product.includes(ticket.product.product_name)) this.ticketsRegistry.delete(ticket.post_id!);
-    })
+    this.filteredTickets.forEach((ticket) => {
+      if (!product.includes(ticket.product.product_name))
+        this.filteredTickets.delete(ticket.post_id!);
+    });
   };
 
-  filterDate = (
-    fromDate: string,
-    toDate: string,
-  ) => {
-    this.ticketsRegistry.forEach((ticket) => {
-      if(!(ticket.date_time >= fromDate && ticket.date_time <= toDate)) this.ticketsRegistry.delete(ticket.post_id!)
-    })
+  filterDate = (fromDate: string, toDate: string) => {
+    this.filteredTickets.forEach((ticket) => {
+      if(!(ticket.date_time >= fromDate && ticket.date_time <= toDate)) this.filteredTickets.delete(ticket.post_id!)
+    });
   };
 }

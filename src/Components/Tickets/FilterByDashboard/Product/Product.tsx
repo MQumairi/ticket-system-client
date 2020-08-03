@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Store from "../../../App/Store/rootStore";
 import ProductItem from "./ProductItem";
 import "./product.css";
+import { observer } from "mobx-react-lite";
 
 const Product = () => {
 
@@ -21,4 +22,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default observer(Product);

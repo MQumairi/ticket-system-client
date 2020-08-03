@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from "react";
+import React, { useContext } from "react";
 import { Form, TextArea, Button } from "semantic-ui-react";
 import "./commentsNew.css";
 import { IComment } from "../../../Models/comment";
@@ -18,7 +18,7 @@ const CommentsNew: React.FC<IProps> = ({ parent, setReplyPressed }) => {
   const {getUser} = store.userStore;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    const today = new Date();
+    // const today = new Date();
 
     let newComment: IComment = {
       description: e.currentTarget.commentNewDesc.value,

@@ -6,14 +6,13 @@ import TicketsNew from "../TicketsNew/TicketsNew";
 import TicketDetails from "../TicketDetails/TicketDetails";
 import Footer from "../Footer/Footer";
 import { Route, Switch } from "react-router-dom";
-import axios from "axios";
 import Store from "./Store/rootStore";
 
 function App() {
 
   const store = useContext(Store);
   const { loadTickets } = store.ticketStore;
-  const { loadStatuses, statuses } = store.statusStore;
+  const { loadStatuses } = store.statusStore;
 
   useEffect(() => {
     loadTickets();

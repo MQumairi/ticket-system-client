@@ -1,25 +1,20 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { Button, Form } from "semantic-ui-react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { ITicket } from "../../Models/ticket";
-import Store from "../../Components/App/Store/rootStore";
 import "./ticketsNew.css";
 
 const TicketsNew: React.FC<RouteComponentProps> = (props) => {
 
-  const store = useContext(Store);
-  const { productOptions } = store.productStore;
-  const { statusOptions } = store.filterStore;
+  // const store = useContext(Store);
+  // const { productOptions } = store.productStore;
+  // const { statusOptions } = store.filterStore;
   // const { addTicket } = store.ticketStore;
 
-  const [status, setSatus] = useState("");
-  const [product, setProduct] = useState("");
+  // const [product, setProduct] = useState("");
 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-
-    const today = new Date();
 
     // let newTicket: ITicket = {
     //   authorId: 1,
@@ -56,7 +51,7 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
             <input placeholder="Ticket Title" name="ticketTitle" />
           </Form.Field>
           <Form.Group widths="equal">
-            <Form.Select
+            {/* <Form.Select
               fluid
               label="Status"
               options={statusOptions}
@@ -66,8 +61,8 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
                   // setSatus(value);
                 }
               }}
-            />
-            <Form.Select
+            /> */}
+            {/* <Form.Select
               fluid
               label="Product"
               options={productOptions}
@@ -77,7 +72,7 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
                   setProduct(value);
                 }
               }}
-            />
+            /> */}
           </Form.Group>
           <Form.TextArea
             label="Description"

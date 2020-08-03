@@ -1,9 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { IComment } from "../../../Models/comment";
 import "./comment.css";
 import { Button, Grid } from "semantic-ui-react";
-import Store from "../../App/Store/rootStore";
-import Avatar from "../../Users/Avatar/Avatar";
 import CommentsNew from "../CommentsNew/CommentsNew";
 
 interface IProps {
@@ -11,8 +9,8 @@ interface IProps {
 }
 
 const Comment: React.FC<IProps> = ({ comment }) => {
-  const store = useContext(Store);
-  const { getUser } = store.userStore;
+  // const store = useContext(Store);
+  // const { getUser } = store.userStore;
 
   const [replyPressed, setReplyPressed] = useState(false);
   const revealReplyForm = () => {

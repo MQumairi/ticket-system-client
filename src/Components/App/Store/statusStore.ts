@@ -1,9 +1,3 @@
-//Don't forget to:
-// -- install mobx and mobx-react-lite (the latter for observers)
-// -- use observables for states, and actions to mutate
-// -- useContext in relevant components
-// -- deconstruct the store
-// -- set the component as an observer by wraping when export with observer(componentName).
 import { observable, action } from "mobx";
 import { Store } from "./rootStore";
 import { IStatus } from "../../../Models/status";
@@ -24,5 +18,21 @@ export default class StatusStore {
         console.log(e);
     }
   }
+
+  //TICKET OPTIONS FOR SELECTOR... coming soon
+    // @computed get statusOptions() {
+  //   let returnArr: IOption[] = [];
+
+  //   this.statuses.forEach((status) => {
+  //     returnArr.push({
+  //       key: status.status_id!,
+  //       text: status.status_text,
+  //       value: status.status_text,
+  //     });
+  //   });
+
+  //   return returnArr;
+  // }
+
 }
 
