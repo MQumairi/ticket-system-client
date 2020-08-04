@@ -8,7 +8,7 @@ export default class UserStore {
   @observable userList: IUser[] = [
     {
       id: "2980dd9d-26ad-46b3-baa9-01276ff20162",
-      username: "Bob",
+      username: "BILLY",
       email: "pb@email.com",
       avatar:
         "https://images.unsplash.com/photo-1586297098710-0382a496c814?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3750&q=80",
@@ -23,8 +23,12 @@ export default class UserStore {
   ];
 
   @action getUser = (id: string) => {
-    return this.userList.find((user) => {
-      return user.id === id;
-    });
+    return this.userList.find((user) => user.id === id);
   };
+
+  @observable currentUser: IUser | null | undefined = this.getUser("2980dd9d-26ad-46b3-baa9-01276ff20162");
+
+  @action setCurrentUser = () => {
+    this.currentUser = this.getUser("2980dd9d-26ad-46b3-baa9-01276ff20162");
+  }
 }

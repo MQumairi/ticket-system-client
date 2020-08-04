@@ -1,38 +1,33 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Form } from "semantic-ui-react";
+import { Form as FinalForm, Field } from "react-final-form";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+import TextInput from "../Utility/Final Form Fields/TextInput";
+import TextAreaInput from "../Utility/Final Form Fields/TextAreaInput";
+import SelectInput from "../Utility/Final Form Fields/SelectInput";
+import Store from "../App/Store/rootStore";
 import "./ticketsNew.css";
+import { ITicket } from "../../Models/ticket";
+import { format } from "date-fns";
 
-const TicketsNew: React.FC<RouteComponentProps> = (props) => {
+const TicketsNew: React.FC<RouteComponentProps> = () => {
+  const store = useContext(Store);
+  const { productOptions } = store.productStore;
+  const { statusOptions } = store.statusStore;
+  const { currentUser } = store.userStore;
 
-  // const store = useContext(Store);
-  // const { productOptions } = store.productStore;
-  // const { statusOptions } = store.filterStore;
-  // const { addTicket } = store.ticketStore;
-
-  // const [product, setProduct] = useState("");
-
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-
-    // let newTicket: ITicket = {
-    //   authorId: 1,
-    //   id: Math.floor(Math.random() * 10000),
-    //   status: status,
-    //   product: product,
-    //   title: e.currentTarget.ticketTitle.value,
-    //   description: e.currentTarget.ticketNewDesc.value,
-    //   date: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate(),
-    //   commentIds: []
-    // }
-
-    // addTicket(newTicket);
-    // addTicket(newTicket);
-
-    //Redirect
-    props.history.push("/tickets");
-    
+  const handleFinalFormSubmit = (values: any) => {
+    let ticketToPost: ITicket = {
+      date_time: format(Date.now(), "dd/MM/yyyy"),
+      description: values.description,
+      user: currentUser!,
+      title: values.title,
+      product: values.product,
+      status: values.status,
+      comments: []
+    };
+    console.log(ticketToPost);
   };
 
   return (
@@ -45,45 +40,44 @@ const TicketsNew: React.FC<RouteComponentProps> = (props) => {
         </Button>
       </div>
       <div id="ticketsNewBody">
-        <Form onSubmit={(e) => handleSubmit(e)}>
-          <Form.Field>
-            <label>Title</label>
-            <input placeholder="Ticket Title" name="ticketTitle" />
-          </Form.Field>
-          <Form.Group widths="equal">
-            {/* <Form.Select
-              fluid
-              label="Status"
-              options={statusOptions}
-              placeholder="Select Status"
-              onChange={(e, { value }) => {
-                if(typeof(value) === "string") {
-                  // setSatus(value);
-                }
-              }}
-            /> */}
-            {/* <Form.Select
-              fluid
-              label="Product"
-              options={productOptions}
-              placeholder="Select Product"
-              onChange={(e, { value }) => {
-                if(typeof(value) === "string") {
-                  setProduct(value);
-                }
-              }}
-            /> */}
-          </Form.Group>
-          <Form.TextArea
-            label="Description"
-            placeholder="Describe your problem..."
-            rows={10}
-            name="ticketNewDesc"
-          />
-          <Button className="mainButton ticketNewSubmit" type="submit">
-            Submit
-          </Button>
-        </Form>
+        <FinalForm
+          onSubmit={handleFinalFormSubmit}
+          render={({ handleSubmit }) => {
+            return (
+              <Form onSubmit={handleSubmit}>
+                <Field
+                  name="title"
+                  placeholder="Ticket title"
+                  component={TextInput}
+                ></Field>
+                <Form.Group widths="equal">
+                  <Field
+                    component={SelectInput}
+                    options={productOptions}
+                    name="product"
+                    placeholder="Product"
+                  />
+                  <Field
+                    component={SelectInput}
+                    options={statusOptions}
+                    name="status"
+                    placeholder="Status"
+                  />
+                </Form.Group>
+                <Field
+                  label="Description"
+                  placeholder="Describe your problem..."
+                  rows={10}
+                  name="description"
+                  component={TextAreaInput}
+                />
+                <Button className="mainButton ticketNewSubmit" type="submit">
+                  Submit
+                </Button>
+              </Form>
+            );
+          }}
+        />
       </div>
     </div>
   );
