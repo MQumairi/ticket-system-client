@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Menu, Segment } from "semantic-ui-react";
 import "./navbar.css";
 import Avatar from "../Users/Avatar/Avatar";
+import Store from "../App/Store/rootStore";
+import { observer } from "mobx-react-lite";
 
 const Navbar = () => {
-  const [activeItem, setActiveItem] = useState("Tickets");
 
-  const handleItemClick = (e, { name }) => setActiveItem({ activeItem: name });
+  const [activeItem] = useState("Tickets");
+
+
+  const store = useContext(Store);
+  const {user, isLogged} = store.userStore;
+  const {appLoaded} = store.commonStore;
 
   return (
     <Segment inverted>
@@ -18,25 +24,22 @@ const Navbar = () => {
           <Menu.Item
             name="Tickets"
             active={activeItem === "Tickets"}
-            onClick={handleItemClick}
           />
           <Menu.Item
             name="Products"
             active={activeItem === "Products"}
-            onClick={handleItemClick}
           />
           <Menu.Item
             name="Users"
             active={activeItem === "Users"}
-            onClick={handleItemClick}
           />
-          <Menu.Item>
-              <Avatar userId={"1"} diameter={60} borderWidth={3}/>
-          </Menu.Item>
+          {isLogged && user && appLoaded && <Menu.Item>
+              <Avatar avatar={user.avatar} diameter={60} borderWidth={3}/>
+          </Menu.Item>}
         </Menu>
       </div>
     </Segment>
   );
 };
 
-export default Navbar;
+export default observer(Navbar);

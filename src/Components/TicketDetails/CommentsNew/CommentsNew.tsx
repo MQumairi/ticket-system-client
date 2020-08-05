@@ -14,7 +14,7 @@ interface IProps {
 const CommentsNew: React.FC<IProps> = ({ parent, setReplyPressed }) => {
   const store = useContext(Store);
   const { addCommnet } = store.commentStore;
-  const { getUser } = store.userStore;
+  const { user } = store.userStore;
   const { currentTicket } = store.ticketStore;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,7 +23,7 @@ const CommentsNew: React.FC<IProps> = ({ parent, setReplyPressed }) => {
     let newComment: IComment = {
       description: e.currentTarget.commentNewDesc.value,
       date_time: "2020-07-31T18:47:50.605697",
-      user: getUser("2980dd9d-26ad-46b3-baa9-01276ff20162")!,
+      user: user!,
       parent_post_id: currentTicket!.post_id!,
     };
 

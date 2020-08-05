@@ -7,19 +7,31 @@ import TicketDetails from "../TicketDetails/TicketDetails";
 import Footer from "../Footer/Footer";
 import { Route, Switch } from "react-router-dom";
 import Store from "./Store/rootStore";
+import LoginPage from "../Login/LoginPage";
+import { observer } from "mobx-react-lite";
 
 function App() {
-
   const store = useContext(Store);
   const { loadTickets } = store.ticketStore;
   const { loadStatuses } = store.statusStore;
   const { loadProducts } = store.productStore;
+  const { token, appLoaded, setAppLoaded } = store.commonStore;
+  const { getCurrentUser } = store.userStore;
 
   useEffect(() => {
     loadTickets();
     loadStatuses();
     loadProducts();
-  }, [loadTickets, loadStatuses, loadProducts]);
+
+    if (token) {
+      console.log("App if true")
+      getCurrentUser().finally(() => setAppLoaded());
+    } else {
+      console.log("App if false")
+      console.log(token);
+      setAppLoaded();
+    }
+  }, [loadTickets, loadStatuses, loadProducts, getCurrentUser, setAppLoaded, token]);
 
   return (
     <div id="App">
@@ -34,6 +46,7 @@ function App() {
           />
           <Route path="/tickets/new" component={TicketsNew} />
           <Route exact path="/tickets/:id" component={TicketDetails} />
+          <Route exact path="/login" component={LoginPage} />
         </Switch>
       </div>
       <Footer />
@@ -41,4 +54,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);

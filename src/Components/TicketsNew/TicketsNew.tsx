@@ -15,13 +15,13 @@ const TicketsNew: React.FC<RouteComponentProps> = () => {
   const store = useContext(Store);
   const { productOptions } = store.productStore;
   const { statusOptions } = store.statusStore;
-  const { currentUser } = store.userStore;
+  const { user } = store.userStore;
 
   const handleFinalFormSubmit = (values: any) => {
     let ticketToPost: ITicket = {
       date_time: format(Date.now(), "dd/MM/yyyy"),
       description: values.description,
-      user: currentUser!,
+      user: user!,
       title: values.title,
       product: values.product,
       status: values.status,
