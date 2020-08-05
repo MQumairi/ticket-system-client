@@ -4,6 +4,10 @@ import { Store } from "./rootStore";
 import { Tickets } from "../../../API/agent";
 import { format } from "date-fns";
 import { IComment } from "../../../Models/comment";
+import { ITicketForm } from "../../../Models/ticketForm";
+// import { IProduct } from "../../../Models/product";
+// import { IStatus } from "../../../Models/status";
+// import { IUser } from "../../../Models/user";
 
 export default class TicketStore {
   constructor(public rootStore: Store) {}
@@ -38,7 +42,7 @@ export default class TicketStore {
       loadedTicket.comments.forEach((comment: IComment) => {
         let commentDate = Date.parse(comment.date_time);
         comment.display_date = format(commentDate, "dd/MM/yyyy");
-      })
+      });
 
       this.currentTicket = loadedTicket;
     } catch (e) {
@@ -47,10 +51,24 @@ export default class TicketStore {
   };
 
   //Rest
-  @action addTicket = async (ticket: ITicket) => {
+  @action addTicket = async (ticket: ITicketForm) => {
     try {
+
       await Tickets.create(ticket);
-      this.ticketsRegistry.set(ticket.post_id!, ticket);
+
+      // let ticketToAdd: ITicket = {
+      //   date_time: ticket.date_time!,
+      //   display_date: format(Date.parse(ticket.date_time!), "dd/MM/yyyy"),
+      //   description: ticket.description!,
+      //   user: user,
+      //   title: ticket.title!,
+      //   product: product,
+      //   status: status,
+      //   comments: [],
+      // };
+
+      // this.ticketsRegistry.set(ticketToAdd, ticket);
+
     } catch (e) {
       console.log(e);
     }

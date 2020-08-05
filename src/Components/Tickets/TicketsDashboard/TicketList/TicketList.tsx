@@ -3,12 +3,12 @@ import TicketItem from "./TicketItem/TicketItem";
 import { observer } from "mobx-react-lite";
 import "./ticketList.css";
 import Store from "../../../App/Store/rootStore";
+// import { history } from "react-router";
 
 const TicketList = () => {
+
   const store = useContext(Store);
-  // const {ticketsRegistry} = store.ticketStore;
   const { filteredTickets, loadFilteredTickets, ticketsRegistry} = store.filterStore;
-  // const { loadTickets } = store.ticketStore;
 
   useEffect(() => {
     loadFilteredTickets(ticketsRegistry);

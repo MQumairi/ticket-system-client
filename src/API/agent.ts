@@ -5,6 +5,7 @@ import { IStatus } from "../Models/status";
 import { IComment } from "../Models/comment";
 import { IUser } from "../Models/user";
 import { IUserForm } from "../Models/userForm";
+import { ITicketForm} from "../Models/ticketForm";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -32,8 +33,8 @@ const Tickets = {
   list: (): Promise<ITicket[]> => requests.get("/tickets"),
   details: (post_id: string): Promise<ITicket> =>
     requests.get("/tickets/" + post_id),
-  create: (ticket: ITicket) => requests.post("/tickets", ticket),
-  edit: (ticket: ITicket) => requests.put("/tickets/" + ticket.post_id, ticket),
+  create: (ticket: ITicketForm) => requests.post("/tickets", ticket),
+  edit: (ticket: ITicketForm) => requests.put("/tickets/" + ticket.post_id, ticket),
   delete: (post_id: string) => requests.delete("/tickets/" + post_id),
 };
 

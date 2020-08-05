@@ -1,25 +1,22 @@
 import React, { useContext, useState, useEffect } from "react";
 import Store from "../App/Store/rootStore";
-import { ITicket } from "../../Models/ticket";
 import { RouteComponentProps, Link } from "react-router-dom";
 import "./ticketDetails.css";
 import { Grid, Button } from "semantic-ui-react";
 import StatusIcon from "../Tickets/FilterByDashboard/Status/StatusIcon/SatusIcon";
 import Avatar from "../Users/Avatar/Avatar";
 import { observer } from "mobx-react-lite";
-import CommentsNew from "./CommentsNew/CommentsNew";
-import { IComment } from "../../Models/comment";
 import Comment from "./Comment/Comment";
 
 interface params {
   id: string;
 }
 
-const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match, history }) => {
+const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
 
   //Import ticket store
   const store = useContext(Store);
-  const { ticketsRegistry, currentTicket, getTicket, deleteTicket } = store.ticketStore;
+  const { currentTicket, getTicket } = store.ticketStore;
 
   const [replyPressed, setReplyPressed] = useState(false);
 
@@ -29,10 +26,6 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match, history }
   }, [getTicket, match.params.id]);
 
   if (currentTicket === null) return <div>Error 404</div>;
-
-  // const revealReplyForm = () => {
-  //   if (replyPressed) return <CommentsNew parent={currentTicket} setReplyPressed={setReplyPressed} />;
-  // };
 
   const setReplyText = () => {
     if (replyPressed) return "Cancel";
