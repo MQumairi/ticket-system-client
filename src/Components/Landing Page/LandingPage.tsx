@@ -11,7 +11,7 @@ const LandingPage = () => {
         To proceed, please login or register an account
       </h3>
       <Button className="mainButton" as={Link} to="/login">Login</Button>
-      <Button className="mainButton">Register</Button>
+      <Button className="mainButton" as={Link} to="/register">Register</Button>
     </div>
   );
 };

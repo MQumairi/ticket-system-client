@@ -9,6 +9,7 @@ import { Route, Switch } from "react-router-dom";
 import Store from "./Store/rootStore";
 import LoginPage from "../Login/LoginPage";
 import LandingPage from "../Landing Page/LandingPage";
+import RegisterPage from "../Register/RegisterPage";
 import { observer } from "mobx-react-lite";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <div id="mainContentBody">
           <Switch>
             <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/register" component={RegisterPage} />
             <Route path="/" component={LandingPage} />
           </Switch>
         </div>

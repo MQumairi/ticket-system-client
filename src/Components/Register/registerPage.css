@@ -1,0 +1,13 @@
+@import "../../Assets/Styles/style.css";
+
+.register-page-body {
+    width: var(--small-container-width);
+    margin: 100px auto;
+    padding: 30px;
+    background-color: var(--body-bg-color-1);
+    border-radius: var(--container-border-radius);
+}
+
+.register-page-content {
+    padding: 20px;
+}
