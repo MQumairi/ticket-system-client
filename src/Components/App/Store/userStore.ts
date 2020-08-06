@@ -7,9 +7,6 @@ import { Users } from "../../../API/agent";
 export default class UserStore {
   constructor(public rootStore: Store) {}
 
-  //Load commonStore
-  // @observable commonStore = this.rootStore.commonStore;
-
   @observable user: IUser | null = null;
 
   @computed get isLogged() {
@@ -36,9 +33,7 @@ export default class UserStore {
 
   @action getCurrentUser = async () => {
     try {
-      console.log("From userStore")
       const user = await Users.current();
-      console.log(user);
       runInAction(() => {
         this.user = user;
       });

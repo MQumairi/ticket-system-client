@@ -12,32 +12,16 @@ import { observer } from "mobx-react-lite";
 
 function App() {
   const store = useContext(Store);
-  // const { loadTickets } = store.ticketStore;
-  // const { loadStatuses } = store.statusStore;
-  // const { loadProducts } = store.productStore;
   const { token, appLoaded, setAppLoaded } = store.commonStore;
   const { getCurrentUser, isLogged } = store.userStore;
 
   useEffect(() => {
     if (token) {
-      console.log("App if true");
       getCurrentUser().finally(() => setAppLoaded());
-      // loadTickets();
-      // loadStatuses();
-      // loadProducts();
     } else {
-      console.log("App if false");
-      console.log(token);
       setAppLoaded();
     }
-  }, [
-    // loadTickets,
-    // loadStatuses,
-    // loadProducts,
-    getCurrentUser,
-    setAppLoaded,
-    token,
-  ]);
+  }, [getCurrentUser, setAppLoaded, token]);
 
   if (appLoaded && !isLogged) {
     return (
