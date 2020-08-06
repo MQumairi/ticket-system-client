@@ -1,11 +1,16 @@
 import React, { useContext, useState } from "react";
 import { Form as FinalForm, Field } from "react-final-form";
-import { Form, Button, Label } from "semantic-ui-react";
+import { Form, Button, Label, GridColumn, Grid } from "semantic-ui-react";
 import TextInput from "../Utility/Final Form Fields/TextInput";
 import Store from "../App/Store/rootStore";
 import { IUserForm } from "../../Models/userForm";
+import "./loginPage.css";
+import { Link, useHistory } from "react-router-dom";
 
 const LoginPage = () => {
+
+  let history = useHistory();
+
   const store = useContext(Store);
   const { login } = store.userStore;
 
@@ -15,6 +20,8 @@ const LoginPage = () => {
     login(values).catch((error) => {
       setError(error);
     });
+
+    history.push("/tickets");
   };
 
   return (
@@ -23,8 +30,23 @@ const LoginPage = () => {
         onSubmit={handleFinalFormSubmit}
         render={({ handleSubmit, submitError }) => {
           return (
-            <div>
-              {!!error && <Label color="red" basic content={"Unauthorized"} />}
+            <div className="login-page-body">
+              <Grid>
+                <GridColumn width={5} key={1}>
+                  <h2>Login</h2>
+                </GridColumn>
+                <GridColumn width={7} key={2}/>
+                <GridColumn width={3} key={3}>
+                  <Button
+                    className="mainButton"
+                    content="Back"
+                    as={Link}
+                    to="/"
+                  />
+                </GridColumn>
+              </Grid>
+              <hr />
+              {!!error && <Label className="login-error-label" color="red" basic content={"Email/Password combination incorrect. Try again."} />}
               <Form onSubmit={handleSubmit}>
                 <Field name="email" placeholder="Email" component={TextInput} />
                 <Field

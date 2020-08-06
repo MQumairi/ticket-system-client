@@ -8,6 +8,7 @@ import Footer from "../Footer/Footer";
 import { Route, Switch } from "react-router-dom";
 import Store from "./Store/rootStore";
 import LoginPage from "../Login/LoginPage";
+import LandingPage from "../Landing Page/LandingPage";
 import { observer } from "mobx-react-lite";
 
 function App() {
@@ -28,7 +29,10 @@ function App() {
       <div id="App">
         <Navbar />
         <div id="mainContentBody">
-          <LoginPage />
+          <Switch>
+            <Route exact path="/login" component={LoginPage} />
+            <Route path="/" component={LandingPage} />
+          </Switch>
         </div>
         <Footer />
       </div>
@@ -43,7 +47,6 @@ function App() {
           <Route exact path={["/", "/tickets"]} component={Tickets} />
           <Route path="/tickets/new" component={TicketsNew} />
           <Route exact path="/tickets/:id" component={TicketDetails} />
-          <Route exact path="/login" component={LoginPage} />
         </Switch>
       </div>
       <Footer />

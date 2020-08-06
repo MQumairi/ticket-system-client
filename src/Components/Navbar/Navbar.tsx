@@ -19,10 +19,6 @@ const Navbar = () => {
         <div className="logoBar">
           <h1 className="logo">YourCompany</h1>
         </div>
-        <Menu inverted secondary>
-          <Menu.Item name="Login" />
-          <Menu.Item name="Signup" />
-        </Menu>
       </div>
       </Segment>
     );
