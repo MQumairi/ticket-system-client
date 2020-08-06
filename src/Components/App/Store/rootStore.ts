@@ -5,6 +5,7 @@ import ProductStore from "./productStore";
 import UserStore from "./userStore";
 import CommentStore from "./commentStore";
 import StatusStore from "./statusStore";
+import CommonStore from "./commonStore";
 
 export class Store {
   ticketStore = new TicketStore(this);
@@ -13,6 +14,7 @@ export class Store {
   userStore = new UserStore(this);
   commentStore = new CommentStore(this);
   statusStore = new StatusStore(this);
+  commonStore = new CommonStore(this);
 }
 
 export default createContext(new Store());

@@ -7,33 +7,43 @@ import TicketDetails from "../TicketDetails/TicketDetails";
 import Footer from "../Footer/Footer";
 import { Route, Switch } from "react-router-dom";
 import Store from "./Store/rootStore";
+import LoginPage from "../Login/LoginPage";
+import { observer } from "mobx-react-lite";
 
 function App() {
-
   const store = useContext(Store);
-  const { loadTickets } = store.ticketStore;
-  const { loadStatuses } = store.statusStore;
-  const { loadProducts } = store.productStore;
+  const { token, appLoaded, setAppLoaded } = store.commonStore;
+  const { getCurrentUser, isLogged } = store.userStore;
 
   useEffect(() => {
-    loadTickets();
-    loadStatuses();
-    loadProducts();
-  }, [loadTickets, loadStatuses, loadProducts]);
+    if (token) {
+      getCurrentUser().finally(() => setAppLoaded());
+    } else {
+      setAppLoaded();
+    }
+  }, [getCurrentUser, setAppLoaded, token]);
+
+  if (appLoaded && !isLogged) {
+    return (
+      <div id="App">
+        <Navbar />
+        <div id="mainContentBody">
+          <LoginPage />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div id="App">
       <Navbar />
       <div id="mainContentBody">
         <Switch>
-          <Route
-            exact
-            path={["/", "/tickets"]}
-            component={Tickets}
-            key={Date.now()}
-          />
+          <Route exact path={["/", "/tickets"]} component={Tickets} />
           <Route path="/tickets/new" component={TicketsNew} />
           <Route exact path="/tickets/:id" component={TicketDetails} />
+          <Route exact path="/login" component={LoginPage} />
         </Switch>
       </div>
       <Footer />
@@ -41,4 +51,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);

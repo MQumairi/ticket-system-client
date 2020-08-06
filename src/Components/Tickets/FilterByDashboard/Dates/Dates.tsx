@@ -1,21 +1,21 @@
 import React, { useContext } from "react";
-import { Input } from "semantic-ui-react";
 import Store from "../../../App/Store/rootStore";
-// import { format } from 'date-fns'
 import "./dates.css";
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import 'react-day-picker/lib/style.css';
 
 const Dates = () => {
   const store = useContext(Store);
   const {changeFromDate, changeToDate, filterTickets} = store.filterStore;
 
-  const handleChangeFrom = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let fromDate = Date.parse(e.target.value);
+  const handleChangeFrom = (day: any) => {
+    let fromDate = Date.parse(day);
     changeFromDate(fromDate);
     filterTickets();
   };
 
-  const handleChangeTo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let toDate = Date.parse(e.target.value);
+  const handleChangeTo = (day: any) => {
+    let toDate = Date.parse(day);
     changeToDate(toDate);
     filterTickets();
   };
@@ -24,20 +24,12 @@ const Dates = () => {
     <div className="filterDates">
       <h4 className="filterTitle">Dates</h4>
       <div className="dateSubheading">From</div>
-      <Input
-        onChange={(e) => {
-          handleChangeFrom(e);
-        }}
-        type="date"
-        placeholder="Search users..."
+      <DayPickerInput
+      onDayChange={handleChangeFrom}
       />
       <div className="dateSubheading">To</div>
-      <Input
-        onChange={(e) => {
-          handleChangeTo(e);
-        }}
-        type="date"
-        placeholder="Search users..."
+      <DayPickerInput
+      onDayChange={handleChangeTo}
       />
     </div>
   );

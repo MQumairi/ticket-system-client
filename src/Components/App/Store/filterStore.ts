@@ -75,9 +75,6 @@ export default class FilterStore {
   };
 
   @action selectAll = () => {
-    console.log('select all clicked')
-    console.log(this.ticketsRegistry.size)
-    console.log(this.filteredTickets.size)
     this.loadFilteredTickets(this.ticketsRegistry);
     this.filters = {
       status: [],
