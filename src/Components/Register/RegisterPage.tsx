@@ -1,6 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Form as FinalForm, Field } from "react-final-form";
-import { Form, Button, Label, GridColumn, Grid } from "semantic-ui-react";
+import { Form, Button, GridColumn, Grid } from "semantic-ui-react";
 import TextInput from "../Utility/Final Form Fields/TextInput";
 import Store from "../App/Store/rootStore";
 import { IUserForm } from "../../Models/userForm";
@@ -8,7 +8,6 @@ import "./registerPage.css";
 import { Link, useHistory } from "react-router-dom";
 
 const RegisterPage = () => {
-
   let history = useHistory();
 
   const store = useContext(Store);
@@ -25,7 +24,7 @@ const RegisterPage = () => {
       <div>
         <FinalForm
           onSubmit={handleFinalFormSubmit}
-          render={({ handleSubmit, submitError }) => {
+          render={({ handleSubmit }) => {
             return (
               <div className="register-page-body">
                 <Grid>

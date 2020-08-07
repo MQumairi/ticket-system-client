@@ -10,6 +10,7 @@ import Store from "./Store/rootStore";
 import LoginPage from "../Login/LoginPage";
 import LandingPage from "../Landing Page/LandingPage";
 import RegisterPage from "../Register/RegisterPage";
+import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirm";
 import { observer } from "mobx-react-lite";
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
           <Route exact path={["/", "/tickets"]} component={Tickets} />
           <Route path="/tickets/new" component={TicketsNew} />
           <Route exact path="/tickets/:id" component={TicketDetails} />
+          <Route exact path="/tickets/:id/delete" component={DeleteConfirmation} />
         </Switch>
       </div>
       <Footer />

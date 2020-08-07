@@ -5,9 +5,6 @@ import { Tickets } from "../../../API/agent";
 import { format } from "date-fns";
 import { IComment } from "../../../Models/comment";
 import { ITicketForm } from "../../../Models/ticketForm";
-// import { IProduct } from "../../../Models/product";
-// import { IStatus } from "../../../Models/status";
-// import { IUser } from "../../../Models/user";
 
 export default class TicketStore {
   constructor(public rootStore: Store) {}
@@ -53,28 +50,17 @@ export default class TicketStore {
   //Rest
   @action addTicket = async (ticket: ITicketForm) => {
     try {
-
       await Tickets.create(ticket);
-
-      // let ticketToAdd: ITicket = {
-      //   date_time: ticket.date_time!,
-      //   display_date: format(Date.parse(ticket.date_time!), "dd/MM/yyyy"),
-      //   description: ticket.description!,
-      //   user: user,
-      //   title: ticket.title!,
-      //   product: product,
-      //   status: status,
-      //   comments: [],
-      // };
-
-      // this.ticketsRegistry.set(ticketToAdd, ticket);
-
     } catch (e) {
       console.log(e);
     }
   };
 
-  @action deleteTicket = (id: string) => {
-    console.log("Don't forget to implement delete");
+  @action deleteTicket = async (id: string) => {
+    try {
+      await Tickets.delete(id);
+    } catch (e) {
+      console.log(e);
+    }
   };
 }

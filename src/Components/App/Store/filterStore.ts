@@ -1,8 +1,8 @@
-import { observable, action, computed } from "mobx";
+import { observable, action, computed, autorun } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
 
-interface filterObject {
+interface IfilterObject {
   status: string[];
   products: string[];
   dates: {
@@ -17,20 +17,13 @@ const maxDate = Date.parse("9999-12-30");
 export default class FilterStore {
   constructor(public rootStore: Store) {}
 
-  //IMPORTS FROM OTHER STORES
-
-  //Getting the ticketRegistery from the ticketStore
-  @computed get ticketsRegistry() {
-    return observable.map(this.rootStore.ticketStore.ticketsRegistry);
-  } 
-
   //Getting the statuses from the statusStore
   @observable statuses = this.rootStore.statusStore.statuses;
 
   //LOGIC
 
   //Initialize a filterobject. This will store active filters.
-  @observable filters: filterObject = {
+  @observable filters: IfilterObject = {
     status: [],
     products: [],
     dates: {
@@ -39,20 +32,25 @@ export default class FilterStore {
     },
   };
 
-  //Intiialize filitered tickets, a MAP of ITickets
-  @observable filteredTickets: Map<number, ITicket> = new Map<number, ITicket>();
+  @computed get ticketsRegistry(){
+    return new Map<number, ITicket>(observable.map(this.rootStore.ticketStore.ticketsRegistry));
+  }
+
+  //Intiialize filitered tickets, a MAP of ITickets from the ticket store registry
+  @observable filteredTickets : Map<number, ITicket> = observable.map(this.ticketsRegistry);
 
   //Copy ticketsRegistry into filteredTickets
-  @action loadFilteredTickets = (tickets: Map<number, ITicket>) => {
-    let ticketsToReturn: Map<number, ITicket> = new Map<number, ITicket>();
-    ticketsToReturn = observable.map().merge(this.ticketsRegistry);
+  @action loadFilteredTickets = () => {
+    let ticketsToReturn: Map<number, ITicket> = new Map<number, ITicket>(
+      observable.map(this.rootStore.ticketStore.ticketsRegistry)
+    );
     this.filteredTickets = ticketsToReturn;
   };
 
   //The main method that filters the filteredTickets object.
   @action filterTickets = () => {
     //When run, first copy ticketsRegistry into filteredTickets again, resetig the object.
-    this.loadFilteredTickets(this.ticketsRegistry);
+    this.loadFilteredTickets();
 
     //Filter status
     if (this.filters.status.length !== 0) {
@@ -75,7 +73,7 @@ export default class FilterStore {
   };
 
   @action selectAll = () => {
-    this.loadFilteredTickets(this.ticketsRegistry);
+    this.loadFilteredTickets();
     this.filters = {
       status: [],
       products: [],
@@ -84,6 +82,7 @@ export default class FilterStore {
         To: maxDate,
       },
     };
+    console.log(this.filters);
   };
 
   @action changeStatus = (status: string, toAdd: boolean) => {
@@ -124,8 +123,15 @@ export default class FilterStore {
     }
   };
 
-  //HELPER FUNCTIONS
+  @action filteredTicketsRemove = (id: string) => {
+    // this.filteredTickets.delete(+id);
+    this.filteredTickets.forEach((ticket) => {
+      if (ticket.post_id?.toString() === id) console.log("delete");
+      this.filteredTickets.delete(ticket.post_id!);
+    });
+  };
 
+  //HELPER FUNCTIONS
   //Takes a filter criterion, and filters "tickets"
   filterStatus = (status: string[]) => {
     this.filteredTickets.forEach((ticket) => {
@@ -136,15 +142,19 @@ export default class FilterStore {
 
   filterProduct = (product: string[]) => {
     this.filteredTickets.forEach((ticket) => {
-      if (!product.includes(ticket.product.product_name))
+      if (!product.includes(ticket.product.product_name)) {
+        console.log("before product delete " + this.filteredTickets.size);
         this.filteredTickets.delete(ticket.post_id!);
+        console.log("after product delete " + this.filteredTickets.size);
+      }
     });
   };
 
   filterDate = (fromDate: number, toDate: number) => {
     this.filteredTickets.forEach((ticket) => {
       let ticketDate = Date.parse(ticket.date_time);
-      if(!(ticketDate >= fromDate && ticketDate <= toDate)) this.filteredTickets.delete(ticket.post_id!)
+      if (!(ticketDate >= fromDate && ticketDate <= toDate))
+        this.filteredTickets.delete(ticket.post_id!);
     });
   };
 }
