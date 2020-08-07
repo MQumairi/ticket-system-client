@@ -12,10 +12,12 @@ const RegisterPage = () => {
   let history = useHistory();
 
   const store = useContext(Store);
-//   const { login } = store.userStore;
+  const { register } = store.userStore;
 
   const handleFinalFormSubmit = (values: IUserForm) => {
     console.log(values);
+    register(values);
+    history.push("/tickets");
   };
 
   return (

@@ -13,6 +13,7 @@ export default class UserStore {
     return !!this.user;
   }
 
+  //Login
   @action login = async (values: IUserForm) => {
     const userToLogin: IUserForm = {
       email: values.email,
@@ -37,6 +38,16 @@ export default class UserStore {
       runInAction(() => {
         this.user = user;
       });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Register
+  @action register = async (values: IUserForm) => {
+    try {
+      this.user = await Users.register(values);
+      this.rootStore.commonStore.setToken(this.user.token);
     } catch (e) {
       console.log(e);
     }
