@@ -5,9 +5,12 @@ import "./ticketList.css";
 import Store from "../../../App/Store/rootStore";
 
 const TicketList = () => {
-
   const store = useContext(Store);
-  const { filteredTickets, ticketsRegistry, loadFilteredTickets} = store.filterStore;
+  const {
+    filteredTickets,
+    ticketsRegistry,
+    loadFilteredTickets,
+  } = store.filterStore;
 
   useEffect(() => {
     loadFilteredTickets();

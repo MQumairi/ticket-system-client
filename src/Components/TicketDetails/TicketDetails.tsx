@@ -94,7 +94,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               <Button className="mainButton" as={Link} to={"/tickets/" + match.params.id + "/delete"}>Delete</Button>
             </Grid.Column>
             <Grid.Column width={2}>
-              <Button className="mainButton">Edit</Button>
+              <Button className="mainButton" as={Link} to={"/tickets/" + match.params.id + "/edit"}>Edit</Button>
             </Grid.Column>
           </Grid.Row>
         </Grid>

@@ -1,10 +1,14 @@
 import React from "react";
 import { FieldRenderProps } from "react-final-form";
-import { FormFieldProps, Form, Label, Select } from "semantic-ui-react";
+import {
+  FormFieldProps,
+  Form,
+  Label,
+  Select,
+  Dropdown,
+} from "semantic-ui-react";
 
-interface IProps
-  extends FieldRenderProps<any, any>,
-    FormFieldProps {}
+interface IProps extends FieldRenderProps<any, any>, FormFieldProps {}
 
 const SelectInput: React.FC<IProps> = ({
   input,
@@ -12,14 +16,18 @@ const SelectInput: React.FC<IProps> = ({
   options,
   placeholder,
   meta: { touched, error },
+  defaultValue,
 }) => {
   return (
     <Form.Field error={touched && error} width={width}>
-      <Select
+      <Dropdown
         value={input.value}
         options={options}
         onChange={(e, data) => input.onChange(data.value)}
         placeholder={placeholder}
+        defaultValue={defaultValue}
+        fluid
+        selection
       />
       {touched && error && <Label>{error}</Label>}
     </Form.Field>

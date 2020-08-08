@@ -1,4 +1,4 @@
-import { observable, action, computed, autorun } from "mobx";
+import { observable, action, computed } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
 
@@ -33,7 +33,7 @@ export default class FilterStore {
   };
 
   @computed get ticketsRegistry(){
-    return new Map<number, ITicket>(observable.map(this.rootStore.ticketStore.ticketsRegistry));
+    return observable.map(this.rootStore.ticketStore.ticketsRegistry);
   }
 
   //Intiialize filitered tickets, a MAP of ITickets from the ticket store registry
@@ -41,10 +41,9 @@ export default class FilterStore {
 
   //Copy ticketsRegistry into filteredTickets
   @action loadFilteredTickets = () => {
-    let ticketsToReturn: Map<number, ITicket> = new Map<number, ITicket>(
-      observable.map(this.rootStore.ticketStore.ticketsRegistry)
-    );
-    this.filteredTickets = ticketsToReturn;
+    console.log("From loadFilteredTickets. Pre Filtered Tick size = " + this.filteredTickets.size)
+    this.filteredTickets = observable.map().merge(this.ticketsRegistry);
+    console.log("From loadFilteredTickets. Post Filtered Tick size = " + this.filteredTickets.size)
   };
 
   //The main method that filters the filteredTickets object.
@@ -82,7 +81,6 @@ export default class FilterStore {
         To: maxDate,
       },
     };
-    console.log(this.filters);
   };
 
   @action changeStatus = (status: string, toAdd: boolean) => {
@@ -127,8 +125,9 @@ export default class FilterStore {
     // this.filteredTickets.delete(+id);
     this.filteredTickets.forEach((ticket) => {
       if (ticket.post_id?.toString() === id) console.log("delete");
-      this.filteredTickets.delete(ticket.post_id!);
+      this.ticketsRegistry.delete(ticket.post_id!);
     });
+    this.loadFilteredTickets();
   };
 
   //HELPER FUNCTIONS
