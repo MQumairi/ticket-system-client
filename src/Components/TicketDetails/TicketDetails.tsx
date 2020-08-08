@@ -31,12 +31,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
     if (replyPressed) return "Cancel";
     return "Reply";
   };
-
-  //Delete ticket
-  const handleDelete = () => {
-    console.log("from handle delete");
-  }
-
+  
   return (
     <div id="ticketDetailsBody">
       <div id="ticketDetailsMainPost">
@@ -96,10 +91,10 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               </Button>
             </Grid.Column>
             <Grid.Column width={2}>
-              <Button className="mainButton" onClick={handleDelete}>Delete</Button>
+              <Button className="mainButton" as={Link} to={"/tickets/" + match.params.id + "/delete"}>Delete</Button>
             </Grid.Column>
             <Grid.Column width={2}>
-              <Button className="mainButton">Edit</Button>
+              <Button className="mainButton" as={Link} to={"/tickets/" + match.params.id + "/edit"}>Edit</Button>
             </Grid.Column>
           </Grid.Row>
         </Grid>

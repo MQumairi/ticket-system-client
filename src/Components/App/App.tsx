@@ -3,32 +3,44 @@ import Navbar from "../Navbar/Navbar";
 import "./App.css";
 import Tickets from "../Tickets/Tickets";
 import TicketsNew from "../TicketsNew/TicketsNew";
+import TicketsEdit from "../TicketsEdit/TicketsEdit";
 import TicketDetails from "../TicketDetails/TicketDetails";
 import Footer from "../Footer/Footer";
 import { Route, Switch } from "react-router-dom";
 import Store from "./Store/rootStore";
 import LoginPage from "../Login/LoginPage";
+import LandingPage from "../Landing Page/LandingPage";
+import RegisterPage from "../Register/RegisterPage";
+import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirm";
 import { observer } from "mobx-react-lite";
 
 function App() {
   const store = useContext(Store);
   const { token, appLoaded, setAppLoaded } = store.commonStore;
   const { getCurrentUser, isLogged } = store.userStore;
+  const {loadProducts} = store.productStore;
+  const {loadStatuses} = store.statusStore;
 
   useEffect(() => {
     if (token) {
       getCurrentUser().finally(() => setAppLoaded());
+      loadProducts();
+      loadStatuses();
     } else {
       setAppLoaded();
     }
-  }, [getCurrentUser, setAppLoaded, token]);
+  }, [getCurrentUser, setAppLoaded, token, loadProducts, loadStatuses]);
 
   if (appLoaded && !isLogged) {
     return (
       <div id="App">
         <Navbar />
         <div id="mainContentBody">
-          <LoginPage />
+          <Switch>
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/register" component={RegisterPage} />
+            <Route path="/" component={LandingPage} />
+          </Switch>
         </div>
         <Footer />
       </div>
@@ -43,7 +55,8 @@ function App() {
           <Route exact path={["/", "/tickets"]} component={Tickets} />
           <Route path="/tickets/new" component={TicketsNew} />
           <Route exact path="/tickets/:id" component={TicketDetails} />
-          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/tickets/:id/delete" component={DeleteConfirmation} />
+          <Route exact path="/tickets/:id/edit" component={TicketsEdit} />
         </Switch>
       </div>
       <Footer />

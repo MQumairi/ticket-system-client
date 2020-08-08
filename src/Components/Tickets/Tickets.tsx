@@ -4,9 +4,10 @@ import TicketDashboard from "./TicketsDashboard/TicketDashboard";
 import { Grid } from "semantic-ui-react";
 import "./tickets.css";
 import Store from "../App/Store/rootStore";
+import { observer } from "mobx-react-lite";
 
 const Tickets = () => {
-  const store = useContext(Store)
+  const store = useContext(Store);
   const { loadTickets } = store.ticketStore;
   const { loadStatuses } = store.statusStore;
   const { loadProducts } = store.productStore;
@@ -16,6 +17,7 @@ const Tickets = () => {
     loadStatuses();
     loadProducts();
   }, [loadTickets, loadStatuses, loadProducts]);
+
   return (
     <div>
       <Grid columns={2} id="ticketDashboardGrid">
@@ -30,4 +32,4 @@ const Tickets = () => {
   );
 };
 
-export default Tickets;
+export default observer(Tickets);

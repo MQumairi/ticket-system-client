@@ -3,21 +3,24 @@ import TicketItem from "./TicketItem/TicketItem";
 import { observer } from "mobx-react-lite";
 import "./ticketList.css";
 import Store from "../../../App/Store/rootStore";
-// import { history } from "react-router";
 
 const TicketList = () => {
-
   const store = useContext(Store);
-  const { filteredTickets, loadFilteredTickets, ticketsRegistry} = store.filterStore;
+  const {
+    filteredTickets,
+    ticketsRegistry,
+    loadFilteredTickets,
+  } = store.filterStore;
 
   useEffect(() => {
-    loadFilteredTickets(ticketsRegistry);
+    loadFilteredTickets();
   }, [ticketsRegistry, loadFilteredTickets]);
 
   return (
     <div id="ticketList">
+      {console.log("Rendering Ticket List " + filteredTickets.size)}
       {Array.from(filteredTickets).map(([number, ticket]) => {
-        return <TicketItem key={ticket.post_id} ticket={ticket} />;
+        return <TicketItem key={number} ticket={ticket} />;
       })}
     </div>
   );

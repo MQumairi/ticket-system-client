@@ -1,0 +1,12 @@
+@import "../../Assets/Styles/style.css";
+
+.landing-box {
+    width: 60%;
+    margin: 150px auto;
+    text-align: center;
+    color: var(--navbar-text);
+}
+
+.landing-box h3 {
+    margin-bottom: 50px;
+}

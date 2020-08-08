@@ -3,6 +3,11 @@
     --body-width: 70%;
     min-height: 100vh;
 
+    --container-border-radius: 10px;
+
+    --small-container-width: 40%;
+    --med-container-width: 60%;
+
     /* Colors */
     --primary-color: #B31E1E;
     --primary-color-hover: #851616;

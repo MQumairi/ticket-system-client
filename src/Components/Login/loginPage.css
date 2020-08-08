@@ -1,0 +1,17 @@
+@import "../../Assets/Styles/style.css";
+
+.login-page-body {
+    width: var(--small-container-width);
+    margin: 100px auto;
+    padding: 30px;
+    background-color: var(--body-bg-color-1);
+    border-radius: var(--container-border-radius);
+}
+
+.login-page-content {
+    padding: 20px;
+}
+
+.login-error-label {
+    margin: 20px 0px !important;
+}

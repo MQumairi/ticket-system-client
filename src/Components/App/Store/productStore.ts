@@ -4,9 +4,6 @@ import { Store } from "./rootStore";
 import { Products } from "../../../API/agent";
 import { IOption } from "../../../Models/options";
 
-interface IProductNames {
-  [key: string]: any;
-}
 
 export default class ProductStore {
   //Constructors
@@ -23,18 +20,6 @@ export default class ProductStore {
       console.log(e);
     }
   };
-
-  // @computed get productNames() {
-  //   let productFilters: IProductNames = {};
-  //   this.products.forEach((product) => {
-  //     productFilters[product.product_name] = false;
-  //   });
-  //   return productFilters;
-  // }
-
-  // @action getProduct = (product_id: number) => {
-  //   return this.products
-  // }
 
   @computed get productOptions() {
     let returnArr: IOption[] = [];
