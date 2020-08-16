@@ -13,7 +13,6 @@ import { format } from "date-fns";
 import { ITicketForm } from "../../../Models/ticketForm";
 import { ITicket } from "../../../Models/ticket";
 import { useHistory } from "react-router-dom";
-import { hi } from "date-fns/esm/locale";
 
 interface IProps {
   ticket?: ITicket;
@@ -34,7 +33,6 @@ const TicketsForm: React.FC<IProps> = (props) => {
     if (!!props.ticket) {
       setTicketToEdit(currentTicket);
     } else {
-      console.log("no match");
     }
   }, [setTicketToEdit, currentTicket, props.ticket]);
 
@@ -60,8 +58,6 @@ const TicketsForm: React.FC<IProps> = (props) => {
         product_id: values.product.product_id,
         status_id: values.status.status_id,
       }
-
-      console.log(ticketToUpdate);
 
       editTicket(ticketToUpdate);
       history.push("/tickets/" + props.ticket.post_id);

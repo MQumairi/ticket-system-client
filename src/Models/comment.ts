@@ -5,6 +5,6 @@ export interface IComment {
   date_time: string;
   display_date?: string;
   description: string;
-  user: IUser;
+  author: IUser;
   parent_post_id: number;
 }

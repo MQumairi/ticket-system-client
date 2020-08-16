@@ -23,7 +23,7 @@ const CommentsNew: React.FC<IProps> = ({ parent, setReplyPressed }) => {
     let newComment: IComment = {
       description: e.currentTarget.commentNewDesc.value,
       date_time: "2020-07-31T18:47:50.605697",
-      user: user!,
+      author: user!,
       parent_post_id: currentTicket!.post_id!,
     };
 

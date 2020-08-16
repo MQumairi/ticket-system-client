@@ -8,7 +8,7 @@ export interface ITicket {
   date_time: string;
   display_date?: string;
   description: string;
-  user: IUser;
+  author: IUser;
   title: string;
   product: IProduct;
   status: IStatus;

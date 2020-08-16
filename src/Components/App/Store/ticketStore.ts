@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, runInAction } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
 import { Tickets } from "../../../API/agent";
@@ -10,16 +10,19 @@ export default class TicketStore {
   constructor(public rootStore: Store) {}
 
   //Initialize the Ticket Registry
-  @observable ticketsRegistry = new Map<number, ITicket>();
+  @observable ticketsRegistry = observable.map(new Map<number, ITicket>());
 
   //Load tickets from API to Registry
   @action loadTickets = async () => {
+    console.log("loading tickets...");
     try {
       const loadedTickets = await Tickets.list();
-      loadedTickets.forEach((ticket) => {
-        let ticketDate = Date.parse(ticket.date_time);
-        ticket.display_date = format(ticketDate, "dd/MM/yyyy");
-        this.ticketsRegistry.set(ticket.post_id!, ticket);
+      runInAction(() => {
+        loadedTickets.forEach((ticket) => {
+          let ticketDate = Date.parse(ticket.date_time);
+          ticket.display_date = format(ticketDate, "dd/MM/yyyy");
+          this.ticketsRegistry.set(ticket.post_id!, ticket);
+        });
       });
     } catch (e) {
       console.log(e);
@@ -70,5 +73,5 @@ export default class TicketStore {
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 }

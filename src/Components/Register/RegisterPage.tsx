@@ -14,7 +14,6 @@ const RegisterPage = () => {
   const { register } = store.userStore;
 
   const handleFinalFormSubmit = (values: IUserForm) => {
-    console.log(values);
     register(values);
     history.push("/tickets");
   };

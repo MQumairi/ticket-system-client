@@ -32,18 +32,19 @@ export default class FilterStore {
     },
   };
 
-  @computed get ticketsRegistry(){
+  @computed get ticketsRegistry() {
+    console.log("loading ticket registry")
     return observable.map(this.rootStore.ticketStore.ticketsRegistry);
   }
 
   //Intiialize filitered tickets, a MAP of ITickets from the ticket store registry
-  @observable filteredTickets : Map<number, ITicket> = observable.map(this.ticketsRegistry);
+  @observable filteredTickets: Map<number, ITicket> = observable.map(
+    this.ticketsRegistry
+  );
 
   //Copy ticketsRegistry into filteredTickets
   @action loadFilteredTickets = () => {
-    console.log("From loadFilteredTickets. Pre Filtered Tick size = " + this.filteredTickets.size)
     this.filteredTickets = observable.map().merge(this.ticketsRegistry);
-    console.log("From loadFilteredTickets. Post Filtered Tick size = " + this.filteredTickets.size)
   };
 
   //The main method that filters the filteredTickets object.
@@ -124,10 +125,13 @@ export default class FilterStore {
   @action filteredTicketsRemove = (id: string) => {
     // this.filteredTickets.delete(+id);
     this.filteredTickets.forEach((ticket) => {
-      if (ticket.post_id?.toString() === id) console.log("delete");
-      this.ticketsRegistry.delete(ticket.post_id!);
+      if (ticket.post_id?.toString() === id) {
+        console.log("delete from filterStore. Size before = " + this.filteredTickets.size);
+        this.filteredTickets.delete(+id);
+        console.log("Size after delete = " + this.filteredTickets.size);
+      }
     });
-    this.loadFilteredTickets();
+    this.rootStore.ticketStore.loadTickets();
   };
 
   //HELPER FUNCTIONS
@@ -142,9 +146,7 @@ export default class FilterStore {
   filterProduct = (product: string[]) => {
     this.filteredTickets.forEach((ticket) => {
       if (!product.includes(ticket.product.product_name)) {
-        console.log("before product delete " + this.filteredTickets.size);
         this.filteredTickets.delete(ticket.post_id!);
-        console.log("after product delete " + this.filteredTickets.size);
       }
     });
   };

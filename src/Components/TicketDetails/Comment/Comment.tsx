@@ -41,13 +41,13 @@ const Comment: React.FC<IProps> = ({ comment }) => {
             <Grid.Row columns={2}>
               <Grid.Column width={2}>
                 <Avatar
-                  avatar={comment.user.avatar}
+                  avatar={comment.author.avatar}
                   diameter={80}
                   borderWidth={4}
                 />
               </Grid.Column>
               <Grid.Column width={14}>
-                <h2 className="posterName">{comment.user.username}</h2>
+                <h2 className="posterName">{comment.author.username}</h2>
                 <h4 className="posterRank">Poster Rank</h4>
               </Grid.Column>
             </Grid.Row>

@@ -59,14 +59,14 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
           <Grid.Row columns={3}>
             <Grid.Column width={2}>
               <Avatar
-                avatar={currentTicket.user.avatar!}
+                avatar={currentTicket.author.avatar}
                 diameter={80}
                 borderWidth={4}
               />
             </Grid.Column>
             <Grid.Column width={10}>
               <h2 className="posterName">
-                {currentTicket.user.username}
+                {currentTicket.author.username}
               </h2>
               <h4 className="posterRank">Rank Here</h4>
             </Grid.Column>

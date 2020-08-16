@@ -4,7 +4,6 @@ import {
   FormFieldProps,
   Form,
   Label,
-  Select,
   Dropdown,
 } from "semantic-ui-react";
 

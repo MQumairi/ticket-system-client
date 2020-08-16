@@ -18,7 +18,7 @@ const TicketList = () => {
 
   return (
     <div id="ticketList">
-      {console.log("Rendering Ticket List " + filteredTickets.size)}
+      {console.log("rendering filtered tickets, of size " + filteredTickets.size)}
       {Array.from(filteredTickets).map(([number, ticket]) => {
         return <TicketItem key={number} ticket={ticket} />;
       })}

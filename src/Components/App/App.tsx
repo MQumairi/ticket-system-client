@@ -53,7 +53,7 @@ function App() {
       <div id="mainContentBody">
         <Switch>
           <Route exact path={["/", "/tickets"]} component={Tickets} />
-          <Route path="/tickets/new" component={TicketsNew} />
+          <Route exact path="/tickets/new" component={TicketsNew} />
           <Route exact path="/tickets/:id" component={TicketDetails} />
           <Route exact path="/tickets/:id/delete" component={DeleteConfirmation} />
           <Route exact path="/tickets/:id/edit" component={TicketsEdit} />

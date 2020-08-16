@@ -14,7 +14,7 @@ const TicketItem: React.FC<IProps> = ({ ticket }) => {
   return (
     <Grid columns={6} className="ticketItem" stackable>
       <Grid.Column width={2}>
-        <Avatar avatar={ticket.user.avatar} diameter={50} borderWidth={0} />
+        <Avatar avatar={ticket.author.avatar} diameter={50} borderWidth={0} />
       </Grid.Column>
       <Grid.Column width={3}>
         <div className="ticketStatusCol">
