@@ -13,6 +13,8 @@ import { format } from "date-fns";
 import { ITicketForm } from "../../../Models/ticketForm";
 import { ITicket } from "../../../Models/ticket";
 import { useHistory } from "react-router-dom";
+import formBuilder from "../../../Functions/buildFormData";
+import Dropzone from "../../Utility/Image Upload/Dropzone";
 
 interface IProps {
   ticket?: ITicket;
@@ -29,6 +31,8 @@ const TicketsForm: React.FC<IProps> = (props) => {
 
   const [ticketToEdit, setTicketToEdit] = useState<ITicket | null>(null);
 
+  const [file, setFile] = useState<File | undefined>(undefined);
+
   useEffect(() => {
     if (!!props.ticket) {
       setTicketToEdit(currentTicket);
@@ -39,17 +43,22 @@ const TicketsForm: React.FC<IProps> = (props) => {
   const handleFinalFormSubmit = (values: any) => {
     if (!props.ticket) {
       let ticketToPost: ITicketForm = {
-        date_time: format(Date.now(), "dd/MM/yyyy"),
+        date_time: format(Date.now(), "MM/dd/yyyy h:m:s a"),
         description: values.description,
         author_id: user!.user_id,
         title: values.title,
         product_id: values.product.product_id,
         status_id: values.status.status_id,
+        image: file,
       };
 
-      addTicket(ticketToPost);
-      history.push("/tickets");
+      let formData = formBuilder(ticketToPost);
 
+      console.log(formData);
+
+      addTicket(formData).then(() => {
+        history.push("/tickets");
+      });
     } else {
       let ticketToUpdate: ITicketForm = {
         post_id: props.ticket.post_id!.toString(),
@@ -57,10 +66,11 @@ const TicketsForm: React.FC<IProps> = (props) => {
         title: values.title,
         product_id: values.product.product_id,
         status_id: values.status.status_id,
-      }
+      };
 
-      editTicket(ticketToUpdate);
-      history.push("/tickets/" + props.ticket.post_id);
+      editTicket(ticketToUpdate).then(() => {
+        history.push("/tickets/" + props.ticket!.post_id);
+      });
     }
   };
 
@@ -93,7 +103,9 @@ const TicketsForm: React.FC<IProps> = (props) => {
           render={({ handleSubmit }) => {
             return (
               <Form onSubmit={handleSubmit}>
+                <Form content="Title"></Form>
                 <Field
+                  inputLabel="Title"
                   name="title"
                   placeholder="Ticket title"
                   component={TextInput}
@@ -101,6 +113,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
                 />
                 <Form.Group widths="equal">
                   <Field
+                    inputLabel="Product"
                     component={DropwdownInput}
                     options={productOptions}
                     name="product"
@@ -108,6 +121,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
                     placeholder="Product"
                   />
                   <Field
+                    inputLabel="Status"
                     component={SelectInput}
                     options={statusOptions}
                     name="status"
@@ -116,13 +130,14 @@ const TicketsForm: React.FC<IProps> = (props) => {
                   />
                 </Form.Group>
                 <Field
-                  label="Description"
+                  inputLabel="Description"
                   placeholder="Describe your problem..."
                   rows={10}
                   name="description"
                   component={TextAreaInput}
                   initialValue={ticketToEdit?.description}
                 />
+                <Dropzone setFile={setFile} />
                 <Button className="mainButton ticketNewSubmit" type="submit">
                   Submit
                 </Button>

@@ -2,6 +2,7 @@ import { IUser } from "./user";
 import { IProduct } from "./product";
 import { IComment } from "./comment";
 import { IStatus } from "./status";
+import {IAttachment} from "./attachment";
 
 export interface ITicket {
   post_id?: number;
@@ -13,4 +14,5 @@ export interface ITicket {
   product: IProduct;
   status: IStatus;
   comments: IComment[];
+  attachment?: IAttachment;
 }

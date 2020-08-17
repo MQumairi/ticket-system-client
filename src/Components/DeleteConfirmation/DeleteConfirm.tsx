@@ -17,17 +17,12 @@ const DeleteConfirm: React.FC<RouteComponentProps<params>> = ({
   const store = useContext(Store);
   const { currentTicket, getTicket, deleteTicket } = store.ticketStore;
 
-  const { filteredTicketsRemove, filteredTickets } = store.filterStore;
-
   useEffect(() => {
     getTicket(match.params.id);
-  }, [getTicket, match.params.id, filteredTickets]);
-
-  console.log("begining delete confirm logic");
+  }, [getTicket, match.params.id]);
 
   const handleFinalFormSubmit = () => {
     deleteTicket(match.params.id);
-    filteredTicketsRemove(match.params.id);
     history.push("/tickets");
   };
 

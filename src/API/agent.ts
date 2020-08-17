@@ -22,9 +22,16 @@ axios.interceptors.request.use(
 
 const responseBody = (response: AxiosResponse) => response.data;
 
+const config = {
+  headers: {
+    'content-type': 'multipart/form-data',
+  }
+};
+
 const requests = {
   get: (url: string) => axios.get(url).then(responseBody),
   post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
+  post_form: (url: string, body: {}) => axios.post(url, body, config).then(responseBody),
   put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
   delete: (url: string) => axios.delete(url).then(responseBody),
 };
@@ -33,7 +40,7 @@ const Tickets = {
   list: (): Promise<ITicket[]> => requests.get("/tickets"),
   details: (post_id: string): Promise<ITicket> =>
     requests.get("/tickets/" + post_id),
-  create: (ticket: ITicketForm) => requests.post("/tickets", ticket),
+  create: (ticket: FormData) => requests.post_form("/tickets", ticket),
   edit: (ticket: ITicketForm) => requests.put("/tickets/" + ticket.post_id, ticket),
   delete: (post_id: string) => requests.delete("/tickets/" + post_id),
 };
@@ -58,7 +65,7 @@ const Status = {
 };
 
 const Users = {
-  current: (): Promise<IUser> => requests.get("/users"),
+  current: (): Promise<IUser> => requests.get("/users/profile"),
   login: (user: IUserForm): Promise<IUser> =>
     requests.post("/users/login", user),
   register: (user: IUserForm): Promise<IUser> =>

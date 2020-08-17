@@ -14,7 +14,6 @@ export default class TicketStore {
 
   //Load tickets from API to Registry
   @action loadTickets = async () => {
-    console.log("loading tickets...");
     try {
       const loadedTickets = await Tickets.list();
       runInAction(() => {
@@ -51,9 +50,9 @@ export default class TicketStore {
   };
 
   //Rest
-  @action addTicket = async (ticket: ITicketForm) => {
+  @action addTicket = async (formData: FormData) => {
     try {
-      await Tickets.create(ticket);
+      await Tickets.create(formData);
     } catch (e) {
       console.log(e);
     }
@@ -62,6 +61,9 @@ export default class TicketStore {
   @action deleteTicket = async (id: string) => {
     try {
       await Tickets.delete(id);
+      runInAction(() => {
+        this.ticketsRegistry.delete(+id);
+      });
     } catch (e) {
       console.log(e);
     }

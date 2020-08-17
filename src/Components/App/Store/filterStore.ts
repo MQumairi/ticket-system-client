@@ -33,7 +33,6 @@ export default class FilterStore {
   };
 
   @computed get ticketsRegistry() {
-    console.log("loading ticket registry")
     return observable.map(this.rootStore.ticketStore.ticketsRegistry);
   }
 
@@ -126,9 +125,7 @@ export default class FilterStore {
     // this.filteredTickets.delete(+id);
     this.filteredTickets.forEach((ticket) => {
       if (ticket.post_id?.toString() === id) {
-        console.log("delete from filterStore. Size before = " + this.filteredTickets.size);
         this.filteredTickets.delete(+id);
-        console.log("Size after delete = " + this.filteredTickets.size);
       }
     });
     this.rootStore.ticketStore.loadTickets();

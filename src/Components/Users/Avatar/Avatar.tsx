@@ -1,6 +1,7 @@
 import React from "react";
 import "./avatar.css";
 import { IAvatar } from "../../../Models/avatar";
+import defaultAvatar from "../../../Assets/Images/defaultAvatar.png"; 
 
 interface IProps {
   avatar: IAvatar;
@@ -13,7 +14,7 @@ const Avatar: React.FC<IProps> = (props) => {
   let avatar_url : string;
 
   if(props.avatar == null) {
-    avatar_url = "https://vignette.wikia.nocookie.net/jjba/images/0/01/JotaroProfile.png/revision/latest/scale-to-width-down/340?cb=20191125014406";
+    avatar_url = defaultAvatar;
   } else {
     avatar_url = props.avatar.url;
   }

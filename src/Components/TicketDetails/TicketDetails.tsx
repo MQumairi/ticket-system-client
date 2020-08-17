@@ -13,13 +13,11 @@ interface params {
 }
 
 const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
-
   //Import ticket store
   const store = useContext(Store);
   const { currentTicket, getTicket } = store.ticketStore;
 
   const [replyPressed, setReplyPressed] = useState(false);
-
 
   useEffect(() => {
     getTicket(match.params.id);
@@ -31,7 +29,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
     if (replyPressed) return "Cancel";
     return "Reply";
   };
-  
+
   return (
     <div id="ticketDetailsBody">
       <div id="ticketDetailsMainPost">
@@ -65,19 +63,20 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               />
             </Grid.Column>
             <Grid.Column width={10}>
-              <h2 className="posterName">
-                {currentTicket.author.username}
-              </h2>
+              <h2 className="posterName">{currentTicket.author.username}</h2>
               <h4 className="posterRank">Rank Here</h4>
             </Grid.Column>
             <Grid.Column width={4}>
               <StatusIcon status={currentTicket.status} clickAble={false} />
-              <div className="productButton">{currentTicket.product.product_name}</div>
+              <div className="productButton">
+                {currentTicket.product.product_name}
+              </div>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
             <p>{currentTicket.description}</p>
           </Grid.Row>
+          {currentTicket.attachment && <Grid.Row><img src={currentTicket.attachment.url}/></Grid.Row>}
         </Grid>
         {/* Footer starts here */}
         <Grid>
@@ -91,19 +90,33 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               </Button>
             </Grid.Column>
             <Grid.Column width={2}>
-              <Button className="mainButton" as={Link} to={"/tickets/" + match.params.id + "/delete"}>Delete</Button>
+              <Button
+                className="mainButton"
+                as={Link}
+                to={"/tickets/" + match.params.id + "/delete"}
+              >
+                Delete
+              </Button>
             </Grid.Column>
             <Grid.Column width={2}>
-              <Button className="mainButton" as={Link} to={"/tickets/" + match.params.id + "/edit"}>Edit</Button>
+              <Button
+                className="mainButton"
+                as={Link}
+                to={"/tickets/" + match.params.id + "/edit"}
+              >
+                Edit
+              </Button>
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </div>
       {/* {revealReplyForm()} */}
       {currentTicket.comments.map((comment) => {
-        return <div>
-          <Comment comment={comment}/>
-          </div>;
+        return (
+          <div>
+            <Comment comment={comment} />
+          </div>
+        );
       })}
     </div>
   );
