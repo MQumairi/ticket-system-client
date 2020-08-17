@@ -14,5 +14,7 @@ export interface ITicket {
   product: IProduct;
   status: IStatus;
   comments: IComment[];
+  developer?: IUser;
+  is_archived?: boolean;
   attachment?: IAttachment;
 }

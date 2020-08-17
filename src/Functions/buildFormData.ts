@@ -1,6 +1,7 @@
 import {ITicketForm} from "../Models/ticketForm";
+import { ICommentForm } from "../Models/commentForm";
 
-let formBuilder = (obj : ITicketForm) : FormData => {
+let formBuilder = (obj : ITicketForm | ICommentForm) : FormData => {
 
     let formData = new FormData();
 

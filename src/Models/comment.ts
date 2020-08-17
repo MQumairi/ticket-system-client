@@ -1,4 +1,5 @@
 import { IUser } from "./user";
+import { IAttachment } from "./attachment";
 
 export interface IComment {
   post_id?: number;
@@ -7,4 +8,5 @@ export interface IComment {
   description: string;
   author: IUser;
   parent_post_id: number;
+  attachment?: IAttachment;
 }

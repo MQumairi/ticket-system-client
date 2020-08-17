@@ -31,3 +31,12 @@
     color: var(--subheader-color);
     margin-top: -15px;
 }
+
+.commentButton {
+    display: block !important;
+    margin: auto auto !important;
+    margin-top: 40px !important;
+    width: 30%;
+    font-size: 20px !important;
+    padding: 10px !important;
+}

@@ -45,7 +45,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
       let ticketToPost: ITicketForm = {
         date_time: format(Date.now(), "MM/dd/yyyy h:m:s a"),
         description: values.description,
-        author_id: user!.user_id,
+        author_id: user!.id,
         title: values.title,
         product_id: values.product.product_id,
         status_id: values.status.status_id,

@@ -46,7 +46,7 @@ const Tickets = {
 };
 
 const Comments = {
-  create: (comment: IComment) => requests.post("/comments", comment),
+  create: (comment: FormData) => requests.post_form("/comments", comment),
   edit: (ticket: IComment) =>
     requests.put("/comments/" + ticket.post_id, ticket),
   delete: (post_id: string) => requests.delete("/comments/" + post_id),

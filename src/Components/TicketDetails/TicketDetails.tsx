@@ -1,12 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Store from "../App/Store/rootStore";
 import { RouteComponentProps, Link } from "react-router-dom";
 import "./ticketDetails.css";
-import { Grid, Button } from "semantic-ui-react";
+import { Grid, Button, Label } from "semantic-ui-react";
 import StatusIcon from "../Tickets/FilterByDashboard/Status/StatusIcon/SatusIcon";
 import Avatar from "../Users/Avatar/Avatar";
 import { observer } from "mobx-react-lite";
 import Comment from "./Comment/Comment";
+import defaultAvatar from "../../Assets/Images/defaultAvatar.png";
+import CommentsNew from "./CommentsNew/CommentsNew";
 
 interface params {
   id: string;
@@ -16,19 +18,17 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   //Import ticket store
   const store = useContext(Store);
   const { currentTicket, getTicket } = store.ticketStore;
+  const { user } = store.userStore;
 
-  const [replyPressed, setReplyPressed] = useState(false);
+  const [isReplying, setIsReplying] = useState<boolean>(false);
 
   useEffect(() => {
     getTicket(match.params.id);
   }, [getTicket, match.params.id]);
 
-  if (currentTicket === null) return <div>Error 404</div>;
+  if (user) console.log(user!.id);
 
-  const setReplyText = () => {
-    if (replyPressed) return "Cancel";
-    return "Reply";
-  };
+  if (currentTicket === null) return <div>Error 404</div>;
 
   return (
     <div id="ticketDetailsBody">
@@ -64,7 +64,9 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
             </Grid.Column>
             <Grid.Column width={10}>
               <h2 className="posterName">{currentTicket.author.username}</h2>
-              <h4 className="posterRank">Rank Here</h4>
+              <h4 className="posterRank">
+                {currentTicket.author.roles && currentTicket.author.roles[0]}
+              </h4>
             </Grid.Column>
             <Grid.Column width={4}>
               <StatusIcon status={currentTicket.status} clickAble={false} />
@@ -76,36 +78,57 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
           <Grid.Row columns={1}>
             <p>{currentTicket.description}</p>
           </Grid.Row>
-          {currentTicket.attachment && <Grid.Row><img src={currentTicket.attachment.url}/></Grid.Row>}
+          {currentTicket.attachment && (
+            <Grid.Row>
+              <img
+                alt={currentTicket.attachment.id}
+                src={currentTicket.attachment.url}
+              />
+            </Grid.Row>
+          )}
         </Grid>
         {/* Footer starts here */}
         <Grid>
           <Grid.Row columns={3}>
             <Grid.Column width={12}>
-              <Button
-                className="mainButton"
-                onClick={() => setReplyPressed(!replyPressed)}
-              >
-                {setReplyText()}
-              </Button>
+              {currentTicket.developer && (
+                // <Label content={"Assigned to " + currentTicket.developer.username} />
+                <Label as="a" image>
+                  <img
+                    alt={currentTicket.developer.username}
+                    src={defaultAvatar}
+                  />
+                  {currentTicket.developer.avatar && (
+                    <img
+                      alt={currentTicket.developer.username}
+                      src={currentTicket.developer.avatar.url}
+                    />
+                  )}
+                  Assigned to {currentTicket.developer.username}
+                </Label>
+              )}
             </Grid.Column>
             <Grid.Column width={2}>
-              <Button
-                className="mainButton"
-                as={Link}
-                to={"/tickets/" + match.params.id + "/delete"}
-              >
-                Delete
-              </Button>
+              {user!.id === currentTicket?.author.id && (
+                <Button
+                  className="mainButton"
+                  as={Link}
+                  to={"/tickets/" + match.params.id + "/delete"}
+                >
+                  Delete
+                </Button>
+              )}
             </Grid.Column>
             <Grid.Column width={2}>
-              <Button
-                className="mainButton"
-                as={Link}
-                to={"/tickets/" + match.params.id + "/edit"}
-              >
-                Edit
-              </Button>
+              {user!.id === currentTicket?.author.id && (
+                <Button
+                  className="mainButton"
+                  as={Link}
+                  to={"/tickets/" + match.params.id + "/edit"}
+                >
+                  Edit
+                </Button>
+              )}
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -118,6 +141,18 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
           </div>
         );
       })}
+      <Button
+        className="mainButton commentButton"
+        onClick={() => {
+          setIsReplying(!isReplying);
+        }}
+      >
+        {!isReplying && "Add Comment"}
+        {isReplying && "Cancel"}
+      </Button>
+
+      {isReplying && <CommentsNew parent={currentTicket} />}
+
     </div>
   );
 };
