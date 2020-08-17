@@ -59,9 +59,10 @@ export default class TicketStore {
 
   @action deleteTicket = async (id: string) => {
     try {
-      await Tickets.delete(id);
-      runInAction(() => {
-        this.ticketsRegistry.delete(+id);
+      await Tickets.delete(id).then(() => {
+        runInAction(() => {
+          this.ticketsRegistry.delete(+id);
+        });
       });
     } catch (e) {
       console.log(e);

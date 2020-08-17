@@ -35,6 +35,7 @@ const Dropzone : React.FC<IProps> = (props) => {
       
       props.setFile(acceptedFiles[0]);
 
+      acceptedFiles = null;
     },
     [props]
   );

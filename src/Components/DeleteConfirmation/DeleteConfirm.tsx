@@ -22,8 +22,9 @@ const DeleteConfirm: React.FC<RouteComponentProps<params>> = ({
   }, [getTicket, match.params.id]);
 
   const handleFinalFormSubmit = () => {
-    deleteTicket(match.params.id);
-    history.push("/tickets");
+    deleteTicket(match.params.id).then(() => {
+      history.push("/tickets");
+    });
   };
 
   if (currentTicket == null) return <div>Error 404</div>;

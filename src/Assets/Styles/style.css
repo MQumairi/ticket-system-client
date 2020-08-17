@@ -2,11 +2,13 @@
     /* Sizes */
     --body-width: 70%;
     min-height: 100vh;
-
-    --container-border-radius: 10px;
-
+    
     --small-container-width: 40%;
     --med-container-width: 60%;
+
+    --default-padding: 30px;
+
+    --container-border-radius: 10px;
 
     /* Colors */
     --primary-color: #B31E1E;
