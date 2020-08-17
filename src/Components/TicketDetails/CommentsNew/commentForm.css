@@ -17,3 +17,12 @@
     padding: 10px;
     width: 100%;
 }
+
+.commentButtons {
+    display: block !important;
+    text-align: center;
+}
+
+.commentButtons .mainButton {
+    margin-left: 20px !important;
+}

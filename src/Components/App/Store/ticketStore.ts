@@ -69,9 +69,9 @@ export default class TicketStore {
     }
   };
 
-  @action editTicket = async (ticket: ITicketForm) => {
+  @action editTicket = async (ticketId: number, ticket: FormData) => {
     try {
-      await Tickets.edit(ticket);
+      await Tickets.edit(ticketId.toString(), ticket);
     } catch (e) {
       console.log(e);
     }

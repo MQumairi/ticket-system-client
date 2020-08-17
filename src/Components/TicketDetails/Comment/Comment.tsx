@@ -1,17 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { IComment } from "../../../Models/comment";
 import "./comment.css";
 import { Button, Grid } from "semantic-ui-react";
 import Avatar from "../../Users/Avatar/Avatar";
 import Store from "../../App/Store/rootStore";
+import {useHistory} from "react-router-dom";
+import CommentForm from "../CommentsNew/CommentForm";
 
 interface IProps {
   comment: IComment;
 }
 
 const Comment: React.FC<IProps> = ({ comment }) => {
+  let history = useHistory();
   const store = useContext(Store);
   const { user } = store.userStore;
+  const {currentTicket} = store.ticketStore;
+
+  const { deleteComment } = store.commentStore;
+
+  const [editingComment, setEditingComment] = useState<boolean>(false);
+  
+
+  const handleDelete = () => {
+    deleteComment(comment.post_id!).then(() => {
+      history.go(0);
+    });
+  };
+
+  const handleEdit = () => {
+
+  }
+
+  if(editingComment) return (<CommentForm parent={currentTicket!} commentToEdit={comment} setEditingComment={setEditingComment}/>);
 
   return (
     <div className="commentContainer">
@@ -56,12 +77,19 @@ const Comment: React.FC<IProps> = ({ comment }) => {
           <Grid.Column width={12}></Grid.Column>
           <Grid.Column width={2}>
             {user!.id === comment.author.id && (
-              <Button className="mainButton">Delete</Button>
+              <Button
+                className="mainButton"
+                onClick={() => {
+                  handleDelete();
+                }}
+              >
+                Delete
+              </Button>
             )}
           </Grid.Column>
           <Grid.Column width={2}>
             {user!.id === comment.author.id && (
-              <Button className="mainButton">Edit</Button>
+              <Button className="mainButton" onClick={() => setEditingComment(!editingComment)}>Edit</Button>
             )}
           </Grid.Column>
         </Grid.Row>

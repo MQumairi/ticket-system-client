@@ -33,6 +33,7 @@ const requests = {
   post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
   post_form: (url: string, body: {}) => axios.post(url, body, config).then(responseBody),
   put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
+  put_form: (url: string, body: {}) => axios.put(url, body, config).then(responseBody),
   delete: (url: string) => axios.delete(url).then(responseBody),
 };
 
@@ -41,14 +42,14 @@ const Tickets = {
   details: (post_id: string): Promise<ITicket> =>
     requests.get("/tickets/" + post_id),
   create: (ticket: FormData) => requests.post_form("/tickets", ticket),
-  edit: (ticket: ITicketForm) => requests.put("/tickets/" + ticket.post_id, ticket),
+  edit: (ticket_id: string, ticket: FormData) => requests.put_form("/tickets/" + ticket_id, ticket),
   delete: (post_id: string) => requests.delete("/tickets/" + post_id),
 };
 
 const Comments = {
   create: (comment: FormData) => requests.post_form("/comments", comment),
-  edit: (ticket: IComment) =>
-    requests.put("/comments/" + ticket.post_id, ticket),
+  edit: (commentId: string, comment: FormData) =>
+    requests.put_form("/comments/" + commentId, comment),
   delete: (post_id: string) => requests.delete("/comments/" + post_id),
 };
 

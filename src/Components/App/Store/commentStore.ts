@@ -1,6 +1,7 @@
 import { Store } from "./rootStore";
 import { action } from "mobx";
 import { Comments } from "../../../API/agent";
+import { IComment } from "../../../Models/comment";
 
 export default class CommentStore {
   constructor(public rootStore: Store) {}
@@ -12,4 +13,20 @@ export default class CommentStore {
       console.log(e);
     }
   };
+
+  @action deleteComment = async (commentId: number) => {
+    try {
+      await Comments.delete(commentId.toString());
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  @action editComment = async (commentId: number, comment: FormData) => {
+    try {
+      await Comments.edit(commentId.toString(), comment);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }

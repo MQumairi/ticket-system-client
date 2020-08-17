@@ -8,7 +8,7 @@ import Avatar from "../Users/Avatar/Avatar";
 import { observer } from "mobx-react-lite";
 import Comment from "./Comment/Comment";
 import defaultAvatar from "../../Assets/Images/defaultAvatar.png";
-import CommentsNew from "./CommentsNew/CommentsNew";
+import CommentsForm from "./CommentsNew/CommentForm";
 
 interface params {
   id: string;
@@ -141,17 +141,16 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
           </div>
         );
       })}
-      <Button
+      {!isReplying && <Button
         className="mainButton commentButton"
         onClick={() => {
           setIsReplying(!isReplying);
         }}
       >
-        {!isReplying && "Add Comment"}
-        {isReplying && "Cancel"}
-      </Button>
+        Add Comment
+      </Button>}
 
-      {isReplying && <CommentsNew parent={currentTicket} />}
+      {isReplying && <CommentsForm parent={currentTicket} setIsReplying={setIsReplying} />}
 
     </div>
   );

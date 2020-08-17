@@ -68,7 +68,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
         status_id: values.status.status_id,
       };
 
-      editTicket(ticketToUpdate).then(() => {
+      editTicket(props.ticket.post_id!, formBuilder(ticketToUpdate)).then(() => {
         history.push("/tickets/" + props.ticket!.post_id);
       });
     }
