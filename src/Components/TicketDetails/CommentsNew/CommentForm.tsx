@@ -85,7 +85,7 @@ const CommentForm: React.FC<IProps> = ({
                 component={TextAreaInput}
                 initialValue={commentToEdit?.description}
               />
-              <Dropzone setFile={setFile} />
+              <Dropzone setFile={setFile} defaultAttach={commentToEdit?.attachment} />
 
               <div className="commentButtons">
                 <Button className="mainButton" type="submit">

@@ -4,7 +4,6 @@ import { Store } from "./rootStore";
 import { Tickets } from "../../../API/agent";
 import { format } from "date-fns";
 import { IComment } from "../../../Models/comment";
-import { ITicketForm } from "../../../Models/ticketForm";
 
 export default class TicketStore {
   constructor(public rootStore: Store) {}

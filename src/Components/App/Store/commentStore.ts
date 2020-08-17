@@ -1,7 +1,6 @@
 import { Store } from "./rootStore";
 import { action } from "mobx";
 import { Comments } from "../../../API/agent";
-import { IComment } from "../../../Models/comment";
 
 export default class CommentStore {
   constructor(public rootStore: Store) {}

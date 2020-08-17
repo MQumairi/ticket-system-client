@@ -28,10 +28,6 @@ const Comment: React.FC<IProps> = ({ comment }) => {
     });
   };
 
-  const handleEdit = () => {
-
-  }
-
   if(editingComment) return (<CommentForm parent={currentTicket!} commentToEdit={comment} setEditingComment={setEditingComment}/>);
 
   return (

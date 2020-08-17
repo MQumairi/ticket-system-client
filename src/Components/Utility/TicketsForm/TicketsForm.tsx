@@ -137,7 +137,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
                   component={TextAreaInput}
                   initialValue={ticketToEdit?.description}
                 />
-                <Dropzone setFile={setFile} />
+                <Dropzone setFile={setFile} defaultAttach={props.ticket?.attachment} />
                 <Button className="mainButton ticketNewSubmit" type="submit">
                   Submit
                 </Button>

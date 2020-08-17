@@ -2,10 +2,8 @@ import axios, { AxiosResponse } from "axios";
 import { ITicket } from "../Models/ticket";
 import { IProduct } from "../Models/product";
 import { IStatus } from "../Models/status";
-import { IComment } from "../Models/comment";
 import { IUser } from "../Models/user";
 import { IUserForm } from "../Models/userForm";
-import { ITicketForm} from "../Models/ticketForm";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
