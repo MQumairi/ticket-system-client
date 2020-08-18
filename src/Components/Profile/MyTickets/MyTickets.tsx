@@ -16,13 +16,13 @@ const MyTickets = () => {
       {console.log(devTicketsRegistry.size)}
       {Array.from(devTicketsRegistry).map(([key, ticket]) => {
         return (
-          <button
+          <button key={key}
             onClick={() => {
                 setTicketsFromProfile(true);
                 history.push("/tickets/" + ticket.post_id);
             }}
           >
-            <TicketItemSmall ticket={ticket} key={key} />
+            <TicketItemSmall ticket={ticket}/>
           </button>
         );
       })}

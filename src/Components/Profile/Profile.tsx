@@ -63,7 +63,7 @@ const Profile = () => {
                   setActive("Security");
                 }}
               />
-              {user?.roles && loadDevTickets(user.id!) && user?.roles[0]==="Developer" && <Menu.Item
+              {user?.roles && user?.roles[0]==="Developer" && loadDevTickets(user.id!) && <Menu.Item
                 name="My Tickets"
                 active={active === "My Tickets"}
                 onClick={() => {
