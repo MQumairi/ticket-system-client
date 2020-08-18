@@ -1,12 +1,15 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Store from "../App/Store/rootStore";
 import { RouteComponentProps, Link } from "react-router-dom";
 import "./ticketDetails.css";
-import { Grid, Button } from "semantic-ui-react";
+import { Grid, Button, Label } from "semantic-ui-react";
 import StatusIcon from "../Tickets/FilterByDashboard/Status/StatusIcon/SatusIcon";
 import Avatar from "../Users/Avatar/Avatar";
 import { observer } from "mobx-react-lite";
 import Comment from "./Comment/Comment";
+import defaultAvatar from "../../Assets/Images/defaultAvatar.png";
+import CommentsForm from "./CommentsNew/CommentForm";
+import {useHistory} from "react-router-dom";
 
 interface params {
   id: string;
@@ -14,24 +17,39 @@ interface params {
 
 const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
 
+  let history = useHistory();
+
   //Import ticket store
   const store = useContext(Store);
   const { currentTicket, getTicket } = store.ticketStore;
+  const { user } = store.userStore;
+  const {ticketsFromProfile, setTicketsFromProfile} = store.commonStore;
 
-  const [replyPressed, setReplyPressed] = useState(false);
-
+  const [isReplying, setIsReplying] = useState<boolean>(false);
 
   useEffect(() => {
     getTicket(match.params.id);
   }, [getTicket, match.params.id]);
 
+  const handleBack = () => {
+    console.log("From handle back");
+    console.log(ticketsFromProfile);
+    if(ticketsFromProfile) {
+      setTicketsFromProfile(false);
+      history.push("/profile");
+    } else {
+
+      if(currentTicket?.is_archived){
+        history.push("/archives");
+      } else {
+        history.push("/tickets");
+      }
+      
+    }
+  }
+
   if (currentTicket === null) return <div>Error 404</div>;
 
-  const setReplyText = () => {
-    if (replyPressed) return "Cancel";
-    return "Reply";
-  };
-  
   return (
     <div id="ticketDetailsBody">
       <div id="ticketDetailsMainPost">
@@ -44,11 +62,10 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
             </Grid.Column>
             <Grid.Column>
               <Button
-                as={Link}
-                to="/tickets"
                 floated="right"
                 className="mainButton"
                 content="Back"
+                onClick={() => handleBack()}
               />
             </Grid.Column>
           </Grid.Row>
@@ -59,52 +76,101 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
           <Grid.Row columns={3}>
             <Grid.Column width={2}>
               <Avatar
-                avatar={currentTicket.user.avatar!}
+                avatar={currentTicket.author.avatar}
                 diameter={80}
                 borderWidth={4}
               />
             </Grid.Column>
             <Grid.Column width={10}>
-              <h2 className="posterName">
-                {currentTicket.user.username}
-              </h2>
-              <h4 className="posterRank">Rank Here</h4>
+              <h2 className="posterName">{currentTicket.author.username}</h2>
+              <h4 className="posterRank">
+                {currentTicket.author.roles && currentTicket.author.roles[0]}
+              </h4>
             </Grid.Column>
             <Grid.Column width={4}>
               <StatusIcon status={currentTicket.status} clickAble={false} />
-              <div className="productButton">{currentTicket.product.product_name}</div>
+              <div className="productButton">
+                {currentTicket.product.product_name}
+              </div>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
             <p>{currentTicket.description}</p>
           </Grid.Row>
+          {currentTicket.attachment && (
+            <Grid.Row>
+              <img
+                alt={currentTicket.attachment.id}
+                src={currentTicket.attachment.url}
+              />
+            </Grid.Row>
+          )}
         </Grid>
         {/* Footer starts here */}
         <Grid>
           <Grid.Row columns={3}>
             <Grid.Column width={12}>
-              <Button
-                className="mainButton"
-                onClick={() => setReplyPressed(!replyPressed)}
-              >
-                {setReplyText()}
-              </Button>
+              {currentTicket.developer && (
+                // <Label content={"Assigned to " + currentTicket.developer.username} />
+                <Label as="a" image>
+                  {!currentTicket.developer.avatar && <img
+                    alt={currentTicket.developer.username}
+                    src={defaultAvatar}
+                  />}
+                  {currentTicket.developer.avatar && (
+                    <img
+                      alt={currentTicket.developer.username}
+                      src={currentTicket.developer.avatar.url}
+                    />
+                  )}
+                  Assigned to {currentTicket.developer.username}
+                </Label>
+              )}
             </Grid.Column>
             <Grid.Column width={2}>
-              <Button className="mainButton" as={Link} to={"/tickets/" + match.params.id + "/delete"}>Delete</Button>
+              {user!.id === currentTicket?.author.id && (
+                <Button
+                  className="mainButton"
+                  as={Link}
+                  to={"/tickets/" + match.params.id + "/delete"}
+                >
+                  Delete
+                </Button>
+              )}
             </Grid.Column>
             <Grid.Column width={2}>
-              <Button className="mainButton" as={Link} to={"/tickets/" + match.params.id + "/edit"}>Edit</Button>
+              {user!.id === currentTicket?.author.id && (
+                <Button
+                  className="mainButton"
+                  as={Link}
+                  to={"/tickets/" + match.params.id + "/edit"}
+                >
+                  Edit
+                </Button>
+              )}
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </div>
       {/* {revealReplyForm()} */}
       {currentTicket.comments.map((comment) => {
-        return <div>
-          <Comment comment={comment}/>
-          </div>;
+        return (
+          <div>
+            <Comment comment={comment} />
+          </div>
+        );
       })}
+      {!isReplying && <Button
+        className="mainButton commentButton"
+        onClick={() => {
+          setIsReplying(!isReplying);
+        }}
+      >
+        Add Comment
+      </Button>}
+
+      {isReplying && <CommentsForm parent={currentTicket} setIsReplying={setIsReplying} />}
+
     </div>
   );
 };

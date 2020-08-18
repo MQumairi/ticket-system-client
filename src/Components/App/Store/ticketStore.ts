@@ -1,25 +1,27 @@
-import { observable, action } from "mobx";
+import { observable, action, runInAction } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
 import { Tickets } from "../../../API/agent";
+import { Archives } from "../../../API/agent";
 import { format } from "date-fns";
 import { IComment } from "../../../Models/comment";
-import { ITicketForm } from "../../../Models/ticketForm";
 
 export default class TicketStore {
   constructor(public rootStore: Store) {}
 
   //Initialize the Ticket Registry
-  @observable ticketsRegistry = new Map<number, ITicket>();
+  @observable ticketsRegistry = observable.map(new Map<number, ITicket>());
 
   //Load tickets from API to Registry
   @action loadTickets = async () => {
     try {
       const loadedTickets = await Tickets.list();
-      loadedTickets.forEach((ticket) => {
-        let ticketDate = Date.parse(ticket.date_time);
-        ticket.display_date = format(ticketDate, "dd/MM/yyyy");
-        this.ticketsRegistry.set(ticket.post_id!, ticket);
+      runInAction(() => {
+        loadedTickets.forEach((ticket) => {
+          let ticketDate = Date.parse(ticket.date_time);
+          ticket.display_date = format(ticketDate, "dd/MM/yyyy");
+          this.ticketsRegistry.set(ticket.post_id!, ticket);
+        });
       });
     } catch (e) {
       console.log(e);
@@ -48,9 +50,9 @@ export default class TicketStore {
   };
 
   //Rest
-  @action addTicket = async (ticket: ITicketForm) => {
+  @action addTicket = async (formData: FormData) => {
     try {
-      await Tickets.create(ticket);
+      await Tickets.create(formData);
     } catch (e) {
       console.log(e);
     }
@@ -58,17 +60,41 @@ export default class TicketStore {
 
   @action deleteTicket = async (id: string) => {
     try {
-      await Tickets.delete(id);
+      await Tickets.delete(id).then(() => {
+        runInAction(() => {
+          this.ticketsRegistry.delete(+id);
+        });
+      });
     } catch (e) {
       console.log(e);
     }
   };
 
-  @action editTicket = async (ticket: ITicketForm) => {
+  @action editTicket = async (ticketId: number, ticket: FormData) => {
     try {
-      await Tickets.edit(ticket);
+      await Tickets.edit(ticketId.toString(), ticket);
     } catch (e) {
       console.log(e);
     }
-  }
+  };
+
+  //Archives
+  @observable archivesRegistry = observable.map(new Map<number, ITicket>());
+
+  @action loadArchives = async () => {
+    try {
+      const loadedArchives = await Archives.list();
+      runInAction(() => {
+        loadedArchives.forEach((ticket : ITicket) => {
+          let ticketDate = Date.parse(ticket.date_time);
+          ticket.display_date = format(ticketDate, "dd/MM/yyyy");
+          this.archivesRegistry.set(ticket.post_id!, ticket);
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+
 }

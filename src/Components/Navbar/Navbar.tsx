@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
 
   const store = useContext(Store);
-  const { user, isLogged, logout } = store.userStore;
+  const { user, isLogged } = store.userStore;
   const {appLoaded} = store.commonStore;
 
   if (!isLogged && appLoaded) {
@@ -32,10 +32,10 @@ const Navbar = () => {
         </div>
         <Menu inverted secondary>
           <Menu.Item name="Tickets" as={Link} to="/tickets" />
-          <Menu.Item name="Logout" onClick={() => logout()}/>
+          <Menu.Item name="Archive" as={Link} to="/archives" />
           {user && (
-            <Menu.Item>
-              <Avatar avatar={user.avatar} diameter={60} borderWidth={3} />
+            <Menu.Item as={Link} to="/profile">
+              <Avatar avatar={user.avatar} diameter={60} borderWidth={3}/>
             </Menu.Item>
           )}
         </Menu>

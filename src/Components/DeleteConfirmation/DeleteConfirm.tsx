@@ -17,18 +17,14 @@ const DeleteConfirm: React.FC<RouteComponentProps<params>> = ({
   const store = useContext(Store);
   const { currentTicket, getTicket, deleteTicket } = store.ticketStore;
 
-  const {filteredTickets, filteredTicketsRemove } = store.filterStore;
-
   useEffect(() => {
     getTicket(match.params.id);
   }, [getTicket, match.params.id]);
 
   const handleFinalFormSubmit = () => {
-    deleteTicket(match.params.id);
-    console.log("Before remove " + filteredTickets.size)
-    filteredTicketsRemove(match.params.id);
-    console.log("After remove " + filteredTickets.size)
-    history.push("/tickets");
+    deleteTicket(match.params.id).then(() => {
+      history.push("/tickets");
+    });
   };
 
   if (currentTicket == null) return <div>Error 404</div>;
@@ -62,7 +58,9 @@ const DeleteConfirm: React.FC<RouteComponentProps<params>> = ({
           render={({ handleSubmit }) => {
             return (
               <Form onSubmit={handleSubmit}>
-                <Button className="mainButton" type="submit">Delete</Button>
+                <Button className="mainButton" type="submit">
+                  Delete
+                </Button>
               </Form>
             );
           }}

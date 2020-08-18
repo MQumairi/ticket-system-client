@@ -8,7 +8,6 @@ import "./loginPage.css";
 import { Link, useHistory } from "react-router-dom";
 
 const LoginPage = () => {
-
   let history = useHistory();
 
   const store = useContext(Store);
@@ -35,7 +34,7 @@ const LoginPage = () => {
                 <GridColumn width={5} key={1}>
                   <h2>Login</h2>
                 </GridColumn>
-                <GridColumn width={7} key={2}/>
+                <GridColumn width={7} key={2} />
                 <GridColumn width={3} key={3}>
                   <Button
                     className="mainButton"
@@ -46,10 +45,24 @@ const LoginPage = () => {
                 </GridColumn>
               </Grid>
               <hr />
-              {!!error && <Label className="login-error-label" color="red" basic content={"Email/Password combination incorrect. Try again."} />}
+              {!!error && (
+                <Label
+                  className="login-error-label"
+                  color="red"
+                  basic
+                  content={"Email/Password combination incorrect. Try again."}
+                />
+              )}
               <Form onSubmit={handleSubmit}>
-                <Field name="email" placeholder="Email" component={TextInput} />
                 <Field
+                  inputLabel="Email"
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  component={TextInput}
+                />
+                <Field
+                  inputLabel="Password"
                   name="password"
                   placeholder="Password"
                   component={TextInput}

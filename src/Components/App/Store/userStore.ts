@@ -3,6 +3,10 @@ import { IUser } from "../../../Models/user";
 import { Store } from "./rootStore";
 import { IUserForm } from "../../../Models/userForm";
 import { Users } from "../../../API/agent";
+import { Developers } from "../../../API/agent";
+import { IUserFormGeneral } from "../../../Models/userFormGeneral";
+import { ITicket } from "../../../Models/ticket";
+import { format } from "date-fns";
 
 export default class UserStore {
   constructor(public rootStore: Store) {}
@@ -27,20 +31,10 @@ export default class UserStore {
     }
   };
 
+  //Logout
   @action logout = () => {
     this.user = null;
     window.localStorage.removeItem("jwt");
-  };
-
-  @action getCurrentUser = async () => {
-    try {
-      const user = await Users.current();
-      runInAction(() => {
-        this.user = user;
-      });
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   //Register
@@ -52,4 +46,63 @@ export default class UserStore {
       console.log(e);
     }
   };
+
+  //Current User
+  @action getCurrentUser = async () => {
+    try {
+      const user = await Users.current();
+      runInAction(() => {
+        this.user = user;
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Edit Profile
+  @action editProfile = async (user: IUserFormGeneral) => {
+    try {
+      await Users.editProfile(user).then(() => {
+        runInAction(() => {
+          this.getCurrentUser();
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Upload Avatar
+  @action addAvatar = async (avatar: FormData) => {
+    try {
+      await Users.addAvatar(avatar).then(() => {
+        runInAction(() => {
+          this.getCurrentUser();
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+
+  //Developers
+  @observable devTicketsRegistry = observable.map(new Map<number, ITicket>());
+
+
+  //List Developer's tickets
+  @action loadDevTickets = async (dev_id: string) => {
+    try {
+      const loadedTickets = await Developers.listAssignedTickets(dev_id);
+      runInAction(() => {
+        loadedTickets.forEach((ticket) => {
+          let ticketDate = Date.parse(ticket.date_time);
+          ticket.display_date = format(ticketDate, "dd/MM/yyyy");
+          this.devTicketsRegistry.set(ticket.post_id!, ticket);
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }

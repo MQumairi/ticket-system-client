@@ -14,7 +14,6 @@ const RegisterPage = () => {
   const { register } = store.userStore;
 
   const handleFinalFormSubmit = (values: IUserForm) => {
-    console.log(values);
     register(values);
     history.push("/tickets");
   };
@@ -43,17 +42,35 @@ const RegisterPage = () => {
                 </Grid>
                 <hr />
                 <Form onSubmit={handleSubmit}>
+                <Form.Group widths='equal'>
+                <Field
+                    inputLabel="First Name"
+                    name="first_name"
+                    placeholder="First Name"
+                    component={TextInput}
+                  />
                   <Field
+                    inputLabel="Surname"
+                    name="surname"
+                    placeholder="Surname"
+                    component={TextInput}
+                  />
+                </Form.Group>
+                  <Field
+                    type="email"
+                    inputLabel="Email"
                     name="email"
                     placeholder="Email"
                     component={TextInput}
                   />
                   <Field
+                    inputLabel="Username"
                     name="username"
                     placeholder="Username"
                     component={TextInput}
                   />
                   <Field
+                    inputLabel="Password"
                     name="password"
                     placeholder="Password"
                     component={TextInput}

@@ -1,0 +1,20 @@
+@import "../../../Assets/Styles/style.css";
+
+h5 {
+    color: var(--label-color);
+    margin-bottom: 5px;
+}
+
+.drop_zone {
+    height: 150px;
+    border: 2px dashed var(--label-color);
+    border-radius: var(--container-border-radius);
+    margin-bottom: 20px;
+    background-image: url('../../../Assets/Images/image-icon.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.drop_area {
+    height: 100%;
+}

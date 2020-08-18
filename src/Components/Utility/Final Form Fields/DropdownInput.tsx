@@ -4,11 +4,12 @@ import {
   FormFieldProps,
   Form,
   Label,
-  Select,
   Dropdown,
 } from "semantic-ui-react";
 
-interface IProps extends FieldRenderProps<any, any>, FormFieldProps {}
+interface IProps extends FieldRenderProps<any, any>, FormFieldProps {
+  inputLabel: string;
+}
 
 const SelectInput: React.FC<IProps> = ({
   input,
@@ -17,9 +18,11 @@ const SelectInput: React.FC<IProps> = ({
   placeholder,
   meta: { touched, error },
   defaultValue,
+  inputLabel
 }) => {
   return (
     <Form.Field error={touched && error} width={width}>
+      <label>{inputLabel}</label>
       <Dropdown
         value={input.value}
         options={options}

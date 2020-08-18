@@ -1,0 +1,10 @@
+@import "../../../Assets/Styles/style.css";
+
+.myTickets {
+    padding: 10px;
+}
+
+.myTickets button {
+    margin-top: 20px !important;
+    width: 100%;
+}

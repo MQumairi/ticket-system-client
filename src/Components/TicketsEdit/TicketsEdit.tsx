@@ -17,8 +17,6 @@ const TicketsEdit: React.FC<RouteComponentProps<params>> = ({ match }) => {
 
   return (
     <div>
-        {console.log("Param id = " + match.params.id)}
-        {console.log("Current ticket " + currentTicket?.title)}
       <TicketsForm ticket={currentTicket!} />
     </div>
   );
