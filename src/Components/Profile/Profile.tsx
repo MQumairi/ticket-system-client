@@ -23,11 +23,11 @@ const Profile = () => {
             <h1>
               {user?.first_name} {user?.surname}
             </h1>
-            <h3>Developer</h3>
+            <h3>{user?.roles}</h3>
             <hr></hr>
 
             {active === "Your Profile" && <ProfileDefault />}
-            {active === "Edit Details" && <ProfileEditDetails />}
+            {active === "Edit Details" && <ProfileEditDetails setActive={setActive} />}
             {active === "Avatar" && <ProfileAvatar />}
             {active === "Security" && <ProfilePassword />}
           </Grid.Column>

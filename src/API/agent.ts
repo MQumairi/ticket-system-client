@@ -4,6 +4,7 @@ import { IProduct } from "../Models/product";
 import { IStatus } from "../Models/status";
 import { IUser } from "../Models/user";
 import { IUserForm } from "../Models/userForm";
+import { IUserFormGeneral } from "../Models/userFormGeneral";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -37,8 +38,7 @@ const requests = {
 
 const Tickets = {
   list: (): Promise<ITicket[]> => requests.get("/tickets"),
-  details: (post_id: string): Promise<ITicket> =>
-    requests.get("/tickets/" + post_id),
+  details: (post_id: string): Promise<ITicket> => requests.get("/tickets/" + post_id),
   create: (ticket: FormData) => requests.post_form("/tickets", ticket),
   edit: (ticket_id: string, ticket: FormData) => requests.put_form("/tickets/" + ticket_id, ticket),
   delete: (post_id: string) => requests.delete("/tickets/" + post_id),
@@ -46,8 +46,7 @@ const Tickets = {
 
 const Comments = {
   create: (comment: FormData) => requests.post_form("/comments", comment),
-  edit: (commentId: string, comment: FormData) =>
-    requests.put_form("/comments/" + commentId, comment),
+  edit: (commentId: string, comment: FormData) => requests.put_form("/comments/" + commentId, comment),
   delete: (post_id: string) => requests.delete("/comments/" + post_id),
 };
 
@@ -59,16 +58,14 @@ const Products = {
 
 const Status = {
   list: (): Promise<IStatus[]> => requests.get("/status"),
-  details: (status_id: string): Promise<ITicket> =>
-    requests.get("/status/" + status_id),
+  details: (status_id: string): Promise<ITicket> => requests.get("/status/" + status_id),
 };
 
 const Users = {
   current: (): Promise<IUser> => requests.get("/users/profile"),
-  login: (user: IUserForm): Promise<IUser> =>
-    requests.post("/users/login", user),
-  register: (user: IUserForm): Promise<IUser> =>
-    requests.post("/users/register", user),
+  login: (user: IUserForm): Promise<IUser> => requests.post("/users/login", user),
+  register: (user: IUserForm): Promise<IUser> => requests.post("/users/register", user),
+  editProfile: (user: IUserFormGeneral) => requests.put("/users/profile", user) 
 };
 
 export { Tickets, Comments, Products, Status, Users };

@@ -1,7 +1,5 @@
-export interface IUserForm {
-    username?: string;
-    first_name?: string;
-    surname?: string;
-    email: string;
+import {IUserFormGeneral} from "./userFormGeneral";
+
+export interface IUserForm extends IUserFormGeneral {
     password: string;
 }

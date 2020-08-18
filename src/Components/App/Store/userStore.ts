@@ -3,6 +3,7 @@ import { IUser } from "../../../Models/user";
 import { Store } from "./rootStore";
 import { IUserForm } from "../../../Models/userForm";
 import { Users } from "../../../API/agent";
+import { IUserFormGeneral } from "../../../Models/userFormGeneral";
 
 export default class UserStore {
   constructor(public rootStore: Store) {}
@@ -27,11 +28,23 @@ export default class UserStore {
     }
   };
 
+  //Logout
   @action logout = () => {
     this.user = null;
     window.localStorage.removeItem("jwt");
   };
 
+  //Register
+  @action register = async (values: IUserForm) => {
+    try {
+      this.user = await Users.register(values);
+      this.rootStore.commonStore.setToken(this.user.token);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Current User
   @action getCurrentUser = async () => {
     try {
       const user = await Users.current();
@@ -43,11 +56,14 @@ export default class UserStore {
     }
   };
 
-  //Register
-  @action register = async (values: IUserForm) => {
+  //Edit Profile
+  @action editProfile = async (user: IUserFormGeneral) => {
     try {
-      this.user = await Users.register(values);
-      this.rootStore.commonStore.setToken(this.user.token);
+      await Users.editProfile(user).then(() => {
+        runInAction(() => {
+          this.getCurrentUser();
+        });
+      });
     } catch (e) {
       console.log(e);
     }
