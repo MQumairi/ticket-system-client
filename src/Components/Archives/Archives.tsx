@@ -1,21 +1,21 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from "react";
 import "./archives.css";
 import ArchivesDashboard from "./ArchivesDashboard/ArchivesDashboard";
-import Store from '../App/Store/rootStore';
+import Store from "../App/Store/rootStore";
 
 const Archives = () => {
-    const store = useContext(Store);
-    const {
-      loadArchives,
-    } = store.ticketStore;
+  const store = useContext(Store);
+  const { loadArchives } = store.ticketStore;
 
-    useEffect(() => {
-        loadArchives();
-    }, [loadArchives])
-    
-    return (
-        <ArchivesDashboard/>
-    )
-}
+  useEffect(() => {
+    loadArchives();
+  }, [loadArchives]);
 
-export default Archives
+  return (
+    <div id="archiveBox">
+      <ArchivesDashboard />
+    </div>
+  );
+};
+
+export default Archives;
