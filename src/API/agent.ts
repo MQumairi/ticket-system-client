@@ -65,7 +65,8 @@ const Users = {
   current: (): Promise<IUser> => requests.get("/users/profile"),
   login: (user: IUserForm): Promise<IUser> => requests.post("/users/login", user),
   register: (user: IUserForm): Promise<IUser> => requests.post("/users/register", user),
-  editProfile: (user: IUserFormGeneral) => requests.put("/users/profile", user) 
+  editProfile: (user: IUserFormGeneral) => requests.put("/users/profile", user),
+  addAvatar: (avatar: FormData) => requests.post_form("/avatars", avatar)
 };
 
 export { Tickets, Comments, Products, Status, Users };

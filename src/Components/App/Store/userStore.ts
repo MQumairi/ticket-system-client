@@ -68,4 +68,17 @@ export default class UserStore {
       console.log(e);
     }
   };
+
+  //Upload Avatar
+  @action addAvatar = async (avatar: FormData) => {
+    try {
+      await Users.addAvatar(avatar).then(() => {
+        runInAction(() => {
+          this.getCurrentUser();
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 }

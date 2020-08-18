@@ -5,7 +5,8 @@ import { IAttachment } from "../../../Models/attachment";
 
 interface IProps {
   setFile : (file: File)=>void,
-  defaultAttach? : IAttachment
+  defaultAttach? : IAttachment,
+  square?: boolean
 }
 
 const Dropzone : React.FC<IProps> = (props) => {
@@ -42,6 +43,14 @@ const Dropzone : React.FC<IProps> = (props) => {
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
+  let square_style = {};
+
+  if(props.square) {
+    square_style = {
+      width: "150px"
+    }
+  }
+
   const drop_area_style = {
     backgroundImage: "url('" + objUrl + "')",
     backgroundSize: "auto 100%",
@@ -52,7 +61,7 @@ const Dropzone : React.FC<IProps> = (props) => {
   return (
     <div>
       <h5>Drop or click to attach image</h5>
-      <div className="drop_zone">
+      <div className="drop_zone" style={square_style}>
         <div style={drop_area_style} className="drop_area" {...getRootProps()}>
           <input {...getInputProps()} />
         </div>
