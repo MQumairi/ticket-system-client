@@ -55,12 +55,21 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
       <div id="ticketDetailsMainPost">
         {/* Header starts here */}
         <Grid>
-          <Grid.Row columns={2}>
-            <Grid.Column>
+          <Grid.Row columns={3}>
+            <Grid.Column width={12}>
               <h1>{currentTicket.title}</h1>
               <p className="postHeaderDate">{currentTicket.display_date}</p>
             </Grid.Column>
-            <Grid.Column>
+            <Grid.Column width={2}>
+              {user?.roles && user.roles[0] === "Developer" && <Button
+                floated="right"
+                className="mainButton devButton"
+                content="DCP"
+                as={Link}
+                to={"/tickets/" + currentTicket.post_id + "/developer-console"}
+              />}
+            </Grid.Column>
+            <Grid.Column width={2}>
               <Button
                 floated="right"
                 className="mainButton"
