@@ -24,3 +24,9 @@
     background-color: var(--body-bg-color-1);
     border: 2px solid var(--body-border-color);
 }
+
+.ticketItemTitle {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

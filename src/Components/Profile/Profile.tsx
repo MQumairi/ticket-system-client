@@ -8,10 +8,11 @@ import ProfileDefault from "./ProfileDefault/ProfileDefault";
 import ProfileEditDetails from "./EditDetails/ProfileEditDetails";
 import ProfileAvatar from "./EditAvatar/ProfileAvatar";
 import ProfilePassword from "./EditPassword/ProfilePassword";
+import MyTickets from "./MyTickets/MyTickets";
 
 const Profile = () => {
   const store = useContext(Store);
-  const { user, logout } = store.userStore;
+  const { user, logout, loadDevTickets} = store.userStore;
 
   const [active, setActive] = useState<string>("Your Profile");
 
@@ -30,6 +31,8 @@ const Profile = () => {
             {active === "Edit Details" && <ProfileEditDetails setActive={setActive} />}
             {active === "Avatar" && <ProfileAvatar setActive={setActive} />}
             {active === "Security" && <ProfilePassword setActive={setActive} />}
+            {active === "My Tickets" && <MyTickets/>}
+
           </Grid.Column>
           <Grid.Column width={7} id="avatarCol">
             {user && (
@@ -60,6 +63,13 @@ const Profile = () => {
                   setActive("Security");
                 }}
               />
+              {user?.roles && loadDevTickets(user.id!) && user?.roles[0]==="Developer" && <Menu.Item
+                name="My Tickets"
+                active={active === "My Tickets"}
+                onClick={() => {
+                  setActive("My Tickets");
+                }}
+              />}
             </Menu>
           </Grid.Column>
         </Grid.Row>

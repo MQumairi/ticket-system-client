@@ -28,4 +28,11 @@ export default class CommonStore {
   @action setAppLoaded = () => {
     this.appLoaded = true;
   };
+
+  @observable ticketsFromProfile: boolean = false;
+
+  @action setTicketsFromProfile = (bool : boolean) => {
+    this.ticketsFromProfile = bool;
+  }
+  
 }

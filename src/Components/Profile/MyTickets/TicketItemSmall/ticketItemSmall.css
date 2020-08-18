@@ -1,0 +1,22 @@
+@import "../../../../Assets/Styles/style.css";
+
+.ticketItemSmall {
+  text-align: center;
+  background-color: var(--body-bg-color-3);
+  border: 1px solid var(--body-border-color);
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.statusCirc {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+}
+
+.ticketItemSmallText {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-top: 20px !important;
+}

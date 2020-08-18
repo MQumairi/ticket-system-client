@@ -22,7 +22,7 @@ const TicketItem: React.FC<IProps> = ({ ticket }) => {
         </div>
       </Grid.Column>
       <Grid.Column width={2}>{ticket.product.product_name}</Grid.Column>
-      <Grid.Column width={4}>{ticket.title}</Grid.Column>
+      <Grid.Column width={4} className="ticketItemTitle">{ticket.title}</Grid.Column>
       <Grid.Column width={3}>{ticket.display_date}</Grid.Column>
       <Grid.Column width={1}>
         <Button

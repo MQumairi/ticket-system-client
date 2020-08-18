@@ -9,22 +9,38 @@ import { observer } from "mobx-react-lite";
 import Comment from "./Comment/Comment";
 import defaultAvatar from "../../Assets/Images/defaultAvatar.png";
 import CommentsForm from "./CommentsNew/CommentForm";
+import {useHistory} from "react-router-dom";
 
 interface params {
   id: string;
 }
 
 const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
+
+  let history = useHistory();
+
   //Import ticket store
   const store = useContext(Store);
   const { currentTicket, getTicket } = store.ticketStore;
   const { user } = store.userStore;
+  const {ticketsFromProfile, setTicketsFromProfile} = store.commonStore;
 
   const [isReplying, setIsReplying] = useState<boolean>(false);
 
   useEffect(() => {
     getTicket(match.params.id);
   }, [getTicket, match.params.id]);
+
+  const handleBack = () => {
+    console.log("From handle back");
+    console.log(ticketsFromProfile);
+    if(ticketsFromProfile) {
+      setTicketsFromProfile(false);
+      history.push("/profile");
+    } else {
+      history.push("/tickets");
+    }
+  }
 
   if (currentTicket === null) return <div>Error 404</div>;
 
@@ -40,11 +56,10 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
             </Grid.Column>
             <Grid.Column>
               <Button
-                as={Link}
-                to="/tickets"
                 floated="right"
                 className="mainButton"
                 content="Back"
+                onClick={() => handleBack()}
               />
             </Grid.Column>
           </Grid.Row>
@@ -92,10 +107,10 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               {currentTicket.developer && (
                 // <Label content={"Assigned to " + currentTicket.developer.username} />
                 <Label as="a" image>
-                  <img
+                  {!currentTicket.developer.avatar && <img
                     alt={currentTicket.developer.username}
                     src={defaultAvatar}
-                  />
+                  />}
                   {currentTicket.developer.avatar && (
                     <img
                       alt={currentTicket.developer.username}

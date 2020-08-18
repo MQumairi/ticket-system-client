@@ -69,4 +69,8 @@ const Users = {
   addAvatar: (avatar: FormData) => requests.post_form("/avatars", avatar)
 };
 
-export { Tickets, Comments, Products, Status, Users };
+const Developers = {
+  listAssignedTickets: (dev_id : string): Promise<ITicket[]> => requests.get("/developers/" + dev_id + "/tickets")
+}
+
+export { Tickets, Comments, Products, Status, Users, Developers};
