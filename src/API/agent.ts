@@ -73,4 +73,8 @@ const Developers = {
   listAssignedTickets: (dev_id : string): Promise<ITicket[]> => requests.get("/developers/" + dev_id + "/tickets")
 }
 
-export { Tickets, Comments, Products, Status, Users, Developers};
+const Archives = {
+  list: () => requests.get("/archives")
+}
+
+export { Tickets, Comments, Products, Status, Users, Developers, Archives};

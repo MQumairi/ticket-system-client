@@ -14,6 +14,7 @@ import RegisterPage from "../Register/RegisterPage";
 import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirm";
 import { observer } from "mobx-react-lite";
 import Profile from "../Profile/Profile";
+import Archives from "../Archives/Archives";
 
 function App() {
   const store = useContext(Store);
@@ -58,6 +59,7 @@ function App() {
           <Route exact path="/tickets/:id" component={TicketDetails} />
           <Route exact path="/tickets/:id/delete" component={DeleteConfirmation} />
           <Route exact path="/tickets/:id/edit" component={TicketsEdit} />
+          <Route exact path="/archives"  component={Archives} />
           <Route exact path="/profile"  component={Profile} />
         </Switch>
       </div>

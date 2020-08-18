@@ -1,19 +1,17 @@
 import React, { useContext } from 'react'
-import "./ticketDashboard.css"
-import { Grid, Button } from 'semantic-ui-react'
-import TicketList from './TicketList/TicketList'
-import { Link } from 'react-router-dom'
-import Store from '../../App/Store/rootStore'
+import Store from '../../App/Store/rootStore';
+import { Grid } from 'semantic-ui-react';
+import TicketList from '../../Tickets/TicketsDashboard/TicketList/TicketList';
 
-const TicketDashboard  = () => {
+const ArchivesDashboard = () => {
     const store = useContext(Store);
     const {
-      ticketsRegistry,
+      archivesRegistry,
     } = store.ticketStore;
     
     return (
         <div id="TicketDashboard">
-            <h2>Tickets</h2>
+            <h2>Archives</h2>
             <hr/>
             <Grid columns={6} id="ticketsHeader">
                 <Grid.Column width={2} className="remove-padding table-header">Author</Grid.Column>
@@ -24,10 +22,9 @@ const TicketDashboard  = () => {
                 <Grid.Column width={2} className="remove-padding table-header"></Grid.Column>
             </Grid>
             <hr/>
-            <TicketList ticketsMap={ticketsRegistry} />
-            <Button as={Link} to="/tickets/new" className="mainButton postTicketButton">POST TICKET</Button>
+            <TicketList ticketsMap={archivesRegistry} />
         </div>
     )
 }
 
-export default TicketDashboard
+export default ArchivesDashboard

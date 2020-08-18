@@ -38,7 +38,13 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
       setTicketsFromProfile(false);
       history.push("/profile");
     } else {
-      history.push("/tickets");
+
+      if(currentTicket?.is_archived){
+        history.push("/archives");
+      } else {
+        history.push("/tickets");
+      }
+      
     }
   }
 

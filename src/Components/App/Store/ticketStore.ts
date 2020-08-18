@@ -2,6 +2,7 @@ import { observable, action, runInAction } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
 import { Tickets } from "../../../API/agent";
+import { Archives } from "../../../API/agent";
 import { format } from "date-fns";
 import { IComment } from "../../../Models/comment";
 
@@ -76,4 +77,24 @@ export default class TicketStore {
       console.log(e);
     }
   };
+
+  //Archives
+  @observable archivesRegistry = observable.map(new Map<number, ITicket>());
+
+  @action loadArchives = async () => {
+    try {
+      const loadedArchives = await Archives.list();
+      runInAction(() => {
+        loadedArchives.forEach((ticket : ITicket) => {
+          let ticketDate = Date.parse(ticket.date_time);
+          ticket.display_date = format(ticketDate, "dd/MM/yyyy");
+          this.archivesRegistry.set(ticket.post_id!, ticket);
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+
 }
