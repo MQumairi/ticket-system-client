@@ -14,7 +14,6 @@ const Dropzone : React.FC<IProps> = (props) => {
   const [objUrl, setobjUrl] = useState<any>(null);
 
   useEffect(() => {
-    console.log("use effecting");
     if(props.defaultAttach) setobjUrl(props.defaultAttach.url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -22,8 +21,6 @@ const Dropzone : React.FC<IProps> = (props) => {
   const onDrop = useCallback(
     (acceptedFiles) => {
       // Do something with the files
-      console.log(acceptedFiles);
-
       setobjUrl("");
 
       acceptedFiles.map((file: object) =>

@@ -54,8 +54,6 @@ const TicketsForm: React.FC<IProps> = (props) => {
 
       let formData = formBuilder(ticketToPost);
 
-      console.log(formData);
-
       addTicket(formData).then(() => {
         history.push("/tickets");
       });

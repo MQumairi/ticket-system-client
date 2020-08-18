@@ -29,7 +29,7 @@ const Profile = () => {
             {active === "Your Profile" && <ProfileDefault />}
             {active === "Edit Details" && <ProfileEditDetails setActive={setActive} />}
             {active === "Avatar" && <ProfileAvatar setActive={setActive} />}
-            {active === "Security" && <ProfilePassword />}
+            {active === "Security" && <ProfilePassword setActive={setActive} />}
           </Grid.Column>
           <Grid.Column width={7} id="avatarCol">
             {user && (

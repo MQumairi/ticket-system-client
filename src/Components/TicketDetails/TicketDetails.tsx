@@ -26,8 +26,6 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
     getTicket(match.params.id);
   }, [getTicket, match.params.id]);
 
-  if (user) console.log(user!.id);
-
   if (currentTicket === null) return <div>Error 404</div>;
 
   return (

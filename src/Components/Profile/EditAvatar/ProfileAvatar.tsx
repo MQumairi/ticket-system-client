@@ -20,8 +20,6 @@ const ProfileAvatar: React.FC<IProps> = ({ setActive }) => {
 
     if(file) formData.set("image", file);
 
-    console.log(formData);
-
     addAvatar(formData).then(() => {
       setActive("Your Profile");
     });
