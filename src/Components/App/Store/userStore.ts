@@ -7,6 +7,7 @@ import { Developers } from "../../../API/agent";
 import { IUserFormGeneral } from "../../../Models/userFormGeneral";
 import { ITicket } from "../../../Models/ticket";
 import { format } from "date-fns";
+import { IOption } from "../../../Models/options";
 
 export default class UserStore {
   constructor(public rootStore: Store) {}
@@ -85,10 +86,25 @@ export default class UserStore {
     }
   };
 
-
   //Developers
-  @observable devTicketsRegistry = observable.map(new Map<number, ITicket>());
+  @observable developers = observable.map(new Map<number, IUser>());
 
+  //List Developers
+  @action loadDevelopers = async () => {
+    try {
+      const loadedDevelopers = await Developers.List();
+      runInAction(() => {
+        loadedDevelopers.forEach((developer, i) => {
+          this.developers.set(i, developer);
+        })
+      })
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  //Developers' assigned ticket
+  @observable devTicketsRegistry = observable.map(new Map<number, ITicket>());
 
   //List Developer's tickets
   @action loadDevTickets = async (dev_id: string) => {
@@ -104,5 +120,18 @@ export default class UserStore {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  @computed get developerOptions() {
+    let returnArr: IOption[] = [];
+    this.developers.forEach((developer) => {
+      returnArr.push({
+        key: developer.id!,
+        text: developer.username,
+        value: developer.id!,
+      });
+    });
+
+    return returnArr;
   }
 }

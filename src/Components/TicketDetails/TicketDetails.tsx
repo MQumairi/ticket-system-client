@@ -64,7 +64,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               {user?.roles && user.roles[0] === "Developer" && <Button
                 floated="right"
                 className="mainButton devButton"
-                content="DCP"
+                content="Manage"
                 as={Link}
                 to={"/tickets/" + currentTicket.post_id + "/developer-console"}
               />}

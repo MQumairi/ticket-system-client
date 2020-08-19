@@ -70,6 +70,7 @@ const Users = {
 };
 
 const Developers = {
+  List: (): Promise<IUser[]> => requests.get("/developers"),
   listAssignedTickets: (dev_id : string): Promise<ITicket[]> => requests.get("/developers/" + dev_id + "/tickets")
 }
 

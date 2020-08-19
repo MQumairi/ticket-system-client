@@ -1,0 +1,27 @@
+@import "../../Assets/Styles/style.css";
+
+#devConsoleBody {
+    margin: auto auto;
+    margin-top: 50px;
+    background-color: var(--body-bg-color-1);
+    width: var(--body-width);
+    padding: var(--default-padding);
+    border-radius: var(--container-border-radius);
+}
+
+.ticketInformation {
+    padding: 0px 50px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.ticketInformation img {
+    width: 100%;
+    height: auto;
+}
+
+.devConsoleSubmit {
+    margin-top: 30px !important;
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+}
