@@ -1,10 +1,11 @@
 import { observable, action, runInAction } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
-import { Tickets } from "../../../API/agent";
+import { Tickets, Developers } from "../../../API/agent";
 import { Archives } from "../../../API/agent";
 import { format } from "date-fns";
 import { IComment } from "../../../Models/comment";
+import { ITicketForm } from "../../../Models/ticketForm";
 
 export default class TicketStore {
   constructor(public rootStore: Store) {}
@@ -95,6 +96,15 @@ export default class TicketStore {
       console.log(e);
     }
   };
+
+  //Manage tickets
+  @action manageTicket = async (ticketId: number, ticket: ITicketForm) => {
+    try {
+      await Developers.manage(ticketId.toString(), ticket);
+    } catch(e) {
+       console.log(e);
+    }
+  }
 
 
 }

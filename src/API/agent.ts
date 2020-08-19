@@ -5,6 +5,7 @@ import { IStatus } from "../Models/status";
 import { IUser } from "../Models/user";
 import { IUserForm } from "../Models/userForm";
 import { IUserFormGeneral } from "../Models/userFormGeneral";
+import { ITicketForm } from "../Models/ticketForm";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -71,7 +72,8 @@ const Users = {
 
 const Developers = {
   List: (): Promise<IUser[]> => requests.get("/developers"),
-  listAssignedTickets: (dev_id : string): Promise<ITicket[]> => requests.get("/developers/" + dev_id + "/tickets")
+  listAssignedTickets: (dev_id : string): Promise<ITicket[]> => requests.get("/developers/" + dev_id + "/tickets"),
+  manage: (post_id: string, ticket: ITicketForm) => requests.put("/tickets/" + post_id + "/manage", ticket) 
 }
 
 const Archives = {

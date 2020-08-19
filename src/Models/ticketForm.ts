@@ -6,5 +6,7 @@ export interface ITicketForm {
   title?: string;
   product_id?: number;
   status_id?: number;
+  developer_id?: string;
+  is_archived?: boolean;
   image?: File
 }
