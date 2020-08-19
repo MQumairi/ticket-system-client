@@ -16,6 +16,7 @@ import { observer } from "mobx-react-lite";
 import Profile from "../Profile/Profile";
 import Archives from "../Archives/Archives";
 import DevConsole from "../Developer Console/DevConsole";
+import AdminPanel from "../ACP/AdminPanel";
 
 function App() {
   const store = useContext(Store);
@@ -63,6 +64,7 @@ function App() {
           <Route exact path="/tickets/:id/developer-console" component={DevConsole} />
           <Route exact path="/archives"  component={Archives} />
           <Route exact path="/profile"  component={Profile} />
+          <Route exact path="/admin-console"  component={AdminPanel} />
         </Switch>
       </div>
       <Footer />

@@ -12,6 +12,7 @@ interface params {
 
 const DevConsole: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const store = useContext(Store);
+  const {user} = store.userStore;
   const { currentTicket, getTicket } = store.ticketStore;
   const {loadDevelopers} = store.userStore;
 
@@ -20,7 +21,9 @@ const DevConsole: React.FC<RouteComponentProps<params>> = ({ match }) => {
     loadDevelopers();
   }, [getTicket, match.params.id, loadDevelopers]);
 
-  if (currentTicket === null) return <div>Error 404</div>;
+  if (currentTicket === null) return (<div>Error 404</div>);
+
+  if(!user?.roles || !(user.roles.includes("Developer") || user.roles.includes("Admin"))) return(<div>No permission</div>);
 
   return (
     <div id="devConsoleBody">

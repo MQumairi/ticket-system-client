@@ -33,11 +33,13 @@ const Navbar = () => {
         <Menu inverted secondary>
           <Menu.Item name="Tickets" as={Link} to="/tickets" />
           <Menu.Item name="Archive" as={Link} to="/archives" />
+          {user?.roles && user.roles.includes("Admin") && <Menu.Item name="ACP" as={Link} to="/admin-console" />}
           {user && (
             <Menu.Item as={Link} to="/profile">
               <Avatar avatar={user.avatar} diameter={60} borderWidth={3}/>
             </Menu.Item>
           )}
+          
         </Menu>
       </div>
     </Segment>

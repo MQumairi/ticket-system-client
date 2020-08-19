@@ -76,8 +76,14 @@ const Developers = {
   manage: (post_id: string, ticket: ITicketForm) => requests.put("/tickets/" + post_id + "/manage", ticket) 
 }
 
+const Admins = {
+  listUsers: (): Promise<IUser[]> => requests.get("/users/list"),
+  userDetails: (userId : string): Promise<IUser> => requests.get("/users/" + userId),
+  editUser: (userId: string, user: IUserFormGeneral) => requests.put("/users/" + userId, user)
+}
+
 const Archives = {
   list: () => requests.get("/archives")
 }
 
-export { Tickets, Comments, Products, Status, Users, Developers, Archives};
+export { Tickets, Comments, Products, Status, Users, Developers, Admins, Archives};

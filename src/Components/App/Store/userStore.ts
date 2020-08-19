@@ -2,7 +2,7 @@ import { observable, action, computed, runInAction } from "mobx";
 import { IUser } from "../../../Models/user";
 import { Store } from "./rootStore";
 import { IUserForm } from "../../../Models/userForm";
-import { Users } from "../../../API/agent";
+import { Users, Admins } from "../../../API/agent";
 import { Developers } from "../../../API/agent";
 import { IUserFormGeneral } from "../../../Models/userFormGeneral";
 import { ITicket } from "../../../Models/ticket";
@@ -86,6 +86,32 @@ export default class UserStore {
     }
   };
 
+  //Users on the system
+  @observable userList = observable.map(new Map<number, IUser>());
+
+  //List users
+  @action loadUserList = async () => {
+    try {
+      const loadedUserList = await Admins.listUsers();
+      runInAction(() => {
+        loadedUserList.forEach((user, i) => {
+          this.userList.set(i, user);
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Edit users
+  @action editUser = async (userId: string, userData: IUserFormGeneral) => {
+    try {
+      await Admins.editUser(userId, userData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //Developers
   @observable developers = observable.map(new Map<number, IUser>());
 
@@ -96,12 +122,12 @@ export default class UserStore {
       runInAction(() => {
         loadedDevelopers.forEach((developer, i) => {
           this.developers.set(i, developer);
-        })
-      })
-    } catch(e) {
+        });
+      });
+    } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   //Developers' assigned ticket
   @observable devTicketsRegistry = observable.map(new Map<number, ITicket>());

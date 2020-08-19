@@ -61,7 +61,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               <p className="postHeaderDate">{currentTicket.display_date}</p>
             </Grid.Column>
             <Grid.Column width={2}>
-              {user?.roles && user.roles[0] === "Developer" && <Button
+              {user?.roles && (user.roles[0] === "Developer" || user.roles[0] === "Admin") && <Button
                 floated="right"
                 className="mainButton devButton"
                 content="Manage"
@@ -137,7 +137,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               )}
             </Grid.Column>
             <Grid.Column width={2}>
-              {user!.id === currentTicket?.author.id && (
+              {(user!.id === currentTicket?.author.id || user?.roles?.includes("Admin")) && (
                 <Button
                   className="mainButton"
                   as={Link}
@@ -148,7 +148,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               )}
             </Grid.Column>
             <Grid.Column width={2}>
-              {user!.id === currentTicket?.author.id && (
+              {(user!.id === currentTicket?.author.id || user?.roles?.includes("Admin")) && (
                 <Button
                   className="mainButton"
                   as={Link}
