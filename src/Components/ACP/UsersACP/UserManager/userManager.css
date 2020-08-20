@@ -1,0 +1,25 @@
+@import "../../../../Assets/Styles/style.css";
+
+.acpUserDefault {
+    margin: auto;
+    width: 80%;
+}
+
+.managementButtons {
+  text-align: center;
+}
+
+.acpUserData {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.acpUserData label {
+  font-size: 16px;
+}
+
+.acpUserData p {
+  font-weight: bold;
+  font-size: 18px;
+}
+

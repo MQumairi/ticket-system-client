@@ -87,17 +87,29 @@ export default class UserStore {
   };
 
   //Users on the system
-  @observable userList = observable.map(new Map<number, IUser>());
+  @observable userList = observable.map(new Map<string, IUser>());
 
   //List users
   @action loadUserList = async () => {
     try {
       const loadedUserList = await Admins.listUsers();
       runInAction(() => {
-        loadedUserList.forEach((user, i) => {
-          this.userList.set(i, user);
+        loadedUserList.forEach((user) => {
+          this.userList.set(user.id!, user);
         });
       });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //User details for inspectedUsers
+  @observable inspectedUser: IUser | null = null;
+
+  //Get inspected user
+  @action loadInspectedUser = async (userId: string) => {
+    try {
+      this.inspectedUser = await Admins.userDetails(userId);
     } catch (e) {
       console.log(e);
     }
@@ -112,16 +124,27 @@ export default class UserStore {
     }
   };
 
+  //Delete users
+  @action deleteUser = async (userId: string) => {
+    try {
+      await Admins.deleteUser(userId).then(() => {
+        this.userList.delete(userId);
+      })
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //Developers
-  @observable developers = observable.map(new Map<number, IUser>());
+  @observable developers = observable.map(new Map<string, IUser>());
 
   //List Developers
   @action loadDevelopers = async () => {
     try {
       const loadedDevelopers = await Developers.List();
       runInAction(() => {
-        loadedDevelopers.forEach((developer, i) => {
-          this.developers.set(i, developer);
+        loadedDevelopers.forEach((developer) => {
+          this.developers.set(developer.id!, developer);
         });
       });
     } catch (e) {

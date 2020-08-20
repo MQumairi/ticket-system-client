@@ -79,7 +79,8 @@ const Developers = {
 const Admins = {
   listUsers: (): Promise<IUser[]> => requests.get("/users/list"),
   userDetails: (userId : string): Promise<IUser> => requests.get("/users/" + userId),
-  editUser: (userId: string, user: IUserFormGeneral) => requests.put("/users/" + userId, user)
+  editUser: (userId: string, user: IUserFormGeneral) => requests.put("/users/" + userId, user),
+  deleteUser: (userId: string) => requests.delete("/users/" + userId)
 }
 
 const Archives = {

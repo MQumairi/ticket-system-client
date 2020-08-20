@@ -17,6 +17,7 @@ import Profile from "../Profile/Profile";
 import Archives from "../Archives/Archives";
 import DevConsole from "../Developer Console/DevConsole";
 import AdminPanel from "../ACP/AdminPanel";
+import DeleteConfirmationUser from "../DeleteConfirmationUser/DeleteConfirmationUser";
 
 function App() {
   const store = useContext(Store);
@@ -65,6 +66,7 @@ function App() {
           <Route exact path="/archives"  component={Archives} />
           <Route exact path="/profile"  component={Profile} />
           <Route exact path="/admin-console"  component={AdminPanel} />
+          <Route exact path="/admin-console/users/:id/delete"  component={DeleteConfirmationUser} />
         </Switch>
       </div>
       <Footer />
