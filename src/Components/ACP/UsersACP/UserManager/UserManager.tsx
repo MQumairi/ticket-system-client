@@ -1,101 +1,103 @@
-import React, { useState, useContext } from "react";
-import { IUser } from "../../../../Models/user";
-import { Grid, GridColumn, Button } from "semantic-ui-react";
+import React, { useState, useContext, useEffect } from "react";
+import { Button } from "semantic-ui-react";
 import Avatar from "../../../Users/Avatar/Avatar";
 import UserManagerEdit from "./UserManagerEdit";
 import "./userManager.css";
-import { useHistory } from "react-router-dom";
+import { RouteComponentProps, Link } from "react-router-dom";
 import Store from "../../../App/Store/rootStore";
 
-interface IProps {
-  user: IUser;
-  setManagedUser: (user: IUser | null) => void;
+interface params {
+  id: string;
 }
-
-const UserManager: React.FC<IProps> = ({ user, setManagedUser }) => {
-  let history = useHistory();
-
+const UserManager: React.FC<RouteComponentProps<params>> = ({
+  match,
+  history,
+}) => {
   const [editingUserMode, setEditingUserMode] = useState<boolean>(false);
 
   const store = useContext(Store);
-  const { loadUserList, deleteAvatar } = store.userStore;
+  const { inspectedUser, loadInspectedUser, deleteAvatar } = store.userStore;
+
+  useEffect(() => {
+    loadInspectedUser(match.params.id);
+  }, [loadInspectedUser, match.params]);
 
   const handleDeleteAvatar = () => {
-
-    if (user.avatar) {
-
-      deleteAvatar(user.avatar.id)
-      .then(() => {
-        loadUserList();
-      })
-      .then(() => {
-        setManagedUser(null);
+    if (inspectedUser && inspectedUser.avatar) {
+      deleteAvatar(inspectedUser.avatar.id).then(() => {
+        loadInspectedUser(match.params.id);
       });
     }
-
   };
 
+  if (!inspectedUser) return <div>404 err</div>;
+
   return (
-    <div>
+    <div className="userManagerBody">
+      <Button
+            content="Back"
+            className="mainButton"
+            as={Link}
+            to="/acp/users"
+            floated="right"
+          />
       {!editingUserMode && (
-        <Grid>
-          <GridColumn width={13}>
-            <Avatar avatar={user.avatar} diameter={120} borderWidth={3} />
+        <div>
+          <Avatar
+            avatar={inspectedUser.avatar}
+            diameter={120}
+            borderWidth={3}
+          />
 
-            <div className="acpUserDefault">
-              <div className="acpUserData">
-                <label>Name</label>
-                <p>
-                  {user?.first_name} {user?.surname}
-                </p>
+          <div className="acpUserDefault">
+            <div className="acpUserData">
+              <label>Name</label>
+              <p>
+                {inspectedUser?.first_name} {inspectedUser?.surname}
+              </p>
 
-                <label>Username</label>
-                <p>{user?.username}</p>
+              <label>Username</label>
+              <p>{inspectedUser?.username}</p>
 
-                <label>Email</label>
-                <p>{user?.email}</p>
-              </div>
-
-              <div className="managementButtons">
-                <Button
-                  className="mainButton"
-                  onClick={() => setEditingUserMode(true)}
-                >
-                  Edit User
-                </Button>
-                {user.avatar && (
-                  <Button
-                    className="mainButton"
-                    onClick={() => handleDeleteAvatar()}
-                  >
-                    Delete Avatar
-                  </Button>
-                )}
-                <Button
-                  className="mainButton"
-                  onClick={() =>
-                    history.push("/admin-console/users/" + user.id + "/delete")
-                  }
-                >
-                  Delete User
-                </Button>
-              </div>
+              <label>Email</label>
+              <p>{inspectedUser?.email}</p>
             </div>
-          </GridColumn>
-          <GridColumn width={3}>
-            <Button
-              content="Back"
-              onClick={() => {
-                setManagedUser(null);
-              }}
-              className="mainButton"
-            />
-          </GridColumn>
-        </Grid>
+
+            <div className="managementButtons">
+              <Button
+                className="mainButton fullWidth userManagerButton"
+                onClick={() => setEditingUserMode(true)}
+              >
+                Edit User
+              </Button>
+              {inspectedUser.avatar && (
+                <Button
+                  className="mainButton fullWidth userManagerButton"
+                  onClick={() => handleDeleteAvatar()}
+                >
+                  Delete Avatar
+                </Button>
+              )}
+              <Button
+                className="mainButton fullWidth userManagerButton"
+                onClick={() =>
+                  history.push(
+                    "/admin-console/users/" + inspectedUser.id + "/delete"
+                  )
+                }
+              >
+                Delete User
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
 
       {editingUserMode && (
-        <UserManagerEdit user={user} setEditingUserMode={setEditingUserMode} />
+        <UserManagerEdit
+          user={inspectedUser}
+          setEditingUserMode={setEditingUserMode}
+        />
       )}
     </div>
   );

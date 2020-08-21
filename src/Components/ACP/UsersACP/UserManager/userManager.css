@@ -1,5 +1,14 @@
 @import "../../../../Assets/Styles/style.css";
 
+.userManagerBody {
+  background-color: var(--body-bg-color-1);
+  border-radius: var(--container-border-radius);
+  padding: var(--default-padding);
+  width: var(--small-container-width);
+  margin: auto auto;
+  margin-top: 40px;
+}
+
 .acpUserDefault {
     margin: auto;
     width: 80%;
@@ -21,5 +30,9 @@
 .acpUserData p {
   font-weight: bold;
   font-size: 18px;
+}
+
+.userManagerButton {
+  margin-top: 10px !important;
 }
 

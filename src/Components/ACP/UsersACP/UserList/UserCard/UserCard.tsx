@@ -3,6 +3,7 @@ import { Card, Button } from "semantic-ui-react";
 import { IUser } from "../../../../../Models/user";
 import Avatar from "../../../../Users/Avatar/Avatar";
 import "./userCard.css";
+import { Link } from "react-router-dom";
 
 interface IProps {
   user: IUser;
@@ -21,6 +22,8 @@ const UserCard: React.FC<IProps> = ({ user }) => {
         <Button
           className="mainButton ticketNewSubmit"
           content="Manage"
+          as={Link}
+          to={"/acp/users/" + user.id}
         />
       </Card.Content>
     </Card>

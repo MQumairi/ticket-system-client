@@ -72,7 +72,7 @@ const Comment: React.FC<IProps> = ({ comment }) => {
         <Grid.Row columns={3}>
           <Grid.Column width={12}></Grid.Column>
           <Grid.Column width={2}>
-            {user!.id === comment.author.id && (
+            {(user!.id === comment.author.id || user?.roles?.includes("Admin")) && (
               <Button
                 className="mainButton"
                 onClick={() => {
@@ -84,7 +84,7 @@ const Comment: React.FC<IProps> = ({ comment }) => {
             )}
           </Grid.Column>
           <Grid.Column width={2}>
-            {user!.id === comment.author.id && (
+            {(user!.id === comment.author.id || user?.roles?.includes("Admin")) && (
               <Button className="mainButton" onClick={() => setEditingComment(!editingComment)}>Edit</Button>
             )}
           </Grid.Column>

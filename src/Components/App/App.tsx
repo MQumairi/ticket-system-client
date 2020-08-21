@@ -21,6 +21,8 @@ import RolesACP from "../ACP/RolesACP/RolesACP";
 import ProductsACP from "../ACP/ProductsACP/ProductsACP";
 import StatusesACP from "../ACP/StatusesACP/StatusesACP";
 
+import UserManager from "../ACP/UsersACP/UserManager/UserManager";
+
 import DeleteConfirmationUser from "../DeleteConfirmationUser/DeleteConfirmationUser";
 import RolesManager from "../ACP/RolesACP/RolesManager/RolesManager";
 
@@ -76,7 +78,7 @@ function App() {
 
           <Route exact path={["/acp", "/acp/users/"]} component={UsersACP} />
 
-          <Route exact path="/acp/users/:id" component={UsersACP} />
+          <Route exact path="/acp/users/:id" component={UserManager} />
           <Route exact path="/acp/users/:id/delete"  component={DeleteConfirmationUser} />
 
           <Route exact path="/acp/roles"  component={RolesACP} />
