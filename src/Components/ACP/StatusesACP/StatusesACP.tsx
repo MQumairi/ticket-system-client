@@ -3,13 +3,13 @@ import { Grid, GridColumn } from "semantic-ui-react";
 import Store from "../../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
 import ACPMenu from "../ACPMenu/ACPMenu";
-import UserList from "./UserList/UserList";
+import StatusList from "./StatusList/StatusList";
 import "../adminPanel.css";
 
 const UsersACP = () => {
   const store = useContext(Store);
   const {loadUserList} = store.userStore;
-  const [active, setActive] = useState<string>("Users");
+  const [active, setActive] = useState<string>("Statuses");
 
    useEffect(() => {
       loadUserList();
@@ -21,7 +21,7 @@ const UsersACP = () => {
       <hr />
       <Grid columns={2} className="ACPmainContent">
         <GridColumn width={11}>
-          <UserList/>
+          <StatusList/>
         </GridColumn>
         <GridColumn width={5}>
           <ACPMenu active={active} setActive={setActive}/>

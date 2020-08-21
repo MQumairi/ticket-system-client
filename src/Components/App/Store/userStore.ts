@@ -8,6 +8,7 @@ import { IUserFormGeneral } from "../../../Models/userFormGeneral";
 import { ITicket } from "../../../Models/ticket";
 import { format } from "date-fns";
 import { IOption } from "../../../Models/options";
+import { IRole } from "../../../Models/role";
 
 export default class UserStore {
   constructor(public rootStore: Store) {}
@@ -129,7 +130,16 @@ export default class UserStore {
     try {
       await Admins.deleteUser(userId).then(() => {
         this.userList.delete(userId);
-      })
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Delete user avatar
+  @action deleteAvatar = async (avatarId: string) => {
+    try {
+      await Admins.deleteAvatar(avatarId);
     } catch (e) {
       console.log(e);
     }
@@ -183,4 +193,33 @@ export default class UserStore {
 
     return returnArr;
   }
+
+  //List roles
+  @observable roles = observable.map(new Map<string, IRole>());
+
+  //Load roles
+  @action loadRoles = async () => {
+    try {
+      const loadedRoles = await Admins.listRoles();
+      runInAction(() => {
+        loadedRoles.forEach((role) => {
+          this.roles.set(role.id, role);
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Role details
+  @observable currentRole: IRole | null = null;
+
+  //Get role details
+  @action loadCurrentRole = async (roleId: string) => {
+    try {
+      this.currentRole = await Admins.roleDetails(roleId);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 }

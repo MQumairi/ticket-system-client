@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { IUser } from "../../../../Models/user";
 import { Grid, GridColumn, Button } from "semantic-ui-react";
 import Avatar from "../../../Users/Avatar/Avatar";
 import UserManagerEdit from "./UserManagerEdit";
 import "./userManager.css";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import Store from "../../../App/Store/rootStore";
 
 interface IProps {
   user: IUser;
@@ -12,10 +13,27 @@ interface IProps {
 }
 
 const UserManager: React.FC<IProps> = ({ user, setManagedUser }) => {
-
   let history = useHistory();
 
   const [editingUserMode, setEditingUserMode] = useState<boolean>(false);
+
+  const store = useContext(Store);
+  const { loadUserList, deleteAvatar } = store.userStore;
+
+  const handleDeleteAvatar = () => {
+
+    if (user.avatar) {
+
+      deleteAvatar(user.avatar.id)
+      .then(() => {
+        loadUserList();
+      })
+      .then(() => {
+        setManagedUser(null);
+      });
+    }
+
+  };
 
   return (
     <div>
@@ -45,8 +63,22 @@ const UserManager: React.FC<IProps> = ({ user, setManagedUser }) => {
                 >
                   Edit User
                 </Button>
-                {user.avatar && <Button className="mainButton">Delete Avatar</Button>}
-                <Button className="mainButton" onClick={() => history.push("/admin-console/users/" +  user.id +"/delete")}>Delete User</Button>
+                {user.avatar && (
+                  <Button
+                    className="mainButton"
+                    onClick={() => handleDeleteAvatar()}
+                  >
+                    Delete Avatar
+                  </Button>
+                )}
+                <Button
+                  className="mainButton"
+                  onClick={() =>
+                    history.push("/admin-console/users/" + user.id + "/delete")
+                  }
+                >
+                  Delete User
+                </Button>
               </div>
             </div>
           </GridColumn>

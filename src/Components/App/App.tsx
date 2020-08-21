@@ -16,8 +16,13 @@ import { observer } from "mobx-react-lite";
 import Profile from "../Profile/Profile";
 import Archives from "../Archives/Archives";
 import DevConsole from "../Developer Console/DevConsole";
-import AdminPanel from "../ACP/AdminPanel";
+import UsersACP from "../ACP/UsersACP/UsersACP";
+import RolesACP from "../ACP/RolesACP/RolesACP";
+import ProductsACP from "../ACP/ProductsACP/ProductsACP";
+import StatusesACP from "../ACP/StatusesACP/StatusesACP";
+
 import DeleteConfirmationUser from "../DeleteConfirmationUser/DeleteConfirmationUser";
+import RolesManager from "../ACP/RolesACP/RolesManager/RolesManager";
 
 function App() {
   const store = useContext(Store);
@@ -57,16 +62,33 @@ function App() {
       <Navbar />
       <div id="mainContentBody">
         <Switch>
+
           <Route exact path={["/", "/tickets"]} component={Tickets} />
           <Route exact path="/tickets/new" component={TicketsNew} />
           <Route exact path="/tickets/:id" component={TicketDetails} />
           <Route exact path="/tickets/:id/delete" component={DeleteConfirmation} />
           <Route exact path="/tickets/:id/edit" component={TicketsEdit} />
           <Route exact path="/tickets/:id/developer-console" component={DevConsole} />
+
           <Route exact path="/archives"  component={Archives} />
+
           <Route exact path="/profile"  component={Profile} />
-          <Route exact path="/admin-console"  component={AdminPanel} />
-          <Route exact path="/admin-console/users/:id/delete"  component={DeleteConfirmationUser} />
+
+          <Route exact path={["/acp", "/acp/users/"]} component={UsersACP} />
+
+          <Route exact path="/acp/users/:id" component={UsersACP} />
+          <Route exact path="/acp/users/:id/delete"  component={DeleteConfirmationUser} />
+
+          <Route exact path="/acp/roles"  component={RolesACP} />
+          <Route exact path="/acp/roles/:id"  component={RolesManager} />
+          
+          <Route exact path="/acp/products"  component={ProductsACP} />
+          <Route exact path="/acp/products/:id"  component={RolesManager} />
+          <Route exact path="/acp/products/:id/delete"  component={RolesManager} />
+
+          <Route exact path="/acp/statuses"  component={StatusesACP} />
+          <Route exact path="/acp/statuses/:id"  component={RolesManager} />
+          <Route exact path="/acp/statuses/:id/delete"  component={RolesManager} />
         </Switch>
       </div>
       <Footer />

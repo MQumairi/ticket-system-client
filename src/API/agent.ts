@@ -6,6 +6,7 @@ import { IUser } from "../Models/user";
 import { IUserForm } from "../Models/userForm";
 import { IUserFormGeneral } from "../Models/userFormGeneral";
 import { ITicketForm } from "../Models/ticketForm";
+import {IRole} from "../Models/role";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -80,7 +81,10 @@ const Admins = {
   listUsers: (): Promise<IUser[]> => requests.get("/users/list"),
   userDetails: (userId : string): Promise<IUser> => requests.get("/users/" + userId),
   editUser: (userId: string, user: IUserFormGeneral) => requests.put("/users/" + userId, user),
-  deleteUser: (userId: string) => requests.delete("/users/" + userId)
+  deleteUser: (userId: string) => requests.delete("/users/" + userId),
+  deleteAvatar: (avatarId: string) => requests.delete("/avatars/" + avatarId),
+  listRoles: (): Promise<IRole[]> => requests.get("/roles"),
+  roleDetails: (roleId : string): Promise<IRole> => requests.get("/roles/" + roleId)
 }
 
 const Archives = {

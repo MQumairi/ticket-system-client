@@ -1,15 +1,14 @@
 import React from "react";
 import { Card, Button } from "semantic-ui-react";
-import { IUser } from "../../../../Models/user";
-import Avatar from "../../../Users/Avatar/Avatar";
+import { IUser } from "../../../../../Models/user";
+import Avatar from "../../../../Users/Avatar/Avatar";
 import "./userCard.css";
 
 interface IProps {
   user: IUser;
-  setManagedUser: (user: IUser) => void;
 }
 
-const UserCard: React.FC<IProps> = ({ user, setManagedUser }) => {
+const UserCard: React.FC<IProps> = ({ user }) => {
   return (
     <Card>
       <Card.Content>
@@ -22,9 +21,6 @@ const UserCard: React.FC<IProps> = ({ user, setManagedUser }) => {
         <Button
           className="mainButton ticketNewSubmit"
           content="Manage"
-          onClick={() => {
-            setManagedUser(user);
-          }}
         />
       </Card.Content>
     </Card>
