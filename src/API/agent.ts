@@ -7,6 +7,7 @@ import { IUserForm } from "../Models/userForm";
 import { IUserFormGeneral } from "../Models/userFormGeneral";
 import { ITicketForm } from "../Models/ticketForm";
 import {IRole} from "../Models/role";
+import {IRoleForm} from "../Models/roleForm";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -54,8 +55,10 @@ const Comments = {
 
 const Products = {
   list: (): Promise<IProduct[]> => requests.get("/products"),
-  details: (product_id: string): Promise<ITicket> =>
-    requests.get("/products/" + product_id),
+  details: (product_id: string): Promise<ITicket> => requests.get("/products/" + product_id),
+  add: (product: IProduct) => requests.post("/products", product),
+  edit: (product_id: string, product: IProduct) => requests.put("/products/" + product_id, product),
+  delete: (product_id: string) => requests.delete("/products/" + product_id)
 };
 
 const Status = {
@@ -84,7 +87,13 @@ const Admins = {
   deleteUser: (userId: string) => requests.delete("/users/" + userId),
   deleteAvatar: (avatarId: string) => requests.delete("/avatars/" + avatarId),
   listRoles: (): Promise<IRole[]> => requests.get("/roles"),
-  roleDetails: (roleId : string): Promise<IRole> => requests.get("/roles/" + roleId)
+  roleDetails: (roleId : string): Promise<IRole> => requests.get("/roles/" + roleId),
+  listRoleUsers: (roleName : string): Promise<IUser[]> => requests.get("/users/list/" + roleName),
+  assignRole: (userId: string, roleForm: IRoleForm) => requests.put("/users/" + userId + "/assign", roleForm),
+  unassignRole: (userId: string, roleForm: IRoleForm) => requests.put("/users/" + userId + "/unassign", roleForm),
+  editRole: (roleId: string, roleForm: IRoleForm) => requests.put("/roles/" + roleId, roleForm),
+  deleteRole: (roleId: string) => requests.delete("/roles/" + roleId),
+  addRole: (roleForm: IRoleForm) => requests.post("/roles", roleForm)
 }
 
 const Archives = {

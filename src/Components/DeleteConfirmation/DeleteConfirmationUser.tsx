@@ -4,6 +4,7 @@ import Store from "../App/Store/rootStore";
 import { RouteComponentProps, Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { Form as FinalForm } from "react-final-form";
+import "./deleteconfirm.css";
 
 interface params {
   id: string;
@@ -48,7 +49,7 @@ const DeleteConfirmationUser: React.FC<RouteComponentProps<params>> = ({
         </GridColumn>
         <GridColumn width={2} />
         <GridColumn width={2}>
-          <Button className="mainButton" as={Link} to={"/admin-console"}>
+          <Button className="mainButton" as={Link} to={"/acp/users/" + match.params.id}>
             Back
           </Button>
         </GridColumn>

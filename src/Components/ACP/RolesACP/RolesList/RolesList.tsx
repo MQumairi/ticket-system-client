@@ -1,12 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Store from "../../../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
-import { Card } from "semantic-ui-react";
+import { Card, Button } from "semantic-ui-react";
 import RolesCard from "./RolesCard/RolesCard";
+import RolesNewForm from "./RolesNewForm";
 
 const RolesList = () => {
   const store = useContext(Store);
   const { loadRoles, roles } = store.userStore;
+
+    const [addingRole, setAddingRole] = useState<boolean>(false);
 
   useEffect(() => {
     console.log("renders");
@@ -24,6 +27,11 @@ const RolesList = () => {
           );
         })}
       </Card.Group>
+      <div className="acpAddButton">
+      <hr/>
+      {!addingRole && <Button className="mainButton addRoleButton" content="Add Role" onClick={() => setAddingRole(true)}/>}
+      {addingRole && <RolesNewForm setAddingRole={setAddingRole}/>}
+      </div>
     </div>
   );
 };

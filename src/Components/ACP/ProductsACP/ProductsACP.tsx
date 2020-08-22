@@ -8,12 +8,12 @@ import "../adminPanel.css";
 
 const UsersACP = () => {
   const store = useContext(Store);
-  const {loadUserList} = store.userStore;
+  const {loadProducts} = store.productStore;
   const [active, setActive] = useState<string>("Products");
 
    useEffect(() => {
-      loadUserList();
-    }, [loadUserList]);
+    loadProducts();
+    }, [loadProducts]);
 
   return (
     <div id="adminPanelBody">

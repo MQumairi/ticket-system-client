@@ -5,6 +5,7 @@ import UserManagerEdit from "./UserManagerEdit";
 import "./userManager.css";
 import { RouteComponentProps, Link } from "react-router-dom";
 import Store from "../../../App/Store/rootStore";
+import { observer } from "mobx-react-lite";
 
 interface params {
   id: string;
@@ -20,7 +21,7 @@ const UserManager: React.FC<RouteComponentProps<params>> = ({
 
   useEffect(() => {
     loadInspectedUser(match.params.id);
-  }, [loadInspectedUser, match.params]);
+  }, [loadInspectedUser, match.params.id]);
 
   const handleDeleteAvatar = () => {
     if (inspectedUser && inspectedUser.avatar) {
@@ -30,18 +31,16 @@ const UserManager: React.FC<RouteComponentProps<params>> = ({
     }
   };
 
-  if (!inspectedUser) return <div>404 err</div>;
-
   return (
     <div className="userManagerBody">
-      <Button
+      {!editingUserMode && <Button
             content="Back"
             className="mainButton"
             as={Link}
             to="/acp/users"
             floated="right"
-          />
-      {!editingUserMode && (
+          />}
+      {inspectedUser && !editingUserMode && (
         <div>
           <Avatar
             avatar={inspectedUser.avatar}
@@ -82,7 +81,7 @@ const UserManager: React.FC<RouteComponentProps<params>> = ({
                 className="mainButton fullWidth userManagerButton"
                 onClick={() =>
                   history.push(
-                    "/admin-console/users/" + inspectedUser.id + "/delete"
+                    "/acp/users/" + inspectedUser.id + "/delete"
                   )
                 }
               >
@@ -93,7 +92,7 @@ const UserManager: React.FC<RouteComponentProps<params>> = ({
         </div>
       )}
 
-      {editingUserMode && (
+      {inspectedUser && editingUserMode && (
         <UserManagerEdit
           user={inspectedUser}
           setEditingUserMode={setEditingUserMode}
@@ -103,4 +102,4 @@ const UserManager: React.FC<RouteComponentProps<params>> = ({
   );
 };
 
-export default UserManager;
+export default observer(UserManager);

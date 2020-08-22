@@ -9,6 +9,7 @@ import { ITicket } from "../../../Models/ticket";
 import { format } from "date-fns";
 import { IOption } from "../../../Models/options";
 import { IRole } from "../../../Models/role";
+import { IRoleForm } from "../../../Models/roleForm";
 
 export default class UserStore {
   constructor(public rootStore: Store) {}
@@ -222,4 +223,84 @@ export default class UserStore {
       console.log(e);
     }
   };
+
+  //Current role's users
+  @observable currentRoleUsers = observable.map(new Map<string, IUser>());
+
+  //Get role's users
+  @action loadCurrentRoleUsers = async (roleName: string) => {
+    try {
+      let loadedRoleUsers = await Admins.listRoleUsers(roleName);
+      runInAction(() => {
+        this.currentRoleUsers.clear();
+        loadedRoleUsers.forEach((user) => {
+          this.currentRoleUsers.set(user.id!, user);
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Add role
+  @action addRole = async (roleForm: IRoleForm) => {
+    try {
+      await Admins.addRole(roleForm);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Edit role
+  @action editRole = async (roleId: string, roleForm: IRoleForm) => {
+    try {
+      await Admins.editRole(roleId, roleForm);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Delete role
+  @action deleteRole = async (roleId: string) => {
+    try {
+      await Admins.deleteRole(roleId);
+      runInAction(() => {
+        this.roles.delete(roleId);
+      })
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Assign role
+  @action assignRole = async (userId: string, roleForm: IRoleForm) => {
+    try {
+      await Admins.assignRole(userId, roleForm);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //Unassign role
+  @action unassignRole = async (userId: string, roleForm: IRoleForm) => {
+    try {
+      await Admins.unassignRole(userId, roleForm);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //User options
+  @computed get userOptions() {
+    let returnArr: IOption[] = [];
+    this.userList.forEach((user) => {
+      returnArr.push({
+        key: user.id!,
+        text: user.username,
+        value: user.id!,
+      });
+    });
+
+    return returnArr;
+  }
 }

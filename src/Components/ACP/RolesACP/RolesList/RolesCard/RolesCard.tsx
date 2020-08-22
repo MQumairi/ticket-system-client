@@ -17,7 +17,7 @@ const RolesCard: React.FC<IProps> = ({ role }) => {
             <h4>{role.name}</h4>
           </Grid.Column>
           <Grid.Column>
-            <Button className="mainButton" floated="right" as={Link} to={"/admin-console/roles/" + role.id}>View</Button>
+            <Button className="mainButton" floated="right" as={Link} to={"/acp/roles/" + role.id}>View</Button>
           </Grid.Column>
         </Grid>
       </Card.Content>

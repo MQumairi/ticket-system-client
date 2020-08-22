@@ -1,0 +1,6 @@
+@import "../../../../Assets/Styles/style.css";
+
+.productListContainer hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
