@@ -38,7 +38,6 @@ export default class ProductStore {
     try {
       await Products.add(product);
       runInAction(() => {
-        // console.log("pushing " + product.product_name)
         this.products.push(product);
       });
     } catch (e) {

@@ -1,4 +1,4 @@
-import { observable, action, computed } from "mobx";
+import { observable, action, computed, runInAction } from "mobx";
 import { Store } from "./rootStore";
 import { IStatus } from "../../../Models/status";
 import { Status } from "../../../API/agent";
@@ -19,6 +19,41 @@ export default class StatusStore {
     }
   };
 
+  //Add status
+  @action addStatus = async (status: IStatus) => {
+    try {
+      await Status.add(status);
+      runInAction(() => {
+        this.statuses.push(status);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+
+  @action editStatus = async (status_id: string, status: IStatus) => {
+    try {
+      await Status.edit(status_id, status);
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+
+  @action deleteStatus = async (status_id: string) => {
+    try {
+      await Status.delete(status_id);
+      runInAction(() => {
+        this.statuses = this.statuses.filter(
+          (status) => status.status_id?.toString() !== status_id
+        );
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   //Tickt options for selector inputs
   @computed get statusOptions() {
     let returnArr: IOption[] = [];
@@ -33,4 +68,9 @@ export default class StatusStore {
 
     return returnArr;
   }
+
+  statusIsDefaultOptions : IOption[] = [
+    {key: 0, text: "Default", value: true},
+    {key: 1, text: "Regular", value: false}
+  ]
 }

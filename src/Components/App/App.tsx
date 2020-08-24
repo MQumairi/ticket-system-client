@@ -25,6 +25,7 @@ import DeleteConfirmationUser from "../DeleteConfirmation/DeleteConfirmationUser
 import RolesManager from "../ACP/RolesACP/RolesManager/RolesManager";
 import DeleteConfirmationRole from "../DeleteConfirmation/DeleteConfirmationRole";
 import DeleteConfirmationProduct from "../DeleteConfirmation/DeleteConfirmationProduct";
+import DeleteConfirmationStatus from "../DeleteConfirmation/DeleteConfirmationStatus";
 
 function App() {
   const store = useContext(Store);
@@ -96,8 +97,7 @@ function App() {
           <Route exact path="/acp/products/:id/delete" component={DeleteConfirmationProduct}/>
 
           <Route exact path="/acp/statuses" component={StatusesACP} />
-          <Route exact path="/acp/statuses/:id" component={RolesManager} />
-          <Route exact path="/acp/statuses/:id/delete" component={RolesManager}/>
+          <Route exact path="/acp/statuses/:id/delete" component={DeleteConfirmationStatus}/>
         </Switch>
       </div>
       <Footer />

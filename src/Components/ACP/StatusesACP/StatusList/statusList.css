@@ -1,0 +1,12 @@
+@import "../../../../Assets/Styles/style.css";
+
+.statusListContainer hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.statusAddName {
+    width: 60%;
+    padding-left: 10px;
+    margin-right: 7px;
+}

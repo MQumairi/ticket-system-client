@@ -64,6 +64,9 @@ const Products = {
 const Status = {
   list: (): Promise<IStatus[]> => requests.get("/status"),
   details: (status_id: string): Promise<ITicket> => requests.get("/status/" + status_id),
+  add: (status: IStatus) => requests.post("/status", status),
+  edit: (status_id: string, status: IStatus) => requests.put("/status/" + status_id, status),
+  delete: (status_id: string) => requests.delete("/status/" + status_id)
 };
 
 const Users = {

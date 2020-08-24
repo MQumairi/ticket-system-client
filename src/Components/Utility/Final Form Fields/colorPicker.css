@@ -1,0 +1,15 @@
+@import "../../../Assets/Styles/style.css";
+
+.popOver {
+    position: absolute;
+    background: var(--body-bg-color-1);
+    z-index: 2;
+    text-align: center;
+}
+
+.statusSampleCircle {
+    border-radius: 100%;
+    width: 35px;
+    height: 35px;
+    border: 1px var(--body-bg-color-3) solid;
+}
