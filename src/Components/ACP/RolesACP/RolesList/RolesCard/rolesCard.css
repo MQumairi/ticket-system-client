@@ -1,0 +1,11 @@
+@import "../../../../../Assets/Styles/style.css";
+
+.rolesCard {
+    background: red !important;
+}
+
+.roleCardTitle {
+    display: flex !important;
+    align-items: center !important;
+    padding-left: 30px !important;
+}

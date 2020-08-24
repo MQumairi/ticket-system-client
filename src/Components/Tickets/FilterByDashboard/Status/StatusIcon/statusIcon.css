@@ -17,28 +17,11 @@
     border-radius: 100%;
 }
 
-.circle-orange {
-    width: 20px;
-    height: 20px;
-    background-color: #e68a00;
-    border-radius: 100%;
-}
-
-.circle-yellow {
-    width: 20px;
-    height: 20px;
-    background-color: #f3cb16;
-    border-radius: 100%;
-}
-
-.circle-green {
-    width: 20px;
-    height: 20px;
-    background-color: #45B510;
-    border-radius: 100%;
-}
-
 .statusContent {
+    width: 70%;
     text-align: center;
     flex-grow: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

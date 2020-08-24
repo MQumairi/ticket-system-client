@@ -1,0 +1,38 @@
+@import "../../../../../Assets/Styles/style.css";
+
+.cardRow {
+    display: flex;
+    align-items: center;
+}
+
+.cardName {
+    width: 70%;
+    text-align: center;
+}
+
+.cardEditButton {
+    margin-left: 10px !important;
+    border-radius: 5px !important;
+}
+
+.cardDelButton {
+    margin-left: 10px !important;
+    border-radius: 5px !important;
+}
+
+.productNameCol {
+    /* background: purple; */
+    text-align: center !important;
+}
+
+.editCol {
+    /* background: green !important; */
+    text-align: center !important;
+    padding-left: 40px !important;
+}
+
+.delCol {
+    /* background: pink !important; */
+    text-align: center !important;
+    padding-right: 40px !important;
+}

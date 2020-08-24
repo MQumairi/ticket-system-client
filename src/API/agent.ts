@@ -5,6 +5,9 @@ import { IStatus } from "../Models/status";
 import { IUser } from "../Models/user";
 import { IUserForm } from "../Models/userForm";
 import { IUserFormGeneral } from "../Models/userFormGeneral";
+import { ITicketForm } from "../Models/ticketForm";
+import {IRole} from "../Models/role";
+import {IRoleForm} from "../Models/roleForm";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -52,13 +55,18 @@ const Comments = {
 
 const Products = {
   list: (): Promise<IProduct[]> => requests.get("/products"),
-  details: (product_id: string): Promise<ITicket> =>
-    requests.get("/products/" + product_id),
+  details: (product_id: string): Promise<ITicket> => requests.get("/products/" + product_id),
+  add: (product: IProduct) => requests.post("/products", product),
+  edit: (product_id: string, product: IProduct) => requests.put("/products/" + product_id, product),
+  delete: (product_id: string) => requests.delete("/products/" + product_id)
 };
 
 const Status = {
   list: (): Promise<IStatus[]> => requests.get("/status"),
   details: (status_id: string): Promise<ITicket> => requests.get("/status/" + status_id),
+  add: (status: IStatus) => requests.post("/status", status),
+  edit: (status_id: string, status: IStatus) => requests.put("/status/" + status_id, status),
+  delete: (status_id: string) => requests.delete("/status/" + status_id)
 };
 
 const Users = {
@@ -70,11 +78,29 @@ const Users = {
 };
 
 const Developers = {
-  listAssignedTickets: (dev_id : string): Promise<ITicket[]> => requests.get("/developers/" + dev_id + "/tickets")
+  List: (): Promise<IUser[]> => requests.get("/developers"),
+  listAssignedTickets: (dev_id : string): Promise<ITicket[]> => requests.get("/developers/" + dev_id + "/tickets"),
+  manage: (post_id: string, ticket: ITicketForm) => requests.put("/tickets/" + post_id + "/manage", ticket) 
+}
+
+const Admins = {
+  listUsers: (): Promise<IUser[]> => requests.get("/users/list"),
+  userDetails: (userId : string): Promise<IUser> => requests.get("/users/" + userId),
+  editUser: (userId: string, user: IUserFormGeneral) => requests.put("/users/" + userId, user),
+  deleteUser: (userId: string) => requests.delete("/users/" + userId),
+  deleteAvatar: (avatarId: string) => requests.delete("/avatars/" + avatarId),
+  listRoles: (): Promise<IRole[]> => requests.get("/roles"),
+  roleDetails: (roleId : string): Promise<IRole> => requests.get("/roles/" + roleId),
+  listRoleUsers: (roleName : string): Promise<IUser[]> => requests.get("/users/list/" + roleName),
+  assignRole: (userId: string, roleForm: IRoleForm) => requests.put("/users/" + userId + "/assign", roleForm),
+  unassignRole: (userId: string, roleForm: IRoleForm) => requests.put("/users/" + userId + "/unassign", roleForm),
+  editRole: (roleId: string, roleForm: IRoleForm) => requests.put("/roles/" + roleId, roleForm),
+  deleteRole: (roleId: string) => requests.delete("/roles/" + roleId),
+  addRole: (roleForm: IRoleForm) => requests.post("/roles", roleForm)
 }
 
 const Archives = {
   list: () => requests.get("/archives")
 }
 
-export { Tickets, Comments, Products, Status, Users, Developers, Archives};
+export { Tickets, Comments, Products, Status, Users, Developers, Admins, Archives};

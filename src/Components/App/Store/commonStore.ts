@@ -1,5 +1,6 @@
 import { action, observable, reaction } from "mobx";
 import { Store } from "./rootStore";
+import { IOption } from "../../../Models/options";
 
 export default class CommonStore {
 
@@ -35,4 +36,17 @@ export default class CommonStore {
     this.ticketsFromProfile = bool;
   }
   
+  //Is Archived options
+  @observable isArchivedOptions : IOption[] = [
+    {
+      key: 0,
+      text: "Current",
+      value: false,
+    },
+    {
+      key: 1,
+      text: "Archived",
+      value: true,
+    }
+  ]
 }

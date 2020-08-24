@@ -11,17 +11,28 @@ import Store from "./Store/rootStore";
 import LoginPage from "../Login/LoginPage";
 import LandingPage from "../Landing Page/LandingPage";
 import RegisterPage from "../Register/RegisterPage";
-import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirm";
+import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmationTicket";
 import { observer } from "mobx-react-lite";
 import Profile from "../Profile/Profile";
 import Archives from "../Archives/Archives";
+import DevConsole from "../Developer Console/DevConsole";
+import UsersACP from "../ACP/UsersACP/UsersACP";
+import RolesACP from "../ACP/RolesACP/RolesACP";
+import ProductsACP from "../ACP/ProductsACP/ProductsACP";
+import StatusesACP from "../ACP/StatusesACP/StatusesACP";
+import UserManager from "../ACP/UsersACP/UserManager/UserManager";
+import DeleteConfirmationUser from "../DeleteConfirmation/DeleteConfirmationUser";
+import RolesManager from "../ACP/RolesACP/RolesManager/RolesManager";
+import DeleteConfirmationRole from "../DeleteConfirmation/DeleteConfirmationRole";
+import DeleteConfirmationProduct from "../DeleteConfirmation/DeleteConfirmationProduct";
+import DeleteConfirmationStatus from "../DeleteConfirmation/DeleteConfirmationStatus";
 
 function App() {
   const store = useContext(Store);
   const { token, appLoaded, setAppLoaded } = store.commonStore;
   const { getCurrentUser, isLogged } = store.userStore;
-  const {loadProducts} = store.productStore;
-  const {loadStatuses} = store.statusStore;
+  const { loadProducts } = store.productStore;
+  const { loadStatuses } = store.statusStore;
 
   useEffect(() => {
     if (token) {
@@ -57,10 +68,36 @@ function App() {
           <Route exact path={["/", "/tickets"]} component={Tickets} />
           <Route exact path="/tickets/new" component={TicketsNew} />
           <Route exact path="/tickets/:id" component={TicketDetails} />
-          <Route exact path="/tickets/:id/delete" component={DeleteConfirmation} />
+          <Route
+            exact
+            path="/tickets/:id/delete"
+            component={DeleteConfirmation}
+          />
           <Route exact path="/tickets/:id/edit" component={TicketsEdit} />
-          <Route exact path="/archives"  component={Archives} />
-          <Route exact path="/profile"  component={Profile} />
+          <Route
+            exact
+            path="/tickets/:id/developer-console"
+            component={DevConsole}
+          />
+
+          <Route exact path="/archives" component={Archives} />
+
+          <Route exact path="/profile" component={Profile} />
+
+          <Route exact path={["/acp", "/acp/users/"]} component={UsersACP} />
+
+          <Route exact path="/acp/users/:id" component={UserManager} />
+          <Route exact path="/acp/users/:id/delete" component={DeleteConfirmationUser}/>
+
+          <Route exact path="/acp/roles" component={RolesACP} />
+          <Route exact path="/acp/roles/:id" component={RolesManager} />
+          <Route exact path="/acp/roles/:id/delete" component={DeleteConfirmationRole}/>
+
+          <Route exact path="/acp/products" component={ProductsACP} />
+          <Route exact path="/acp/products/:id/delete" component={DeleteConfirmationProduct}/>
+
+          <Route exact path="/acp/statuses" component={StatusesACP} />
+          <Route exact path="/acp/statuses/:id/delete" component={DeleteConfirmationStatus}/>
         </Switch>
       </div>
       <Footer />

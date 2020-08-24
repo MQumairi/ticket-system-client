@@ -1,0 +1,23 @@
+@import "../../Assets/Styles/style.css";
+
+#adminPanelBody {
+    background-color: var(--body-bg-color-1);
+    padding: var(--default-padding);
+    border-radius: var(--container-border-radius);
+    margin: auto auto;
+    margin-top: 55px;
+    width: var(--body-width);
+}
+
+.ACPmainContent {
+    padding-top: 10px !important;
+}
+
+.acpAddButton {
+    margin-top: 20px !important;
+    text-align: center !important;
+}
+
+.acpAddButton hr {
+    margin-bottom: 20px !important;
+}

@@ -1,0 +1,43 @@
+@import "../../../../Assets/Styles/style.css";
+
+.roleManagerBody {
+    background: var(--body-bg-color-1);
+    padding: var(--default-padding);
+    border-radius: var(--container-border-radius);
+    width: var(--small-container-width);
+    margin: auto auto;
+    margin-top: 50px;
+}
+
+.roleManagerHeader {
+    width: 100%;
+}
+.roleManagerHeader h1 {
+    text-align: center;
+}
+
+.rolesUserItem {
+    background-color: var(--body-bg-color-3);
+    border-radius: var(--container-border-radius);
+    margin-top: 20px;
+}
+
+.rolesUserItem p {
+    text-align: center;
+    font-size: 18px;
+    padding-top: 5px;
+}
+
+.roleManagerHR {
+    margin-top: 30px;
+}
+
+.roleManagerButtonGroup {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.rolesManagerBtn {
+    width: 100%;
+    margin-top: 10px !important;
+}
