@@ -34,6 +34,15 @@ export default class ProductStore {
     return returnArr;
   }
 
+  @computed get product_ids() {
+    let returnArr: number[] = [];
+    this.products.forEach((product) => {
+      returnArr.push(product.product_id!);
+    })
+    
+    return returnArr;
+  }
+
   @action addProduct = async (product: IProduct) => {
     try {
       await Products.add(product);

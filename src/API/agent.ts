@@ -8,6 +8,7 @@ import { IUserFormGeneral } from "../Models/userFormGeneral";
 import { ITicketForm } from "../Models/ticketForm";
 import {IRole} from "../Models/role";
 import {IRoleForm} from "../Models/roleForm";
+import { IFilters } from "../Models/filters";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -32,6 +33,7 @@ const config = {
 
 const requests = {
   get: (url: string) => axios.get(url).then(responseBody),
+  get_with_body: (url: string, body: {}) => axios.post(url, body).then(responseBody),
   post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
   post_form: (url: string, body: {}) => axios.post(url, body, config).then(responseBody),
   put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
@@ -45,6 +47,7 @@ const Tickets = {
   create: (ticket: FormData) => requests.post_form("/tickets", ticket),
   edit: (ticket_id: string, ticket: FormData) => requests.put_form("/tickets/" + ticket_id, ticket),
   delete: (post_id: string) => requests.delete("/tickets/" + post_id),
+  filter: (filters: IFilters): Promise<ITicket[]> => requests.get_with_body("/tickets/filter", filters)
 };
 
 const Comments = {

@@ -8,15 +8,32 @@ import { observer } from "mobx-react-lite";
 
 const Tickets = () => {
   const store = useContext(Store);
-  const { loadTickets } = store.ticketStore;
+  const { loadTickets, loadFilteredTickets } = store.ticketStore;
   const { loadStatuses } = store.statusStore;
   const { loadProducts } = store.productStore;
+  const {
+    isFiltered,
+    filters,
+    defaultStatuses,
+    defaultProducts,
+  } = store.filterStore;
 
   useEffect(() => {
-    loadTickets();
+    if (!isFiltered) {
+      loadTickets();
+    }
     loadStatuses();
     loadProducts();
-  }, [loadTickets, loadStatuses, loadProducts]);
+  }, [
+    loadTickets,
+    isFiltered,
+    defaultStatuses,
+    defaultProducts,
+    loadFilteredTickets,
+    filters,
+    loadStatuses,
+    loadProducts  
+  ]);
 
   return (
     <div>

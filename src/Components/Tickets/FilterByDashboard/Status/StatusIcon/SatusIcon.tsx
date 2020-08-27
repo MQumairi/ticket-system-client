@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import "./statusIcon.css";
 import Store from "../../../../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
@@ -13,26 +13,20 @@ const SatusIcon: React.FC<IProps> = (props) => {
   const [pressed, setPressed] = useState(false);
 
   const store = useContext(Store);
-  const {
-    filters,
-    filterTickets,
-    changeStatus,
-  } = store.filterStore;
+  const {filters, filterStatuses} = store.filterStore;
+  const {status_ids} = store.statusStore;
 
-  useEffect(() => {
-    if (!filters.status.includes(props.status.status_text)) {
-      setPressed(false);
-    }
-  }, [filters, props.status.status_text]);
+  let clickAbleStyle: dynamicStyle = {};
 
   const handleClick = () => {
     if (props.clickAble) {
       if (!pressed) {
-        changeStatus(props.status.status_text, true);
-        filterTickets();
+        if (filters.status_ids.length === status_ids.length) {
+          filters.product_ids = [];
+        }
+        filterStatuses(props.status.status_id!, "add");
       } else {
-        changeStatus(props.status.status_text, false);
-        filterTickets();
+        filterStatuses(props.status.status_id!, "remove");
       }
       setPressed(!pressed);
     }
@@ -42,16 +36,17 @@ const SatusIcon: React.FC<IProps> = (props) => {
     [key: string]: any;
   }
 
-  let clickAbleStyle: dynamicStyle = {};
 
   if (props.clickAble) {
     clickAbleStyle.cursor = "pointer";
     clickAbleStyle.marginTop = "10px";
+
+    if (filters.status_ids.includes(props.status.status_id!)) {
+      clickAbleStyle.border = "solid 2px green";
+    }
   }
 
-  if (pressed && filters.status.includes(props.status.status_text)) {
-    clickAbleStyle.border = "solid 2px green";
-  }
+ 
 
   const circleColor = () => {
     return {backgroundColor: props.status.status_color}

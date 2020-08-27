@@ -6,18 +6,14 @@ import 'react-day-picker/lib/style.css';
 
 const Dates = () => {
   const store = useContext(Store);
-  const {changeFromDate, changeToDate, filterTickets} = store.filterStore;
+  const {setDateFrom, setDateTo} = store.filterStore;
 
   const handleChangeFrom = (day: any) => {
-    let fromDate = Date.parse(day);
-    changeFromDate(fromDate);
-    filterTickets();
+    setDateFrom(day);
   };
 
   const handleChangeTo = (day: any) => {
-    let toDate = Date.parse(day);
-    changeToDate(toDate);
-    filterTickets();
+    setDateTo(day);
   };
 
   return (
