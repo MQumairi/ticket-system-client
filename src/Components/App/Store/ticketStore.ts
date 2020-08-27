@@ -1,4 +1,4 @@
-import { observable, action, runInAction } from "mobx";
+import { observable, action, runInAction, toJS } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
 import { Tickets, Developers } from "../../../API/agent";
@@ -6,6 +6,7 @@ import { Archives } from "../../../API/agent";
 import { format } from "date-fns";
 import { IComment } from "../../../Models/comment";
 import { ITicketForm } from "../../../Models/ticketForm";
+import { IFilters } from "../../../Models/filters";
 
 export default class TicketStore {
   constructor(public rootStore: Store) {}
@@ -106,5 +107,24 @@ export default class TicketStore {
     }
   }
 
+  //Filter Tickets
+  @action loadFilteredTickets = async (filters: IFilters) => {
+    try {
+      console.log("Loading filtered ticketss...")
+      const loadedFilteredTickets = await Tickets.filter(filters);
+      console.log(toJS(loadedFilteredTickets));
+      runInAction(() => {
 
+        this.ticketsRegistry.clear();
+
+        loadedFilteredTickets.forEach((ticket) => {
+          let ticketDate = Date.parse(ticket.date_time);
+          ticket.display_date = format(ticketDate, "dd/MM/yyyy");
+          this.ticketsRegistry.set(ticket.post_id!, ticket);
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }

@@ -1,15 +1,7 @@
-import { observable, action, computed } from "mobx";
-import { ITicket } from "../../../Models/ticket";
+import { observable, action, toJS } from "mobx";
 import { Store } from "./rootStore";
-
-interface IfilterObject {
-  status: string[];
-  products: string[];
-  dates: {
-    From: number;
-    To: number;
-  };
-}
+import { IFilters } from "../../../Models/filters";
+import { format } from "date-fns";
 
 const minDate = Date.parse("0001-01-01");
 const maxDate = Date.parse("9999-12-30");
@@ -17,142 +9,60 @@ const maxDate = Date.parse("9999-12-30");
 export default class FilterStore {
   constructor(public rootStore: Store) {}
 
-  //Getting the statuses from the statusStore
-  @observable statuses = this.rootStore.statusStore.statuses;
-
-  //LOGIC
-
-  //Initialize a filterobject. This will store active filters.
-  @observable filters: IfilterObject = {
-    status: [],
-    products: [],
-    dates: {
-      From: minDate,
-      To: maxDate,
-    },
+  defaultFilters: IFilters = {
+    product_ids: [],
+    status_ids: [],
+    date_from: format(minDate, "MM/dd/yyyy h:m:s a"),
+    date_to: format(maxDate, "MM/dd/yyyy h:m:s a"),
   };
 
-  @computed get ticketsRegistry() {
-    return observable.map(this.rootStore.ticketStore.ticketsRegistry);
+  @observable isFiltered = false;
+
+  @action setIsFiltered = (isFiltered: boolean) => {
+    this.isFiltered = isFiltered;
+    console.log(toJS(this.isFiltered));
   }
 
-  //Intiialize filitered tickets, a MAP of ITickets from the ticket store registry
-  @observable filteredTickets: Map<number, ITicket> = observable.map(
-    this.ticketsRegistry
-  );
+  @observable filters: IFilters = { ...this.defaultFilters };
 
-  //Copy ticketsRegistry into filteredTickets
-  @action loadFilteredTickets = () => {
-    this.filteredTickets = observable.map().merge(this.ticketsRegistry);
-  };
+  @action filterProducts = (product_id: number) => {
 
-  //The main method that filters the filteredTickets object.
-  @action filterTickets = () => {
-    //When run, first copy ticketsRegistry into filteredTickets again, resetig the object.
-    this.loadFilteredTickets();
-
-    //Filter status
-    if (this.filters.status.length !== 0) {
-      this.filterStatus(this.filters.status);
-    }
-
-    //Filter products
-    if (this.filters.products.length !== 0) {
-      this.filters.products.forEach((product) => {
-        this.filterProduct(this.filters.products);
+    if(!this.filters.product_ids.includes(product_id)) {
+      this.filters.product_ids.push(product_id);
+    } else {
+      this.filters.product_ids = this.filters.product_ids.filter((product_id_to_remove) => {
+        return product_id_to_remove !== product_id;
       });
     }
 
-    //Filter dates
-    this.filterTicketsByDate();
+    console.log(toJS(this.filters));
   };
 
-  @action filterTicketsByDate = () => {
-    this.filterDate(this.filters.dates.From, this.filters.dates.To);
-  };
+  @action filterStatuses = (status_id: number) => {
 
-  @action selectAll = () => {
-    this.loadFilteredTickets();
-    this.filters = {
-      status: [],
-      products: [],
-      dates: {
-        From: minDate,
-        To: maxDate,
-      },
-    };
-  };
-
-  @action changeStatus = (status: string, toAdd: boolean) => {
-    if (toAdd) {
-      this.filters.status.push(status);
+    if(!this.filters.status_ids.includes(status_id)) {
+      this.filters.status_ids.push(status_id);
     } else {
-      this.filters.status = this.filters.status.filter((statusToRemove) => {
-        return statusToRemove !== status;
+      this.filters.status_ids = this.filters.status_ids.filter((status_id_to_remove) => {
+        return status_id_to_remove !== status_id;
       });
     }
+
+    console.log(toJS(this.filters));
   };
 
-  @action changeProduct = (product: string, toAdd: boolean) => {
-    if (toAdd) {
-      this.filters.products.push(product);
-    } else {
-      this.filters.products = this.filters.products.filter(
-        (productToRemove) => {
-          return productToRemove !== product;
-        }
-      );
-    }
+  @action setDateFrom = (date_from: number) => {
+    this.filters.date_from = format(date_from, "MM/dd/yyyy h:m:s a");
+    console.log(toJS(this.filters));
   };
 
-  @action changeFromDate = (date: number) => {
-    if (date === null) {
-      this.filters.dates.From = minDate;
-    } else {
-      this.filters.dates.From = date;
-    }
+  @action setDateTo = (date_to: number) => {
+    this.filters.date_to = format(date_to, "MM/dd/yyyy h:m:s a");
+    console.log(toJS(this.filters));
   };
 
-  @action changeToDate = (date: number) => {
-    if (date === null) {
-      this.filters.dates.To = maxDate;
-    } else {
-      this.filters.dates.To = date;
-    }
+  @action resetFilters = () => {
+    this.filters = { ...this.defaultFilters };
   };
 
-  @action filteredTicketsRemove = (id: string) => {
-    // this.filteredTickets.delete(+id);
-    this.filteredTickets.forEach((ticket) => {
-      if (ticket.post_id?.toString() === id) {
-        this.filteredTickets.delete(+id);
-      }
-    });
-    this.rootStore.ticketStore.loadTickets();
-  };
-
-  //HELPER FUNCTIONS
-  //Takes a filter criterion, and filters "tickets"
-  filterStatus = (status: string[]) => {
-    this.filteredTickets.forEach((ticket) => {
-      if (!status.includes(ticket.status.status_text))
-        this.filteredTickets.delete(ticket.post_id!);
-    });
-  };
-
-  filterProduct = (product: string[]) => {
-    this.filteredTickets.forEach((ticket) => {
-      if (!product.includes(ticket.product.product_name)) {
-        this.filteredTickets.delete(ticket.post_id!);
-      }
-    });
-  };
-
-  filterDate = (fromDate: number, toDate: number) => {
-    this.filteredTickets.forEach((ticket) => {
-      let ticketDate = Date.parse(ticket.date_time);
-      if (!(ticketDate >= fromDate && ticketDate <= toDate))
-        this.filteredTickets.delete(ticket.post_id!);
-    });
-  };
 }

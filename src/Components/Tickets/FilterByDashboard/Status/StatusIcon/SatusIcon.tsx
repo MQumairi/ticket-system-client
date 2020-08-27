@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import "./statusIcon.css";
 import Store from "../../../../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
@@ -13,27 +13,11 @@ const SatusIcon: React.FC<IProps> = (props) => {
   const [pressed, setPressed] = useState(false);
 
   const store = useContext(Store);
-  const {
-    filters,
-    filterTickets,
-    changeStatus,
-  } = store.filterStore;
-
-  useEffect(() => {
-    if (!filters.status.includes(props.status.status_text)) {
-      setPressed(false);
-    }
-  }, [filters, props.status.status_text]);
+  const {filterStatuses} = store.filterStore;
 
   const handleClick = () => {
     if (props.clickAble) {
-      if (!pressed) {
-        changeStatus(props.status.status_text, true);
-        filterTickets();
-      } else {
-        changeStatus(props.status.status_text, false);
-        filterTickets();
-      }
+      filterStatuses(props.status.status_id!);
       setPressed(!pressed);
     }
   };
@@ -49,7 +33,7 @@ const SatusIcon: React.FC<IProps> = (props) => {
     clickAbleStyle.marginTop = "10px";
   }
 
-  if (pressed && filters.status.includes(props.status.status_text)) {
+  if (pressed) {
     clickAbleStyle.border = "solid 2px green";
   }
 

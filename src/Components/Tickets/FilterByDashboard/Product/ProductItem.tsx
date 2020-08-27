@@ -11,28 +11,12 @@ interface IProps {
 const ProductItem: React.FC<IProps> = (props) => {
 
   const store = useContext(Store);
-  const {
-    filters,
-    filterTickets,
-    changeProduct
-  } = store.filterStore;
+  const {filterProducts} = store.filterStore;
 
   const [pressed, setPressed] = useState(false);
 
-  useEffect(() => {
-    if (!filters.products.includes(props.name)) {
-      setPressed(false);
-    }
-  }, [filters, props.name]);
-
   const handleClick = (event: any) => {
-    if (!pressed) {
-      changeProduct(props.name, true);
-      filterTickets();
-    } else {
-      changeProduct(props.name, false);
-      filterTickets();
-    }
+    filterProducts(props.id)
     setPressed(!pressed);
   };
 
@@ -42,7 +26,7 @@ const ProductItem: React.FC<IProps> = (props) => {
 
   let clickAbleStyle: dynamicStyle = {};
 
-  if (pressed && filters.products.includes(props.name)) {
+  if (pressed) {
     clickAbleStyle.border = "solid 2px green";
   }
 
