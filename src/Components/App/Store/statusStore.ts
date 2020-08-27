@@ -69,6 +69,16 @@ export default class StatusStore {
     return returnArr;
   }
 
+  @computed get status_ids() {
+    let returnArr: number[] = [];
+
+    this.statuses.forEach((status) => {
+      returnArr.push(status.status_id!);
+    })
+
+    return returnArr;
+  }
+
   statusIsDefaultOptions : IOption[] = [
     {key: 0, text: "Default", value: true},
     {key: 1, text: "Regular", value: false}

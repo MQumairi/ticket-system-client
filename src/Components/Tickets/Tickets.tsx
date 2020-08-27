@@ -5,27 +5,35 @@ import { Grid } from "semantic-ui-react";
 import "./tickets.css";
 import Store from "../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 
 const Tickets = () => {
   const store = useContext(Store);
   const { loadTickets, loadFilteredTickets } = store.ticketStore;
   const { loadStatuses } = store.statusStore;
   const { loadProducts } = store.productStore;
-  const {isFiltered, filters} = store.filterStore;
+  const {
+    isFiltered,
+    filters,
+    defaultStatuses,
+    defaultProducts,
+  } = store.filterStore;
 
   useEffect(() => {
-    if(!isFiltered) {
-      console.log("loading tickets normally")
+    if (!isFiltered) {
       loadTickets();
-    } else {
-      console.log("loading tickets filtered")
-      console.log(toJS(filters));
-      loadFilteredTickets(filters)
     }
     loadStatuses();
     loadProducts();
-  }, [loadTickets, isFiltered, loadFilteredTickets, filters, loadStatuses, loadProducts]);
+  }, [
+    loadTickets,
+    isFiltered,
+    defaultStatuses,
+    defaultProducts,
+    loadFilteredTickets,
+    filters,
+    loadStatuses,
+    loadProducts  
+  ]);
 
   return (
     <div>

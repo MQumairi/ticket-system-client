@@ -21,31 +21,45 @@ export default class FilterStore {
   @action setIsFiltered = (isFiltered: boolean) => {
     this.isFiltered = isFiltered;
     console.log(toJS(this.isFiltered));
-  }
+  };
 
   @observable filters: IFilters = { ...this.defaultFilters };
 
-  @action filterProducts = (product_id: number) => {
-
-    if(!this.filters.product_ids.includes(product_id)) {
+  @action filterProducts = (product_id: number, action: string) => {
+    if (action === "add") {
+      console.log("adding...");
+      if (
+        this.filters.product_ids.length >=
+        this.rootStore.productStore.product_ids.length
+      )
+        this.filters.product_ids = [];
       this.filters.product_ids.push(product_id);
     } else {
-      this.filters.product_ids = this.filters.product_ids.filter((product_id_to_remove) => {
-        return product_id_to_remove !== product_id;
-      });
+      this.filters.product_ids = this.filters.product_ids.filter(
+        (product_id_to_remove) => {
+          return product_id_to_remove !== product_id;
+        }
+      );
     }
 
     console.log(toJS(this.filters));
   };
 
-  @action filterStatuses = (status_id: number) => {
-
-    if(!this.filters.status_ids.includes(status_id)) {
+  @action filterStatuses = (status_id: number, action: string) => {
+    if (action === "add") {
+      console.log("adding...");
+      if (
+        this.filters.status_ids.length >=
+        this.rootStore.statusStore.status_ids.length
+      )
+        this.filters.status_ids = [];
       this.filters.status_ids.push(status_id);
     } else {
-      this.filters.status_ids = this.filters.status_ids.filter((status_id_to_remove) => {
-        return status_id_to_remove !== status_id;
-      });
+      this.filters.status_ids = this.filters.status_ids.filter(
+        (status_id_to_remove) => {
+          return status_id_to_remove !== status_id;
+        }
+      );
     }
 
     console.log(toJS(this.filters));
@@ -61,8 +75,16 @@ export default class FilterStore {
     console.log(toJS(this.filters));
   };
 
+  @action defaultProducts = () => {
+    this.filters.product_ids = this.rootStore.productStore.product_ids;
+  };
+
+  @action defaultStatuses = () => {
+    this.filters.status_ids = this.rootStore.statusStore.status_ids;
+  };
+
+
   @action resetFilters = () => {
     this.filters = { ...this.defaultFilters };
   };
-
 }

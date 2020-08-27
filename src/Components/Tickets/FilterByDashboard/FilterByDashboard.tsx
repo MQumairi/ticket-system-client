@@ -6,13 +6,25 @@ import Dates from "./Dates/Dates";
 import { Button } from "semantic-ui-react";
 import Store from "../../App/Store/rootStore"
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 
 const FilterByDashboard = () => {
 
   const store = useContext(Store);
-  const { setIsFiltered } = store.filterStore;
+  const { setIsFiltered, filters, defaultStatuses, defaultProducts, resetFilters} = store.filterStore;
+  const {loadFilteredTickets} = store.ticketStore;
 
+
+  const handleFilter = () => {
+    setIsFiltered(true);
+    if(filters.status_ids.length === 0) defaultStatuses();
+    if(filters.product_ids.length === 0) defaultProducts();
+    loadFilteredTickets(filters);
+  }
+
+  const handleReset = () => {
+    setIsFiltered(false)
+    resetFilters();
+  }
   
   return (
     <div id="FilterDashboard">
@@ -24,8 +36,8 @@ const FilterByDashboard = () => {
       <hr />
       <Dates />
       <hr />
-      <Button onClick={() => setIsFiltered(true)} className="mainButton">FILTER</Button>
-      <Button onClick={() => setIsFiltered(false)} className="mainButton">RESET</Button>
+      <Button onClick={() => handleFilter()} className="mainButton" name="filterButton">FILTER</Button>
+      <Button onClick={() => handleReset()} className="mainButton" name="resetButton">RESET</Button>
     </div>
   );
 };
