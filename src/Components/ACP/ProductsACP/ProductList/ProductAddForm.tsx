@@ -21,7 +21,9 @@ const ProductAddForm: React.FC<IProps> = ({ setAddingProduct }) => {
         product_name: values.name
     }
 
-    addProduct(productToAdd);
+    addProduct(productToAdd).then(() => {
+      setAddingProduct(false);
+    });
 
   };
 

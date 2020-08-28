@@ -21,6 +21,7 @@ const RolesNewForm: React.FC<IProps> = ({ setAddingRole }) => {
 
     addRole(roleToAdd).then(() => {
       loadRoles();
+      setAddingRole(false);
     });
   };
 

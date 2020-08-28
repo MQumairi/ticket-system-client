@@ -162,7 +162,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
         </Grid>
       </div>
       {/* {revealReplyForm()} */}
-      {currentTicket.comments.map((comment) => {
+      {currentTicket.comments.sort((c1, c2) => Date.parse(c1.date_time) - Date.parse(c2.date_time)).map((comment) => {
         return (
           <div>
             <Comment comment={comment} />
