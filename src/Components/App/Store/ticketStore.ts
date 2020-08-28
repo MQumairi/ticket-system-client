@@ -107,6 +107,14 @@ export default class TicketStore {
     }
   };
 
+  @computed get sortedArchives () : ITicket[] {
+    let archives = Array.from(this.archivesRegistry.values()).sort((a1, a2) => {
+      return Date.parse(a1.date_time) - Date.parse(a2.date_time); 
+    })
+
+    return archives;
+  }
+
   //Manage tickets
   @action manageTicket = async (ticketId: number, ticket: ITicketForm) => {
     try {

@@ -5,16 +5,15 @@ import "./ticketList.css";
 import { ITicket } from "../../../../Models/ticket";
 import Store from "../../../App/Store/rootStore";
 
+interface IProps {
+  ticketsArr : ITicket[];
+}
 
-
-const TicketList = ({}) => {
-  
-  const store = useContext(Store);
-  const {sortedTickets} = store.ticketStore;
+const TicketList:React.FC<IProps> = ({ticketsArr}) => {
 
   return (
     <div id="ticketList">
-      {sortedTickets.map((ticket) => {
+      {ticketsArr.map((ticket) => {
         return <TicketItem key={ticket.post_id!} ticket={ticket} />;
       })}
     </div>

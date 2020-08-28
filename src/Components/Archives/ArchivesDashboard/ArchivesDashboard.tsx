@@ -2,11 +2,12 @@ import React, { useContext } from 'react'
 import Store from '../../App/Store/rootStore';
 import { Grid } from 'semantic-ui-react';
 import TicketList from '../../Tickets/TicketsDashboard/TicketList/TicketList';
+import { observer } from 'mobx-react-lite';
 
 const ArchivesDashboard = () => {
     const store = useContext(Store);
     const {
-      archivesRegistry,
+        sortedArchives,
     } = store.ticketStore;
     
     return (
@@ -22,9 +23,9 @@ const ArchivesDashboard = () => {
                 <Grid.Column width={2} className="remove-padding table-header"></Grid.Column>
             </Grid>
             <hr/>
-            <TicketList ticketsMap={archivesRegistry} />
+            <TicketList ticketsArr={sortedArchives} />
         </div>
     )
 }
 
-export default ArchivesDashboard
+export default observer(ArchivesDashboard)
