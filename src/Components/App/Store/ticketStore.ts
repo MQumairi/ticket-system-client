@@ -1,4 +1,4 @@
-import { observable, action, runInAction, toJS } from "mobx";
+import { observable, action, runInAction, toJS, computed } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
 import { Tickets, Developers } from "../../../API/agent";
@@ -29,6 +29,15 @@ export default class TicketStore {
       console.log(e);
     }
   };
+
+  @computed get sortedTickets(): ITicket[]{
+
+    const tickets = Array.from(this.ticketsRegistry.values()).sort((t1, t2) => {
+      return Date.parse(t1.date_time) - Date.parse(t2.date_time);
+    });
+    
+    return tickets;
+  }
 
   //Initialize the current ticket
   @observable currentTicket: ITicket | null = null;
