@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Form as FinalForm, Field } from "react-final-form";
 import { Form, Button } from "semantic-ui-react";
 import TextInput from "../../../Utility/Final Form Fields/TextInput";
@@ -10,19 +10,24 @@ interface IProps {
 }
 
 const ProductAddForm: React.FC<IProps> = ({ setAddingProduct }) => {
+  const store = useContext(Store);
+  const { addProduct } = store.productStore;
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
-    const store = useContext(Store);
-    const {addProduct} = store.productStore;
-    
   const handleFinalFormSubmit = (values: any) => {
-    console.log(values);
+    setSubmitting(true);
 
-    let productToAdd : IProduct = {
-        product_name: values.name
-    }
+    let productToAdd: IProduct = {
+      product_name: values.name,
+    };
 
-    addProduct(productToAdd);
-
+    addProduct(productToAdd)
+    .then(() => {
+      setSubmitting(false);
+    })
+    .then(() => {
+      setAddingProduct(false);
+    });
   };
 
   return (
@@ -37,7 +42,7 @@ const ProductAddForm: React.FC<IProps> = ({ setAddingProduct }) => {
                 placeholder="Product name"
                 component={TextInput}
               />
-              <Button className="mainButton" type="submit">
+              <Button loading={submitting} className="mainButton" type="submit">
                 Submit
               </Button>
               <Button

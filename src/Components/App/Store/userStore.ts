@@ -27,9 +27,12 @@ export default class UserStore {
       password: values.password,
     };
     try {
+      this.rootStore.commonStore.setAppLoaded(false);
       this.user = await Users.login(userToLogin);
       this.rootStore.commonStore.setToken(this.user.token);
+      this.rootStore.commonStore.setAppLoaded(true);
     } catch (e) {
+      this.rootStore.commonStore.setAppLoaded(true);
       throw e;
     }
   };
@@ -43,9 +46,12 @@ export default class UserStore {
   //Register
   @action register = async (values: IUserForm) => {
     try {
+      this.rootStore.commonStore.setAppLoaded(false);
       this.user = await Users.register(values);
       this.rootStore.commonStore.setToken(this.user.token);
+      this.rootStore.commonStore.setAppLoaded(true);
     } catch (e) {
+      this.rootStore.commonStore.setAppLoaded(true);
       console.log(e);
     }
   };
@@ -94,13 +100,16 @@ export default class UserStore {
   //List users
   @action loadUserList = async () => {
     try {
+      this.rootStore.commonStore.setResourceLoading(true);
       const loadedUserList = await Admins.listUsers();
       runInAction(() => {
         loadedUserList.forEach((user) => {
           this.userList.set(user.id!, user);
         });
+        this.rootStore.commonStore.setResourceLoading(false);
       });
     } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
       console.log(e);
     }
   };
@@ -111,8 +120,13 @@ export default class UserStore {
   //Get inspected user
   @action loadInspectedUser = async (userId: string) => {
     try {
+      this.rootStore.commonStore.setResourceLoading(true);
       this.inspectedUser = await Admins.userDetails(userId);
+      runInAction(() => {
+        this.rootStore.commonStore.setResourceLoading(false);
+      })
     } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
       console.log(e);
     }
   };
@@ -201,13 +215,16 @@ export default class UserStore {
   //Load roles
   @action loadRoles = async () => {
     try {
+      this.rootStore.commonStore.setResourceLoading(true);
       const loadedRoles = await Admins.listRoles();
       runInAction(() => {
         loadedRoles.forEach((role) => {
           this.roles.set(role.id, role);
         });
+        this.rootStore.commonStore.setResourceLoading(false);
       });
     } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
       console.log(e);
     }
   };
@@ -217,9 +234,19 @@ export default class UserStore {
 
   //Get role details
   @action loadCurrentRole = async (roleId: string) => {
+    console.log("Setting load to true");
+    
+    this.rootStore.commonStore.setResourceLoading(true);
     try {
       this.currentRole = await Admins.roleDetails(roleId);
+      runInAction(() => {
+        this.loadCurrentRoleUsers(this.currentRole?.name!).then(() => {
+          console.log("Setting load to false");
+          this.rootStore.commonStore.setResourceLoading(false);
+        });
+      })
     } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
       console.log(e);
     }
   };
@@ -229,6 +256,7 @@ export default class UserStore {
 
   //Get role's users
   @action loadCurrentRoleUsers = async (roleName: string) => {
+    this.rootStore.commonStore.setResourceLoading(true);
     try {
       let loadedRoleUsers = await Admins.listRoleUsers(roleName);
       runInAction(() => {
@@ -236,8 +264,10 @@ export default class UserStore {
         loadedRoleUsers.forEach((user) => {
           this.currentRoleUsers.set(user.id!, user);
         });
+      this.rootStore.commonStore.setResourceLoading(false);
       });
     } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
       console.log(e);
     }
   };

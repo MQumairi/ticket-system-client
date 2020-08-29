@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Form as FinalForm, Field } from "react-final-form";
 import SelectInput from "../../Utility/Final Form Fields/DropdownInput";
 import Store from "../../App/Store/rootStore";
@@ -20,11 +20,14 @@ const DevTicketForm: React.FC<IProps> = ({currentTicket}) => {
   const {developerOptions} = store.userStore;
   const {manageTicket} = store.ticketStore;
 
+  const [saving, setSaving] = useState<boolean>(false);
+
+
   let history = useHistory();
 
   const handleFinalFormSubmit = (values: any) => {
 
-    console.log(values);
+    setSaving(true);
 
     let ticketDataToAdd : ITicketForm = {
       status_id: values.status.status_id,
@@ -32,9 +35,12 @@ const DevTicketForm: React.FC<IProps> = ({currentTicket}) => {
       is_archived: values.is_archived
     }
 
-    console.log(ticketDataToAdd);
 
-    manageTicket(currentTicket.post_id!, ticketDataToAdd).then(() => {
+    manageTicket(currentTicket.post_id!, ticketDataToAdd)
+    .then(() => {
+      setSaving(false);
+    })
+    .then(() => {
       history.push("/tickets/" + currentTicket.post_id);
     });
   };
@@ -74,6 +80,7 @@ const DevTicketForm: React.FC<IProps> = ({currentTicket}) => {
             <Button
               className="mainButton ticketNewSubmit devConsoleSubmit"
               type="submit"
+              loading={saving}
             >
               Save
             </Button>

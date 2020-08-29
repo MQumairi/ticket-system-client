@@ -14,13 +14,19 @@ const ProfileAvatar: React.FC<IProps> = ({ setActive }) => {
   const store = useContext(Store);
   const { user, addAvatar } = store.userStore;
 
-  const handleFinalFormSubmit = (values: any) => {
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
+  const handleFinalFormSubmit = (values: any) => {
+    setSubmitting(true);
     const formData: FormData = new FormData();
 
-    if(file) formData.set("image", file);
+    if (file) formData.set("image", file);
 
-    addAvatar(formData).then(() => {
+    addAvatar(formData)
+    .then(() => {
+      setSubmitting(false);
+    })
+    .then(() => {
       setActive("Your Profile");
     });
   };
@@ -31,8 +37,12 @@ const ProfileAvatar: React.FC<IProps> = ({ setActive }) => {
         render={({ handleSubmit }) => {
           return (
             <Form onSubmit={handleSubmit}>
-              <Dropzone setFile={setFile} square={true} defaultAttach={user?.avatar}></Dropzone>
-              <Button className="mainButton" type="submit">
+              <Dropzone
+                setFile={setFile}
+                square={true}
+                defaultAttach={user?.avatar}
+              ></Dropzone>
+              <Button loading={submitting} className="mainButton" type="submit">
                 Submit
               </Button>
             </Form>

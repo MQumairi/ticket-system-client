@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, Link } from "react-router-dom";
 import Store from "../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
 import "./deleteconfirm.css";
 import { Button, Grid, GridColumn, Form } from "semantic-ui-react";
 import { Form as FinalForm } from "react-final-form";
+import LoadingComp from "../Utility/Loader/LoadingComp";
 
 interface params {
   id: string;
@@ -16,18 +17,26 @@ const DeleteConfirm: React.FC<RouteComponentProps<params>> = ({
 }) => {
   const store = useContext(Store);
   const { currentTicket, getTicket, deleteTicket } = store.ticketStore;
+  const {resourceLoading} = store.commonStore;
+
+  const [deleting, setDeleting] = useState<boolean>(false);
 
   useEffect(() => {
     getTicket(match.params.id);
   }, [getTicket, match.params.id]);
 
   const handleFinalFormSubmit = () => {
-    deleteTicket(match.params.id).then(() => {
+    setDeleting(true);
+    deleteTicket(match.params.id)
+    .then(() => {
+      setDeleting(false);
+    })
+    .then(() => {
       history.push("/tickets");
     });
   };
 
-  if (currentTicket == null) return <div>Error 404</div>;
+  if (resourceLoading || currentTicket == null) return <div className="deleteConfirmBody"><LoadingComp loadingText="Loading"></LoadingComp></div>;
 
   return (
     <div className="deleteConfirmBody">
@@ -58,7 +67,7 @@ const DeleteConfirm: React.FC<RouteComponentProps<params>> = ({
           render={({ handleSubmit }) => {
             return (
               <Form onSubmit={handleSubmit}>
-                <Button className="mainButton" type="submit">
+                <Button loading={deleting} className="mainButton" type="submit">
                   Delete
                 </Button>
               </Form>

@@ -15,7 +15,7 @@ const ProductList = () => {
   return (
     <div className="productListContainer">
       <Card.Group itemsPerRow={1}>
-        {products.map((product) => {
+        {products.sort((p1, p2) => ('' + p1.product_name).localeCompare(p2.product_name)).map((product) => {
           return (<ProductListCard product={product}/>);
         })}
       </Card.Group>

@@ -26,8 +26,8 @@ export default class CommonStore {
     window.localStorage.setItem("jwt", token);
   };
 
-  @action setAppLoaded = () => {
-    this.appLoaded = true;
+  @action setAppLoaded = (appLoaded: boolean) => {
+    this.appLoaded = appLoaded;
   };
 
   @observable ticketsFromProfile: boolean = false;
@@ -49,4 +49,10 @@ export default class CommonStore {
       value: true,
     }
   ]
+
+  @observable resourceLoading = false;
+
+  @action setResourceLoading = (resourceLoading: boolean) => {
+    this.resourceLoading = resourceLoading;
+  }
 }

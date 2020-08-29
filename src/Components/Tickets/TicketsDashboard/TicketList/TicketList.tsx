@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import TicketItem from "./TicketItem/TicketItem";
 import { observer } from "mobx-react-lite";
 import "./ticketList.css";
 import { ITicket } from "../../../../Models/ticket";
+import Store from "../../../App/Store/rootStore";
 
 interface IProps {
-  ticketsMap : Map<number, ITicket>;
+  ticketsArr : ITicket[];
 }
 
-const TicketList:React.FC<IProps> = ({ticketsMap}) => {
+const TicketList:React.FC<IProps> = ({ticketsArr}) => {
 
   return (
     <div id="ticketList">
-      {Array.from(ticketsMap).map(([number, ticket]) => {
-        return <TicketItem key={number} ticket={ticket} />;
+      {ticketsArr.map((ticket) => {
+        return <TicketItem key={ticket.post_id!} ticket={ticket} />;
       })}
     </div>
   );

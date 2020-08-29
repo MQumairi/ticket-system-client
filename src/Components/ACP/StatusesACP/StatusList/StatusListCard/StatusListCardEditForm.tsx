@@ -20,29 +20,42 @@ const StatusListCardEditForm: React.FC<IProps> = ({
 }) => {
   //States
   const store = useContext(Store);
-  const { editStatus, statusIsDefaultOptions, loadStatuses } = store.statusStore;
+  const {
+    editStatus,
+    statusIsDefaultOptions,
+    loadStatuses,
+  } = store.statusStore;
 
   const [selectingColor, setSelectingColor] = useState<boolean>(false);
 
+  const [editing, setEditing] = useState<boolean>(false);
+
   //Form handler
   const handleFinalFormSubmit = (values: any) => {
-    console.log(values);
+    setEditing(true);
     setSelectingColor(false);
 
-    let statusToEdit : IStatus = {
+    let statusToEdit: IStatus = {
       status_text: values.name,
       status_color: values.color,
-      is_default: values.is_default
-    }
+      is_default: values.is_default,
+    };
 
     editStatus(status.status_id!.toString(), statusToEdit)
-    .then(() => {
-      setEditingStatus(false);
-    })
-    .then(() => {
+      .then(() => {
         loadStatuses();
-      }
-    );
+      })
+      .then(() => {
+        status.status_text = statusToEdit.status_text;
+        status.status_color = statusToEdit.status_color;
+        status.is_default = statusToEdit.is_default;
+      })
+      .then(() => {
+        setEditing(false);
+      })
+      .then(() => {
+        setEditingStatus(false);
+      });
   };
 
   const handleCancel = () => {
@@ -66,19 +79,19 @@ const StatusListCardEditForm: React.FC<IProps> = ({
                 setSelectingColor={setSelectingColor}
               />
               <div className="statusEditName">
-              <Form.Group widths="equal">
-                <Field
-                  name="name"
-                  placeholder="Status name"
-                  component={TextInput}
-                  initialValue={status.status_text}
-                />
-                <Field
-                  component={SelectInput}
-                  options={statusIsDefaultOptions}
-                  name="is_default"
-                  defaultValue={status?.is_default}
-                />
+                <Form.Group widths="equal">
+                  <Field
+                    name="name"
+                    placeholder="Status name"
+                    component={TextInput}
+                    initialValue={status.status_text}
+                  />
+                  <Field
+                    component={SelectInput}
+                    options={statusIsDefaultOptions}
+                    name="is_default"
+                    defaultValue={status?.is_default}
+                  />
                 </Form.Group>
               </div>
               <Button.Group>
@@ -86,6 +99,7 @@ const StatusListCardEditForm: React.FC<IProps> = ({
                   className="mainButton cardEditButton"
                   type="submit"
                   content="Save"
+                  loading={editing}
                 />
                 <Button
                   className="mainButton cardDelButton"

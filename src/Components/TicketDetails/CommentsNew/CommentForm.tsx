@@ -45,7 +45,16 @@ const CommentForm: React.FC<IProps> = ({
       };
 
       addComment(formBuilder(commentToPost)).then(() => {
-        history.go(0);
+
+        let commentToPostIc : IComment = {
+          date_time: commentToPost.date_time!,
+          description: commentToPost.description!,
+          author: user!,
+          parent_post_id: commentToPost.parent_post_id,
+        }
+
+        setIsReplying!(false);
+        parent.comments.push(commentToPostIc);
       });
     } else {
 
@@ -58,7 +67,6 @@ const CommentForm: React.FC<IProps> = ({
       editComment(+commentToEdit.post_id! ,formBuilder(commentBeingEdited)).then(() => {
         history.go(0);
       });
-
     }
   };
 
