@@ -9,21 +9,26 @@ import { observer } from "mobx-react-lite";
 import Comment from "./Comment/Comment";
 import defaultAvatar from "../../Assets/Images/defaultAvatar.png";
 import CommentsForm from "./CommentsNew/CommentForm";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import LoadingComp from "../Utility/Loader/LoadingComp";
+import LoadingPage from "../Utility/Loader/LoadingPage";
 
 interface params {
   id: string;
 }
 
 const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
-
   let history = useHistory();
 
   //Import ticket store
   const store = useContext(Store);
   const { currentTicket, getTicket } = store.ticketStore;
   const { user } = store.userStore;
-  const {ticketsFromProfile, setTicketsFromProfile} = store.commonStore;
+  const {
+    ticketsFromProfile,
+    setTicketsFromProfile,
+    resourceLoading,
+  } = store.commonStore;
 
   const [isReplying, setIsReplying] = useState<boolean>(false);
 
@@ -34,21 +39,26 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const handleBack = () => {
     console.log("From handle back");
     console.log(ticketsFromProfile);
-    if(ticketsFromProfile) {
+    if (ticketsFromProfile) {
       setTicketsFromProfile(false);
       history.push("/profile");
     } else {
-
-      if(currentTicket?.is_archived){
+      if (currentTicket?.is_archived) {
         history.push("/archives");
       } else {
         history.push("/tickets");
       }
-      
     }
-  }
+  };
 
-  if (currentTicket === null) return <div>Error 404</div>;
+  if (resourceLoading || currentTicket == null)
+    return (
+      <div id="ticketDetailsBody">
+        <div id="ticketDetailsMainPost">
+          <LoadingComp loadingText="Loading Ticket"></LoadingComp>
+        </div>
+      </div>
+    );
 
   return (
     <div id="ticketDetailsBody">
@@ -61,13 +71,19 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               <p className="postHeaderDate">{currentTicket.display_date}</p>
             </Grid.Column>
             <Grid.Column width={2}>
-              {user?.roles && (user.roles[0] === "Developer" || user.roles[0] === "Admin") && <Button
-                floated="right"
-                className="mainButton devButton"
-                content="Manage"
-                as={Link}
-                to={"/tickets/" + currentTicket.post_id + "/developer-console"}
-              />}
+              {user?.roles &&
+                (user.roles[0] === "Developer" ||
+                  user.roles[0] === "Admin") && (
+                  <Button
+                    floated="right"
+                    className="mainButton devButton"
+                    content="Manage"
+                    as={Link}
+                    to={
+                      "/tickets/" + currentTicket.post_id + "/developer-console"
+                    }
+                  />
+                )}
             </Grid.Column>
             <Grid.Column width={2}>
               <Button
@@ -122,10 +138,12 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               {currentTicket.developer && (
                 // <Label content={"Assigned to " + currentTicket.developer.username} />
                 <Label as="a" image>
-                  {!currentTicket.developer.avatar && <img
-                    alt={currentTicket.developer.username}
-                    src={defaultAvatar}
-                  />}
+                  {!currentTicket.developer.avatar && (
+                    <img
+                      alt={currentTicket.developer.username}
+                      src={defaultAvatar}
+                    />
+                  )}
                   {currentTicket.developer.avatar && (
                     <img
                       alt={currentTicket.developer.username}
@@ -137,7 +155,8 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               )}
             </Grid.Column>
             <Grid.Column width={2}>
-              {(user!.id === currentTicket?.author.id || user?.roles?.includes("Admin")) && (
+              {(user!.id === currentTicket?.author.id ||
+                user?.roles?.includes("Admin")) && (
                 <Button
                   className="mainButton"
                   as={Link}
@@ -148,7 +167,8 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               )}
             </Grid.Column>
             <Grid.Column width={2}>
-              {(user!.id === currentTicket?.author.id || user?.roles?.includes("Admin")) && (
+              {(user!.id === currentTicket?.author.id ||
+                user?.roles?.includes("Admin")) && (
                 <Button
                   className="mainButton"
                   as={Link}
@@ -162,24 +182,29 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
         </Grid>
       </div>
       {/* {revealReplyForm()} */}
-      {currentTicket.comments.sort((c1, c2) => Date.parse(c1.date_time) - Date.parse(c2.date_time)).map((comment) => {
-        return (
-          <div>
-            <Comment comment={comment} />
-          </div>
-        );
-      })}
-      {!isReplying && <Button
-        className="mainButton commentButton"
-        onClick={() => {
-          setIsReplying(!isReplying);
-        }}
-      >
-        Add Comment
-      </Button>}
+      {currentTicket.comments
+        .sort((c1, c2) => Date.parse(c1.date_time) - Date.parse(c2.date_time))
+        .map((comment) => {
+          return (
+            <div>
+              <Comment comment={comment} />
+            </div>
+          );
+        })}
+      {!isReplying && (
+        <Button
+          className="mainButton commentButton"
+          onClick={() => {
+            setIsReplying(!isReplying);
+          }}
+        >
+          Add Comment
+        </Button>
+      )}
 
-      {isReplying && <CommentsForm parent={currentTicket} setIsReplying={setIsReplying} />}
-
+      {isReplying && (
+        <CommentsForm parent={currentTicket} setIsReplying={setIsReplying} />
+      )}
     </div>
   );
 };

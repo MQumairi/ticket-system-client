@@ -6,6 +6,7 @@ import "./userManager.css";
 import { RouteComponentProps, Link } from "react-router-dom";
 import Store from "../../../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
+import LoadingComp from "../../../Utility/Loader/LoadingComp";
 
 interface params {
   id: string;
@@ -19,6 +20,8 @@ const UserManager: React.FC<RouteComponentProps<params>> = ({
   const store = useContext(Store);
   const { inspectedUser, loadInspectedUser, deleteAvatar } = store.userStore;
 
+  const {resourceLoading} = store.commonStore;
+
   useEffect(() => {
     loadInspectedUser(match.params.id);
   }, [loadInspectedUser, match.params.id]);
@@ -30,6 +33,12 @@ const UserManager: React.FC<RouteComponentProps<params>> = ({
       });
     }
   };
+
+  if(resourceLoading) return (
+    <div className="userManagerBody">
+      <LoadingComp loadingText="Loading User"></LoadingComp>
+    </div>
+  )
 
   return (
     <div className="userManagerBody">

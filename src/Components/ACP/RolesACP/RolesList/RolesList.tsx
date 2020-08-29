@@ -4,33 +4,46 @@ import { observer } from "mobx-react-lite";
 import { Card, Button } from "semantic-ui-react";
 import RolesCard from "./RolesCard/RolesCard";
 import RolesNewForm from "./RolesNewForm";
+import LoadingComp from "../../../Utility/Loader/LoadingComp";
 
 const RolesList = () => {
   const store = useContext(Store);
   const { loadRoles, roles } = store.userStore;
+  const {resourceLoading} = store.commonStore;
 
-    const [addingRole, setAddingRole] = useState<boolean>(false);
+  const [addingRole, setAddingRole] = useState<boolean>(false);
 
   useEffect(() => {
     console.log("renders");
     loadRoles();
   }, [loadRoles]);
 
+  if(resourceLoading) return (
+    <LoadingComp loadingText="Loading Roles"></LoadingComp>)
+
   return (
     <div>
       <Card.Group itemsPerRow={2}>
-        {Array.from(roles.values()).sort((r1, r2) => ('' + r1.name).localeCompare(r2.name)).map((role) => {
-          return (
-            <RolesCard role={role} key={role.id}>
-              {role.name}
-            </RolesCard>
-          );
-        })}
+        {Array.from(roles.values())
+          .sort((r1, r2) => ("" + r1.name).localeCompare(r2.name))
+          .map((role) => {
+            return (
+              <RolesCard role={role} key={role.id}>
+                {role.name}
+              </RolesCard>
+            );
+          })}
       </Card.Group>
       <div className="acpAddButton">
-      <hr/>
-      {!addingRole && <Button className="mainButton addRoleButton" content="Add Role" onClick={() => setAddingRole(true)}/>}
-      {addingRole && <RolesNewForm setAddingRole={setAddingRole}/>}
+        <hr />
+        {!addingRole && (
+          <Button
+            className="mainButton addRoleButton"
+            content="Add Role"
+            onClick={() => setAddingRole(true)}
+          />
+        )}
+        {addingRole && <RolesNewForm setAddingRole={setAddingRole} />}
       </div>
     </div>
   );

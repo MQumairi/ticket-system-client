@@ -7,9 +7,10 @@ import { Button, Grid, Form } from "semantic-ui-react";
 import { Field } from "react-final-form";
 import SelectInput from "../../../Utility/Final Form Fields/DropdownInput";
 import { Form as FinalForm } from "react-final-form";
-import RolesManagerUserItem from "./RolesManagerUserItem";
 import { IRoleForm } from "../../../../Models/roleForm";
 import RolesManagerEditForm from "./RolesManagerEditForm";
+import LoadingComp from "../../../Utility/Loader/LoadingComp";
+import RoleManagerUserList from "./RoleManagerUserList";
 
 interface params {
   id: string;
@@ -20,12 +21,13 @@ const RolesManager: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const {
     currentRole: role,
     loadCurrentRole,
-    loadUserList,
+    // loadUserList,
     userOptions,
-    currentRoleUsers,
     loadCurrentRoleUsers,
     assignRole,
   } = store.userStore;
+
+  const {resourceLoading} = store.commonStore;
 
   const [editingRole, setEditingRole] = useState<boolean>(false);
 
@@ -41,17 +43,22 @@ const RolesManager: React.FC<RouteComponentProps<params>> = ({ match }) => {
 
   useEffect(() => {
     loadCurrentRole(match.params.id);
-    if (role) loadCurrentRoleUsers(role?.name);
-    loadUserList();
+    // if (role) loadCurrentRoleUsers(role?.name);
+    // loadUserList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     loadCurrentRole,
     match.params,
     // eslint-disable-next-line
     role?.name,
-    loadCurrentRoleUsers,
-    loadUserList,
+    // loadUserList,
   ]);
+
+  if(resourceLoading) return (
+    <div className="roleManagerBody">
+      <LoadingComp loadingText="Loading Role"></LoadingComp>
+    </div>
+  )
 
   return (
     <div>
@@ -100,16 +107,7 @@ const RolesManager: React.FC<RouteComponentProps<params>> = ({ match }) => {
           />
           <hr />
 
-          <label>Users currently in role:</label>
-          {Array.from(currentRoleUsers).map(([key, user]) => {
-            return (
-              <RolesManagerUserItem
-                user={user}
-                key={key}
-                roleName={role.name}
-              />
-            );
-          })}
+          <RoleManagerUserList/>
 
           <hr className="roleManagerHR" />
 

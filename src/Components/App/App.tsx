@@ -26,6 +26,7 @@ import RolesManager from "../ACP/RolesACP/RolesManager/RolesManager";
 import DeleteConfirmationRole from "../DeleteConfirmation/DeleteConfirmationRole";
 import DeleteConfirmationProduct from "../DeleteConfirmation/DeleteConfirmationProduct";
 import DeleteConfirmationStatus from "../DeleteConfirmation/DeleteConfirmationStatus";
+import LoadingPage from "../Utility/Loader/LoadingPage";
 
 function App() {
   const store = useContext(Store);
@@ -36,13 +37,17 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      getCurrentUser().finally(() => setAppLoaded());
+      getCurrentUser().finally(() => setAppLoaded(true));
       loadProducts();
       loadStatuses();
     } else {
-      setAppLoaded();
+      setAppLoaded(true);
     }
   }, [getCurrentUser, setAppLoaded, token, loadProducts, loadStatuses]);
+
+  if(!appLoaded) {
+    return(<LoadingPage loadingText="Loading"></LoadingPage>)
+  }
 
   if (appLoaded && !isLogged) {
     return (

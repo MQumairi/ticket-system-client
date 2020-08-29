@@ -17,6 +17,7 @@ export default class TicketStore {
   //Load tickets from API to Registry
   @action loadTickets = async () => {
     try {
+      this.rootStore.commonStore.setResourceLoading(true);
       const loadedTickets = await Tickets.list();
       runInAction(() => {
         loadedTickets.forEach((ticket) => {
@@ -24,8 +25,11 @@ export default class TicketStore {
           ticket.display_date = format(ticketDate, "dd/MM/yyyy");
           this.ticketsRegistry.set(ticket.post_id!, ticket);
         });
+
+        this.rootStore.commonStore.setResourceLoading(false);
       });
     } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
       console.log(e);
     }
   };
@@ -45,7 +49,10 @@ export default class TicketStore {
   //Load a ticket by ID from the API, and set it to currentTicket
   @action getTicket = async (id: string) => {
     try {
+      this.rootStore.commonStore.setResourceLoading(true);
       let loadedTicket = await Tickets.details(id);
+
+      runInAction(() => {
       let ticketDate = Date.parse(loadedTicket.date_time);
       loadedTicket.display_date = format(ticketDate, "dd/MM/yyyy");
 
@@ -55,7 +62,11 @@ export default class TicketStore {
       });
 
       this.currentTicket = loadedTicket;
+      this.rootStore.commonStore.setResourceLoading(false);
+      })
+      
     } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
       console.log(e);
     }
   };
@@ -94,6 +105,7 @@ export default class TicketStore {
 
   @action loadArchives = async () => {
     try {
+      this.rootStore.commonStore.setResourceLoading(true);
       const loadedArchives = await Archives.list();
       runInAction(() => {
         loadedArchives.forEach((ticket : ITicket) => {
@@ -101,8 +113,10 @@ export default class TicketStore {
           ticket.display_date = format(ticketDate, "dd/MM/yyyy");
           this.archivesRegistry.set(ticket.post_id!, ticket);
         });
+      this.rootStore.commonStore.setResourceLoading(false);
       });
     } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
       console.log(e);
     }
   };
@@ -127,20 +141,19 @@ export default class TicketStore {
   //Filter Tickets
   @action loadFilteredTickets = async (filters: IFilters) => {
     try {
-      console.log("Loading filtered ticketss...")
+      this.rootStore.commonStore.setResourceLoading(true);
       const loadedFilteredTickets = await Tickets.filter(filters);
-      console.log(toJS(loadedFilteredTickets));
       runInAction(() => {
-
         this.ticketsRegistry.clear();
-
         loadedFilteredTickets.forEach((ticket) => {
           let ticketDate = Date.parse(ticket.date_time);
           ticket.display_date = format(ticketDate, "dd/MM/yyyy");
           this.ticketsRegistry.set(ticket.post_id!, ticket);
         });
+        this.rootStore.commonStore.setResourceLoading(false);
       });
     } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
       console.log(e);
     }
   }

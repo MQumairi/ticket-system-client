@@ -1,0 +1,14 @@
+@import "../../../Assets/Styles/style.css";
+
+.loaderContainer {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    padding-top: 50px;
+}
+
+.loader {
+    position: relative !important;
+}
