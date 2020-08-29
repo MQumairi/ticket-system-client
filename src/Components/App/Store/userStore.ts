@@ -46,9 +46,12 @@ export default class UserStore {
   //Register
   @action register = async (values: IUserForm) => {
     try {
+      this.rootStore.commonStore.setAppLoaded(false);
       this.user = await Users.register(values);
       this.rootStore.commonStore.setToken(this.user.token);
+      this.rootStore.commonStore.setAppLoaded(true);
     } catch (e) {
+      this.rootStore.commonStore.setAppLoaded(true);
       console.log(e);
     }
   };

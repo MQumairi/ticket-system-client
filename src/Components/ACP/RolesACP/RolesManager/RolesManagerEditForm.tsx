@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import TextInput from "../../../Utility/Final Form Fields/TextInput";
@@ -13,18 +13,27 @@ interface IProps {
 
 const RolesManagerEditForm: React.FC<IProps> = ({ setEditingRole, role }) => {
   const store = useContext(Store);
-  const { editRole, loadCurrentRole } = store.userStore;
+  const { editRole } = store.userStore;
+
+  const [saving, setSaving] = useState<boolean>(false);
 
   const handleFinalFormSubmit = (values: any) => {
-    console.log(values);
+    setSaving(true);
 
     let roleToEdit: IRoleForm = {
       role_name: values.name,
     };
 
-    editRole(role.id, roleToEdit).then(() => {
-      loadCurrentRole(role.id);
-    });
+    editRole(role.id, roleToEdit)
+    .then(() => {
+      role.name = roleToEdit.role_name;
+    })
+    .then(() => {
+      setSaving(false);
+    })
+    .then(() => {
+      setEditingRole(false);
+    })
   };
 
   return (
@@ -46,6 +55,7 @@ const RolesManagerEditForm: React.FC<IProps> = ({ setEditingRole, role }) => {
                   className="mainButton fullWidth"
                   type="submit"
                   content="Save"
+                  loading={saving}
                 />
                 <Button
                   className="mainButton fullWidth"

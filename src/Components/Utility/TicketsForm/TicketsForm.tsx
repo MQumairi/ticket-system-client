@@ -33,6 +33,8 @@ const TicketsForm: React.FC<IProps> = (props) => {
 
   const [file, setFile] = useState<File | undefined>(undefined);
 
+  const [submitting, setSubmitting] = useState<boolean>(false);
+
   useEffect(() => {
     if (!!props.ticket) {
       setTicketToEdit(currentTicket);
@@ -41,6 +43,8 @@ const TicketsForm: React.FC<IProps> = (props) => {
   }, [setTicketToEdit, currentTicket, props.ticket]);
 
   const handleFinalFormSubmit = (values: any) => {
+    setSubmitting(true);
+
     if (!props.ticket) {
       let ticketToPost: ITicketForm = {
         date_time: format(Date.now(), "MM/dd/yyyy h:m:s a"),
@@ -54,7 +58,11 @@ const TicketsForm: React.FC<IProps> = (props) => {
 
       let formData = formBuilder(ticketToPost);
 
-      addTicket(formData).then(() => {
+      addTicket(formData)
+      .then(() => {
+        setSubmitting(false);
+      })
+      .then(() => {
         history.push("/tickets");
       });
     } else {
@@ -66,9 +74,14 @@ const TicketsForm: React.FC<IProps> = (props) => {
         status_id: values.status.status_id,
       };
 
-      editTicket(props.ticket.post_id!, formBuilder(ticketToUpdate)).then(() => {
-        history.push("/tickets/" + props.ticket!.post_id);
-      });
+      editTicket(props.ticket.post_id!, formBuilder(ticketToUpdate))
+      .then(() => {
+        setSubmitting(false);
+      })
+      .then(() => {
+          history.push("/tickets/" + props.ticket!.post_id);
+        }
+      );
     }
   };
 
@@ -135,8 +148,11 @@ const TicketsForm: React.FC<IProps> = (props) => {
                   component={TextAreaInput}
                   initialValue={ticketToEdit?.description}
                 />
-                <Dropzone setFile={setFile} defaultAttach={props.ticket?.attachment} />
-                <Button className="mainButton ticketNewSubmit" type="submit">
+                <Dropzone
+                  setFile={setFile}
+                  defaultAttach={props.ticket?.attachment}
+                />
+                <Button loading={submitting} className="mainButton ticketNewSubmit" type="submit">
                   Submit
                 </Button>
               </Form>

@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import "./devConsole.css";
 import { Grid, Button } from "semantic-ui-react";
 import DevTicketForm from "./Developer Ticket Form/DevTicketForm";
+import LoadingComp from "../Utility/Loader/LoadingComp";
 
 interface params {
   id: string;
@@ -12,18 +13,28 @@ interface params {
 
 const DevConsole: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const store = useContext(Store);
-  const {user} = store.userStore;
+  const { user } = store.userStore;
   const { currentTicket, getTicket } = store.ticketStore;
-  const {loadDevelopers} = store.userStore;
+  const { loadDevelopers } = store.userStore;
+  const { resourceLoading } = store.commonStore;
 
   useEffect(() => {
     getTicket(match.params.id);
     loadDevelopers();
   }, [getTicket, match.params.id, loadDevelopers]);
 
-  if (currentTicket === null) return (<div>Error 404</div>);
+  if (resourceLoading || currentTicket === null)
+    return (
+      <div id="devConsoleBody">
+        <LoadingComp loadingText="Loading Developer Console"></LoadingComp>
+      </div>
+    );
 
-  if(!user?.roles || !(user.roles.includes("Developer") || user.roles.includes("Admin"))) return(<div>No permission</div>);
+  if (
+    !user?.roles ||
+    !(user.roles.includes("Developer") || user.roles.includes("Admin"))
+  )
+    return <div>No permission</div>;
 
   return (
     <div id="devConsoleBody">

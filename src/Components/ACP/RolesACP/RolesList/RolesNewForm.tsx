@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import TextInput from "../../../Utility/Final Form Fields/TextInput";
@@ -13,13 +13,21 @@ const RolesNewForm: React.FC<IProps> = ({ setAddingRole }) => {
   const store = useContext(Store);
   const { addRole, loadRoles } = store.userStore;
 
+    const [submitting, setSubmitting] = useState<boolean>(false);
+
   const handleFinalFormSubmit = (values: any) => {
-    console.log(values);
+    
+    setSubmitting(true);
+
     let roleToAdd: IRoleForm = {
       role_name: values.name,
     };
 
-    addRole(roleToAdd).then(() => {
+    addRole(roleToAdd)
+    .then(() => {
+      setSubmitting(false);
+    })
+    .then(() => {
       loadRoles();
       setAddingRole(false);
     });
@@ -38,7 +46,7 @@ const RolesNewForm: React.FC<IProps> = ({ setAddingRole }) => {
                   placeholder="Role Name"
                   component={TextInput}
                 ></Field>
-                <Button className="mainButton" type="submit" content="Submit" />
+                <Button loading={submitting} className="mainButton" type="submit" content="Submit" />
                 <Button
                   content="Cancel"
                   className="mainButton"

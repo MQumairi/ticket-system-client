@@ -49,6 +49,14 @@ const UserManager: React.FC<RouteComponentProps<params>> = ({
             to="/acp/users"
             floated="right"
           />}
+        {editingUserMode &&  <Button
+            content="Back"
+            floated="right"
+            onClick={() => {
+              setEditingUserMode(false);
+            }}
+            className="mainButton"
+          />}
       {inspectedUser && !editingUserMode && (
         <div>
           <Avatar

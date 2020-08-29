@@ -11,32 +11,37 @@ interface IProps {
 }
 
 const StatusAddForm: React.FC<IProps> = ({ setAddingStatus }) => {
+  const store = useContext(Store);
+  const { addStatus } = store.statusStore;
 
-    const store = useContext(Store);
-    const {addStatus} = store.statusStore;
+  const [selectingColor, setSelectingColor] = useState<boolean>(false);
 
-    const [selectingColor, setSelectingColor] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
-    
   const handleFinalFormSubmit = (values: any) => {
+    setSubmitting(true);
     setSelectingColor(false);
 
     let statusToAdd: IStatus = {
       status_text: values.name,
       status_color: values.color,
-      is_default: false
-    }
+      is_default: false,
+    };
     console.log(statusToAdd);
 
-    addStatus(statusToAdd).then(() => {
-      setAddingStatus(false);
+    addStatus(statusToAdd)
+    .then(() => {
+      setSubmitting(false);
     })
+    .then(() => {
+      setAddingStatus(false);
+    });
   };
 
   const handleCancel = () => {
     setSelectingColor(false);
     setAddingStatus(false);
-  }
+  };
 
   return (
     <FinalForm
@@ -45,7 +50,7 @@ const StatusAddForm: React.FC<IProps> = ({ setAddingStatus }) => {
         return (
           <Form onSubmit={handleSubmit}>
             <Form.Group>
-            <Field
+              <Field
                 name="color"
                 placeholder="Status Color"
                 component={ColorPicker}
@@ -53,19 +58,16 @@ const StatusAddForm: React.FC<IProps> = ({ setAddingStatus }) => {
                 setSelectingColor={setSelectingColor}
               />
               <div className="statusAddName">
-              <Field
-                name="name"
-                placeholder="Status name"
-                component={TextInput}
-              />
+                <Field
+                  name="name"
+                  placeholder="Status name"
+                  component={TextInput}
+                />
               </div>
-              <Button className="mainButton" type="submit">
+              <Button loading={submitting} className="mainButton" type="submit">
                 Submit
               </Button>
-              <Button
-                className="mainButton"
-                onClick={() =>handleCancel() }
-              >
+              <Button className="mainButton" onClick={() => handleCancel()}>
                 Cancel
               </Button>
             </Form.Group>

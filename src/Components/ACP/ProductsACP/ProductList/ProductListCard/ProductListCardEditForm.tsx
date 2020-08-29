@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { IProduct } from "../../../../../Models/product";
 import { Form, Button } from "semantic-ui-react";
 import TextInput from "../../../../Utility/Final Form Fields/TextInput";
@@ -18,8 +18,10 @@ const ProductListCardEditForm: React.FC<IProps> = ({
   const store = useContext(Store);
   const { editProduct } = store.productStore;
 
+    const [editing, setEditing] = useState<boolean>(false);
+
   const handleFinalFormSubmit = (values: any) => {
-    console.log(values);
+    setEditing(true);
 
     let productToEdit: IProduct = {
       product_name: values.name,
@@ -29,6 +31,9 @@ const ProductListCardEditForm: React.FC<IProps> = ({
       editProduct(product.product_id!.toString(), productToEdit)
         .then(() => {
           product.product_name = productToEdit.product_name;
+        })
+        .then(() => {
+          setEditing(false);
         })
         .then(() => {
           setEditingProduct(false);
@@ -48,7 +53,7 @@ const ProductListCardEditForm: React.FC<IProps> = ({
                 component={TextInput}
                 initialValue={product.product_name}
               />
-              <Button className="mainButton" type="submit">
+              <Button loading={editing} className="mainButton" type="submit">
                 Submit
               </Button>
               <Button

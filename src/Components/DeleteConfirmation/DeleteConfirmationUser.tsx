@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Grid, GridColumn, Form } from "semantic-ui-react";
 import Store from "../App/Store/rootStore";
 import { RouteComponentProps, Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { Form as FinalForm } from "react-final-form";
 import "./deleteconfirm.css";
+import LoadingComp from "../Utility/Loader/LoadingComp";
 
 interface params {
   id: string;
@@ -20,23 +21,37 @@ const DeleteConfirmationUser: React.FC<RouteComponentProps<params>> = ({
     inspectedUser,
     loadInspectedUser,
     deleteUser,
-    loadUserList
+    loadUserList,
   } = store.userStore;
+
+  const { resourceLoading } = store.commonStore;
+
+  const [deleting, setDeleting] = useState<boolean>(false);
 
   useEffect(() => {
     loadInspectedUser(match.params.id);
   }, [loadInspectedUser, match.params]);
 
   const handleFinalFormSubmit = (values: any) => {
-    console.log("Pressed");
+    setDeleting(true);
     deleteUser(match.params.id)
-    .then(() => {
+      .then(() => {
         loadUserList();
-    })
-    .then(() => {
-      history.push("/admin-console");
-    });
+      })
+      .then(() => {
+        setDeleting(false);
+      })
+      .then(() => {
+        history.push("/acp/users/");
+      });
   };
+
+  if (resourceLoading)
+    return (
+      <div className="deleteConfirmBody">
+        <LoadingComp loadingText="Loading"></LoadingComp>
+      </div>
+    );
 
   if (user == null || user.roles == null || !user.roles.includes("Admin"))
     return <div>Error 403</div>;
@@ -49,7 +64,11 @@ const DeleteConfirmationUser: React.FC<RouteComponentProps<params>> = ({
         </GridColumn>
         <GridColumn width={2} />
         <GridColumn width={2}>
-          <Button className="mainButton" as={Link} to={"/acp/users/" + match.params.id}>
+          <Button
+            className="mainButton"
+            as={Link}
+            to={"/acp/users/" + match.params.id}
+          >
             Back
           </Button>
         </GridColumn>
@@ -69,7 +88,11 @@ const DeleteConfirmationUser: React.FC<RouteComponentProps<params>> = ({
               render={({ handleSubmit }) => {
                 return (
                   <Form onSubmit={handleSubmit}>
-                    <Button className="mainButton" type="submit">
+                    <Button
+                      className="mainButton"
+                      type="submit"
+                      loading={deleting}
+                    >
                       Delete
                     </Button>
                   </Form>

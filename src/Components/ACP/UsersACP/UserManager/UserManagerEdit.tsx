@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IUser } from "../../../../Models/user";
 import { Grid, GridColumn, Button, Form } from "semantic-ui-react";
 import Avatar from "../../../Users/Avatar/Avatar";
@@ -17,15 +17,18 @@ const UserManagerEdit: React.FC<IProps> = ({ user, setEditingUserMode }) => {
   const store = useContext(Store);
   const { editUser, loadUserList } = store.userStore;
 
+    const [saving, setSaving] = useState<boolean>(false);
+
   const handleFinalFormSubmit = (values: any) => {
+
+    setSaving(true);
+
     let userDetails: IUserFormGeneral = {
       username: values.username,
       first_name: values.first_name,
       surname: values.surname,
       email: values.email,
     };
-
-    console.log(userDetails);
 
     editUser(user.id!, userDetails)
       .then(() => {
@@ -38,16 +41,18 @@ const UserManagerEdit: React.FC<IProps> = ({ user, setEditingUserMode }) => {
           user.email = userDetails.email!;
       })
       .then(() => {
+        setSaving(false);
+      })
+      .then(() => {
         setEditingUserMode(false);
       });
   };
 
   return (
     <div>
-      <Grid>
-        <GridColumn width={13}>
+    
           <Avatar avatar={user.avatar} diameter={120} borderWidth={3} />
-
+          <br/>
           <FinalForm
             onSubmit={handleFinalFormSubmit}
             render={({ handleSubmit }) => {
@@ -84,24 +89,13 @@ const UserManagerEdit: React.FC<IProps> = ({ user, setEditingUserMode }) => {
                     type="email"
                     initialValue={user?.email}
                   />
-                  <Button className="mainButton ticketNewSubmit" type="submit">
+                  <Button loading={saving} className="mainButton ticketNewSubmit" type="submit">
                     Submit
                   </Button>
                 </Form>
               );
             }}
           />
-        </GridColumn>
-        <GridColumn width={3}>
-          <Button
-            content="Back"
-            onClick={() => {
-              setEditingUserMode(false);
-            }}
-            className="mainButton"
-          />
-        </GridColumn>
-      </Grid>
     </div>
   );
 };
