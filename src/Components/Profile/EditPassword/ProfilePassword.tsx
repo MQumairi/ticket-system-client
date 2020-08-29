@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import TextInput from "../../Utility/Final Form Fields/TextInput";
@@ -6,22 +6,28 @@ import Store from "../../App/Store/rootStore";
 import { IUserForm } from "../../../Models/userForm";
 
 interface IProps {
-  setActive: (active: string)=>void
+  setActive: (active: string) => void;
 }
 
-const ProfilePassword: React.FC<IProps> = ({setActive}) => {
+const ProfilePassword: React.FC<IProps> = ({ setActive }) => {
   const store = useContext(Store);
   const { editProfile } = store.userStore;
 
-  const handleFinalFormSubmit = (values: any) => {
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
+  const handleFinalFormSubmit = (values: any) => {
+    setSubmitting(true);
     const password_obj: IUserForm = {
       current_password: values.current_password,
       new_password: values.new_password,
     };
 
-    editProfile(password_obj).then(() => {
-        setActive("Your Profile");
+    editProfile(password_obj)
+    .then(() => {
+      setSubmitting(false);
+    })
+    .then(() => {
+      setActive("Your Profile");
     });
   };
 
@@ -47,7 +53,7 @@ const ProfilePassword: React.FC<IProps> = ({setActive}) => {
                 type="password"
               ></Field>
 
-              <Button className="mainButton ticketNewSubmit" type="submit">
+              <Button loading={submitting} className="mainButton ticketNewSubmit" type="submit">
                 Submit
               </Button>
             </Form>

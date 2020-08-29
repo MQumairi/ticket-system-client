@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import TextInput from "../../Utility/Final Form Fields/TextInput";
@@ -7,24 +7,38 @@ import Store from "../../App/Store/rootStore";
 import { IUserFormGeneral } from "../../../Models/userFormGeneral";
 
 interface IProps {
-  setActive: (active: string)=> void;
+  setActive: (active: string) => void;
 }
 
-const ProfileEditDetails: React.FC<IProps> = ({setActive}) => {
+const ProfileEditDetails: React.FC<IProps> = ({ setActive }) => {
   const store = useContext(Store);
   const { user, editProfile } = store.userStore;
 
+  const [editing, setEditing] = useState<boolean>(false);
+
   const handleFinalFormSubmit = (values: any) => {
-    
+
+    setEditing(true);
+
     let profileDetails: IUserFormGeneral = {
       username: values.username,
       first_name: values.first_name,
       surname: values.surname,
       email: values.email,
     };
-    
-    editProfile(profileDetails).then(() => {
-        setActive("Your Profile");
+
+    editProfile(profileDetails)
+    .then(() => {
+      user!.username = profileDetails!.username!;
+      user!.first_name = profileDetails.first_name!;
+      user!.surname = profileDetails.surname!;
+      user!.email = profileDetails.email!;
+    })
+    .then(() => {
+      setEditing(false);
+    })
+    .then(() => {
+      setActive("Your Profile");
     });
   };
 
@@ -66,7 +80,7 @@ const ProfileEditDetails: React.FC<IProps> = ({setActive}) => {
                 type="email"
                 initialValue={user?.email}
               />
-              <Button className="mainButton ticketNewSubmit" type="submit">
+              <Button loading={editing} className="mainButton ticketNewSubmit" type="submit">
                 Submit
               </Button>
             </Form>
