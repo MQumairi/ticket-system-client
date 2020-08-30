@@ -9,8 +9,36 @@ import { ITicketForm } from "../Models/ticketForm";
 import { IRole } from "../Models/role";
 import { IRoleForm } from "../Models/roleForm";
 import { IFilters } from "../Models/filters";
+import {history} from "../index";
+import { toast } from "react-toastify";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
+
+axios.interceptors.response.use(undefined, (error) => {
+
+  const {status, data, config} = error.response;
+
+  if(status === 404) {
+    history.push("/notfound")
+  }
+
+  if(status === 400) {
+    toast.error("Authorization Error");
+  }
+
+  if(status === 401) {
+    toast.error("Login Error");
+  }
+
+  if(status === 500) {
+    toast.error("Server error");
+  }
+
+  if(error.message === "Network Error") {
+    toast.error("Failed to connect to server.")
+  }
+
+});
 
 axios.interceptors.request.use(
   (config) => {

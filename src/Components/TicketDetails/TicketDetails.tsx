@@ -11,7 +11,6 @@ import defaultAvatar from "../../Assets/Images/defaultAvatar.png";
 import CommentsForm from "./CommentsNew/CommentForm";
 import { useHistory } from "react-router-dom";
 import LoadingComp from "../Utility/Loader/LoadingComp";
-import LoadingPage from "../Utility/Loader/LoadingPage";
 
 interface params {
   id: string;
@@ -33,7 +32,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const [isReplying, setIsReplying] = useState<boolean>(false);
 
   useEffect(() => {
-    getTicket(match.params.id);
+    getTicket(match.params.id)
   }, [getTicket, match.params.id]);
 
   const handleBack = () => {

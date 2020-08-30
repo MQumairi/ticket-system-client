@@ -46,7 +46,7 @@ const ColorPicker: React.FC<IProps> = ({
         onClick={() => setSelectingColor(!selectingColor)}
       ></div>
       {selectingColor && (
-        <div className="popOver">
+        <div className="popOver" tabIndex={0} onBlur={() => setSelectingColor(!selectingColor)}>
           <SketchPicker
             disableAlpha
             presetColors={[]}

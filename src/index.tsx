@@ -3,17 +3,21 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./Components/App/App";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
+import {createBrowserHistory} from "history";
 import 'react-widgets/dist/css/react-widgets.css'; 
 import dateFnsLocalizer from 'react-widgets-date-fns';
+import "react-toastify/dist/ReactToastify.min.css";
 
 dateFnsLocalizer();
 
+export const history = createBrowserHistory();
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <Router history={history}>
       <App />
-    </BrowserRouter>
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );

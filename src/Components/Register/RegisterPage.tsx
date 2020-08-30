@@ -15,7 +15,6 @@ const RegisterPage = () => {
 
   const handleFinalFormSubmit = (values: IUserForm) => {
     register(values);
-    history.push("/tickets");
   };
 
   return (

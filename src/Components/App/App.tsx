@@ -27,6 +27,8 @@ import DeleteConfirmationRole from "../DeleteConfirmation/DeleteConfirmationRole
 import DeleteConfirmationProduct from "../DeleteConfirmation/DeleteConfirmationProduct";
 import DeleteConfirmationStatus from "../DeleteConfirmation/DeleteConfirmationStatus";
 import LoadingPage from "../Utility/Loader/LoadingPage";
+import Error404 from "../Errors/Error404";
+import {ToastContainer} from "react-toastify";
 
 function App() {
   const store = useContext(Store);
@@ -54,10 +56,12 @@ function App() {
       <div id="App">
         <Navbar />
         <div id="mainContentBody">
+        <ToastContainer position="top-right"/>
           <Switch>
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/register" component={RegisterPage} />
             <Route path="/" component={LandingPage} />
+            <Route component={Error404}/>
           </Switch>
         </div>
         <Footer />
@@ -69,6 +73,7 @@ function App() {
     <div id="App">
       <Navbar />
       <div id="mainContentBody">
+      <ToastContainer position="top-right"/>
         <Switch>
           <Route exact path={["/", "/tickets"]} component={Tickets} />
           <Route exact path="/tickets/new" component={TicketsNew} />
@@ -103,6 +108,7 @@ function App() {
 
           <Route exact path="/acp/statuses" component={StatusesACP} />
           <Route exact path="/acp/statuses/:id/delete" component={DeleteConfirmationStatus}/>
+          <Route component={Error404}/>
         </Switch>
       </div>
       <Footer />

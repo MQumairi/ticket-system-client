@@ -16,11 +16,10 @@ const LoginPage = () => {
   const [error, setError] = useState(null);
 
   const handleFinalFormSubmit = (values: IUserForm) => {
-    login(values).catch((error) => {
-      setError(error);
-    });
-
-    history.push("/tickets");
+    login(values)
+      .catch((error) => {
+        setError(error);
+      });
   };
 
   return (
