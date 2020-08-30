@@ -1,32 +1,49 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Form as FinalForm, Field } from "react-final-form";
-import { Form, Button, Label, GridColumn, Grid } from "semantic-ui-react";
+import { Form, Button, GridColumn, Grid } from "semantic-ui-react";
 import TextInput from "../Utility/Final Form Fields/TextInput";
 import Store from "../App/Store/rootStore";
 import { IUserForm } from "../../Models/userForm";
 import "./loginPage.css";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import {
+  combineValidators,
+  composeValidators,
+  isRequired,
+  matchesPattern,
+} from "revalidate";
+import { observer } from "mobx-react-lite";
+import ErrorNotice from "../Utility/Error Notice/ErrorNotice";
 
 const LoginPage = () => {
-  let history = useHistory();
-
   const store = useContext(Store);
-  const { login } = store.userStore;
-
-  const [error, setError] = useState(null);
+  const { login, loginError, setLoginError } = store.userStore;
 
   const handleFinalFormSubmit = (values: IUserForm) => {
-    login(values)
-      .catch((error) => {
-        setError(error);
-      });
+    login(values).catch((e) => {
+      setLoginError(true);
+      console.log("Caught a login error");
+    });
   };
+
+  useEffect(() => {
+    console.log("Login error = " + loginError);
+  }, [loginError]);
+
+  const validate = combineValidators({
+    email: composeValidators(
+      isRequired({ message: "Add an email" }),
+      matchesPattern(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
+    )({ message: "Doesn't match email format" }),
+    password: composeValidators(isRequired({ message: "Enter a password" }))(),
+  });
 
   return (
     <div>
       <FinalForm
+        validate={validate}
         onSubmit={handleFinalFormSubmit}
-        render={({ handleSubmit, submitError }) => {
+        render={({ handleSubmit, invalid, pristine }) => {
           return (
             <div className="login-page-body">
               <Grid>
@@ -44,13 +61,8 @@ const LoginPage = () => {
                 </GridColumn>
               </Grid>
               <hr />
-              {!!error && (
-                <Label
-                  className="login-error-label"
-                  color="red"
-                  basic
-                  content={"Email/Password combination incorrect. Try again."}
-                />
+              {loginError && (
+                <ErrorNotice message={"Email/Password combination unrecognized. Try again."} />
               )}
               <Form onSubmit={handleSubmit}>
                 <Field
@@ -67,7 +79,11 @@ const LoginPage = () => {
                   component={TextInput}
                   type="password"
                 />
-                <Button className="mainButton ticketNewSubmit" type="submit">
+                <Button
+                  disabled={invalid || pristine}
+                  className="mainButton ticketNewSubmit"
+                  type="submit"
+                >
                   Login
                 </Button>
               </Form>
@@ -79,4 +95,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default observer(LoginPage);

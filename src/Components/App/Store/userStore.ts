@@ -31,15 +31,27 @@ export default class UserStore {
       this.rootStore.commonStore.setAppLoaded(false);
       this.user = await Users.login(userToLogin);
       runInAction(() => {
-        if(this.user) this.rootStore.commonStore.setToken(this.user.token);
-        this.rootStore.commonStore.setAppLoaded(true);
-        history.push("/tickets");
+        if (this.user) {
+          this.rootStore.commonStore.setToken(this.user.token);
+          this.rootStore.commonStore.setAppLoaded(true);
+          this.setLoginError(false);
+          history.push("/tickets");
+        }
       });
     } catch (e) {
       this.rootStore.commonStore.setAppLoaded(true);
-      throw e;
+      this.setLoginError(true);
+      // throw e;
     }
   };
+
+  //Login Error
+  @observable loginError = false;
+
+  @action setLoginError = (error: boolean) => {
+    this.loginError = error;
+    console.log("Login error is (from store) " + this.loginError);
+  }
 
   //Logout
   @action logout = () => {
@@ -53,10 +65,10 @@ export default class UserStore {
       this.rootStore.commonStore.setAppLoaded(false);
       this.user = await Users.register(values);
       runInAction(() => {
-        if(this.user) this.rootStore.commonStore.setToken(this.user.token);
+        if (this.user) this.rootStore.commonStore.setToken(this.user.token);
         this.rootStore.commonStore.setAppLoaded(true);
         history.push("/tickets");
-      })
+      });
     } catch (e) {
       this.rootStore.commonStore.setAppLoaded(true);
       console.log(e);

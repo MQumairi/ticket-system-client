@@ -1,4 +1,4 @@
-import { observable, action, runInAction, toJS, computed } from "mobx";
+import { observable, action, runInAction, computed } from "mobx";
 import { ITicket } from "../../../Models/ticket";
 import { Store } from "./rootStore";
 import { Tickets, Developers } from "../../../API/agent";

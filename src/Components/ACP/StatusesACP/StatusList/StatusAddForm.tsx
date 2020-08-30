@@ -5,6 +5,7 @@ import TextInput from "../../../Utility/Final Form Fields/TextInput";
 import ColorPicker from "../../../Utility/Final Form Fields/ColorPicker";
 import Store from "../../../App/Store/rootStore";
 import { IStatus } from "../../../../Models/status";
+import { combineValidators, isRequired } from "revalidate";
 
 interface IProps {
   setAddingStatus: (addingStatus: boolean) => void;
@@ -12,11 +13,16 @@ interface IProps {
 
 const StatusAddForm: React.FC<IProps> = ({ setAddingStatus }) => {
   const store = useContext(Store);
-  const { addStatus } = store.statusStore;
+  const { addStatus, loadStatuses } = store.statusStore;
 
   const [selectingColor, setSelectingColor] = useState<boolean>(false);
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const validate = combineValidators({
+    name: isRequired({ message: "A name is required" }),
+    color: isRequired({message: "Select a color"})
+  });
 
   const handleFinalFormSubmit = (values: any) => {
     setSubmitting(true);
@@ -30,12 +36,15 @@ const StatusAddForm: React.FC<IProps> = ({ setAddingStatus }) => {
     console.log(statusToAdd);
 
     addStatus(statusToAdd)
-    .then(() => {
-      setSubmitting(false);
-    })
-    .then(() => {
-      setAddingStatus(false);
-    });
+      .then(() => {
+        loadStatuses();
+      })
+      .then(() => {
+        setSubmitting(false);
+      })
+      .then(() => {
+        setAddingStatus(false);
+      });
   };
 
   const handleCancel = () => {
@@ -45,8 +54,9 @@ const StatusAddForm: React.FC<IProps> = ({ setAddingStatus }) => {
 
   return (
     <FinalForm
+      validate={validate}
       onSubmit={handleFinalFormSubmit}
-      render={({ handleSubmit }) => {
+      render={({ handleSubmit, invalid, pristine }) => {
         return (
           <Form onSubmit={handleSubmit}>
             <Form.Group>
@@ -64,7 +74,12 @@ const StatusAddForm: React.FC<IProps> = ({ setAddingStatus }) => {
                   component={TextInput}
                 />
               </div>
-              <Button loading={submitting} className="mainButton" type="submit">
+              <Button
+                disabled={invalid || pristine}
+                loading={submitting}
+                className="mainButton"
+                type="submit"
+              >
                 Submit
               </Button>
               <Button className="mainButton" onClick={() => handleCancel()}>

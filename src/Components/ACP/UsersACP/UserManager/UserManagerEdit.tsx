@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IUser } from "../../../../Models/user";
-import { Grid, GridColumn, Button, Form } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 import Avatar from "../../../Users/Avatar/Avatar";
 import { IUserFormGeneral } from "../../../../Models/userFormGeneral";
 import { Form as FinalForm, Field } from "react-final-form";

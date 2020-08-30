@@ -4,6 +4,7 @@ import { Form, Button } from "semantic-ui-react";
 import TextInput from "../../../Utility/Final Form Fields/TextInput";
 import Store from "../../../App/Store/rootStore";
 import { IProduct } from "../../../../Models/product";
+import { combineValidators, isRequired } from "revalidate";
 
 interface IProps {
   setAddingProduct: (addingProduct: boolean) => void;
@@ -11,7 +12,7 @@ interface IProps {
 
 const ProductAddForm: React.FC<IProps> = ({ setAddingProduct }) => {
   const store = useContext(Store);
-  const { addProduct } = store.productStore;
+  const { addProduct, loadProducts } = store.productStore;
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const handleFinalFormSubmit = (values: any) => {
@@ -23,6 +24,9 @@ const ProductAddForm: React.FC<IProps> = ({ setAddingProduct }) => {
 
     addProduct(productToAdd)
     .then(() => {
+      loadProducts();
+    })
+    .then(() => {
       setSubmitting(false);
     })
     .then(() => {
@@ -30,10 +34,18 @@ const ProductAddForm: React.FC<IProps> = ({ setAddingProduct }) => {
     });
   };
 
+  //Don't forget to pass this into FinalForm as validate={validate}, 
+    //and destructure params of render prop (handleSubmit, invalid, pristine)
+    //then set the submit button to disabled if invalid or pristine
+    const validate = combineValidators({
+      name: isRequired({ message: "A name is required" })
+    });
+
   return (
     <FinalForm
+    validate={validate}
       onSubmit={handleFinalFormSubmit}
-      render={({ handleSubmit }) => {
+      render={({ handleSubmit, invalid, pristine }) => {
         return (
           <Form onSubmit={handleSubmit}>
             <Form.Group widths="equal">
@@ -42,7 +54,7 @@ const ProductAddForm: React.FC<IProps> = ({ setAddingProduct }) => {
                 placeholder="Product name"
                 component={TextInput}
               />
-              <Button loading={submitting} className="mainButton" type="submit">
+              <Button disabled={invalid || pristine} loading={submitting} className="mainButton" type="submit">
                 Submit
               </Button>
               <Button

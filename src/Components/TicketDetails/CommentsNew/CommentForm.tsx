@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import formBuilder from "../../../Functions/buildFormData";
 import { useHistory } from "react-router-dom";
 import { IComment } from "../../../Models/comment";
+import { combineValidators, isRequired } from "revalidate";
 
 interface IProps {
   parent: ITicket;
@@ -33,8 +34,11 @@ const CommentForm: React.FC<IProps> = ({
 
   const [file, setFile] = useState<File | undefined>(undefined);
 
-  const handleFinalFormSubmit = (values: any) => {
+  const validate = combineValidators({
+    description: isRequired({ message: "A description is required" }),
+  });
 
+  const handleFinalFormSubmit = (values: any) => {
     if (!commentToEdit) {
       let commentToPost: ICommentForm = {
         date_time: format(Date.now(), "MM/dd/yyyy h:m:s a"),
@@ -45,26 +49,27 @@ const CommentForm: React.FC<IProps> = ({
       };
 
       addComment(formBuilder(commentToPost)).then(() => {
-
-        let commentToPostIc : IComment = {
+        let commentToPostIc: IComment = {
           date_time: commentToPost.date_time!,
           description: commentToPost.description!,
           author: user!,
           parent_post_id: commentToPost.parent_post_id,
-        }
+        };
 
         setIsReplying!(false);
         parent.comments.push(commentToPostIc);
       });
     } else {
-
       let commentBeingEdited: ICommentForm = {
         parent_post_id: parent.post_id!,
         description: values.description,
-        image: file
-      }
+        image: file,
+      };
 
-      editComment(+commentToEdit.post_id! ,formBuilder(commentBeingEdited)).then(() => {
+      editComment(
+        +commentToEdit.post_id!,
+        formBuilder(commentBeingEdited)
+      ).then(() => {
         history.go(0);
       });
     }
@@ -81,8 +86,9 @@ const CommentForm: React.FC<IProps> = ({
       {commentToEdit && <h2>Edit your comment</h2>}
       <hr />
       <FinalForm
+        validate={validate}
         onSubmit={handleFinalFormSubmit}
-        render={({ handleSubmit }) => {
+        render={({ handleSubmit, invalid, pristine }) => {
           return (
             <Form onSubmit={handleSubmit}>
               <Field
@@ -93,10 +99,17 @@ const CommentForm: React.FC<IProps> = ({
                 component={TextAreaInput}
                 initialValue={commentToEdit?.description}
               />
-              <Dropzone setFile={setFile} defaultAttach={commentToEdit?.attachment} />
+              <Dropzone
+                setFile={setFile}
+                defaultAttach={commentToEdit?.attachment}
+              />
 
               <div className="commentButtons">
-                <Button className="mainButton" type="submit">
+                <Button
+                  className="mainButton"
+                  type="submit"
+                  disabled={invalid || pristine}
+                >
                   Submit
                 </Button>
                 <Button

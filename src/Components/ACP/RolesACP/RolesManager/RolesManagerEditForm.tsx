@@ -5,6 +5,7 @@ import TextInput from "../../../Utility/Final Form Fields/TextInput";
 import Store from "../../../App/Store/rootStore";
 import { IRoleForm } from "../../../../Models/roleForm";
 import { IRole } from "../../../../Models/role";
+import { combineValidators, isRequired } from "revalidate";
 
 interface IProps {
   setEditingRole: (editingRole: boolean) => void;
@@ -25,22 +26,27 @@ const RolesManagerEditForm: React.FC<IProps> = ({ setEditingRole, role }) => {
     };
 
     editRole(role.id, roleToEdit)
-    .then(() => {
-      role.name = roleToEdit.role_name;
-    })
-    .then(() => {
-      setSaving(false);
-    })
-    .then(() => {
-      setEditingRole(false);
-    })
+      .then(() => {
+        role.name = roleToEdit.role_name;
+      })
+      .then(() => {
+        setSaving(false);
+      })
+      .then(() => {
+        setEditingRole(false);
+      });
   };
+
+  const validate = combineValidators({
+    name: isRequired({ message: "A name is required" }),
+  });
 
   return (
     <div>
       <FinalForm
+        validate={validate}
         onSubmit={handleFinalFormSubmit}
-        render={({ handleSubmit }) => {
+        render={({ handleSubmit, invalid, pristine }) => {
           return (
             <Form onSubmit={handleSubmit}>
               <Field
@@ -52,6 +58,7 @@ const RolesManagerEditForm: React.FC<IProps> = ({ setEditingRole, role }) => {
               ></Field>
               <Form.Group widths="equal">
                 <Button
+                  disabled={invalid || pristine}
                   className="mainButton fullWidth"
                   type="submit"
                   content="Save"

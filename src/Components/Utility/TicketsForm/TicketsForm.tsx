@@ -15,6 +15,7 @@ import { ITicket } from "../../../Models/ticket";
 import { useHistory } from "react-router-dom";
 import formBuilder from "../../../Functions/buildFormData";
 import Dropzone from "../../Utility/Image Upload/Dropzone";
+import { combineValidators, isRequired } from "revalidate";
 
 interface IProps {
   ticket?: ITicket;
@@ -34,6 +35,16 @@ const TicketsForm: React.FC<IProps> = (props) => {
   const [file, setFile] = useState<File | undefined>(undefined);
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+
+  //Don't forget to pass this into FinalForm as validate={validate}, 
+  //and destructure params of render prop (handleSubmit, invalid, pristine)
+  //then set the submit button to disabled if invalid or pristine
+  const validate = combineValidators({
+    title: isRequired({ message: "A title is required" }),
+    product: isRequired({message: "Please select a product"}),
+    status: isRequired({message: "Please select a status"}),
+    description: isRequired({message: "A description is required"})
+  });
 
   useEffect(() => {
     if (!!props.ticket) {
@@ -59,12 +70,12 @@ const TicketsForm: React.FC<IProps> = (props) => {
       let formData = formBuilder(ticketToPost);
 
       addTicket(formData)
-      .then(() => {
-        setSubmitting(false);
-      })
-      .then(() => {
-        history.push("/tickets");
-      });
+        .then(() => {
+          setSubmitting(false);
+        })
+        .then(() => {
+          history.push("/tickets");
+        });
     } else {
       let ticketToUpdate: ITicketForm = {
         post_id: props.ticket.post_id!.toString(),
@@ -75,13 +86,12 @@ const TicketsForm: React.FC<IProps> = (props) => {
       };
 
       editTicket(props.ticket.post_id!, formBuilder(ticketToUpdate))
-      .then(() => {
-        setSubmitting(false);
-      })
-      .then(() => {
+        .then(() => {
+          setSubmitting(false);
+        })
+        .then(() => {
           history.push("/tickets/" + props.ticket!.post_id);
-        }
-      );
+        });
     }
   };
 
@@ -110,8 +120,9 @@ const TicketsForm: React.FC<IProps> = (props) => {
       </div>
       <div id="ticketsNewBody">
         <FinalForm
+          validate={validate}
           onSubmit={handleFinalFormSubmit}
-          render={({ handleSubmit }) => {
+          render={({ handleSubmit, invalid, pristine }) => {
             return (
               <Form onSubmit={handleSubmit}>
                 <Form content="Title"></Form>
@@ -128,7 +139,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
                     component={DropwdownInput}
                     options={productOptions}
                     name="product"
-                    defaultValue={ticketToEdit?.product}
+                    defaultValue={ticketToEdit?.product || productOptions[0].value}
                     placeholder="Product"
                   />
                   <Field
@@ -136,7 +147,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
                     component={SelectInput}
                     options={statusOptions}
                     name="status"
-                    defaultValue={ticketToEdit?.status}
+                    defaultValue={ticketToEdit?.status || statusOptions[0].value}
                     placeholder="Status"
                   />
                 </Form.Group>
@@ -152,7 +163,12 @@ const TicketsForm: React.FC<IProps> = (props) => {
                   setFile={setFile}
                   defaultAttach={props.ticket?.attachment}
                 />
-                <Button loading={submitting} className="mainButton ticketNewSubmit" type="submit">
+                <Button
+                  disabled={invalid || pristine}
+                  loading={submitting}
+                  className="mainButton ticketNewSubmit"
+                  type="submit"
+                >
                   Submit
                 </Button>
               </Form>
