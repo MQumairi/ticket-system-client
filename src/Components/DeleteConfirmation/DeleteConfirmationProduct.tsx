@@ -8,7 +8,6 @@ import { Form as FinalForm } from "react-final-form";
 import "./deleteconfirm.css";
 import { IProduct } from "../../Models/product";
 import LoadingComp from "../Utility/Loader/LoadingComp";
-import { stat } from "fs";
 
 interface params {
   id: string;

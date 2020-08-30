@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import TicketItem from "./TicketItem/TicketItem";
 import { observer } from "mobx-react-lite";
 import "./ticketList.css";
 import { ITicket } from "../../../../Models/ticket";
-import Store from "../../../App/Store/rootStore";
 
 interface IProps {
   ticketsArr : ITicket[];

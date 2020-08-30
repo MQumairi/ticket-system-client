@@ -5,6 +5,7 @@ import TextInput from "../../Utility/Final Form Fields/TextInput";
 import { observer } from "mobx-react-lite";
 import Store from "../../App/Store/rootStore";
 import { IUserFormGeneral } from "../../../Models/userFormGeneral";
+import { combineValidators, isRequired, composeValidators, isAlphabetic, matchesPattern } from "revalidate";
 
 interface IProps {
   setActive: (active: string) => void;
@@ -16,8 +17,14 @@ const ProfileEditDetails: React.FC<IProps> = ({ setActive }) => {
 
   const [editing, setEditing] = useState<boolean>(false);
 
-  const handleFinalFormSubmit = (values: any) => {
+  const validate = combineValidators({
+    first_name: composeValidators(isRequired({ message: "Add a first name" }), isAlphabetic({message: "Can only contain letters"}))(),
+    surname: composeValidators(isRequired({ message: "Add a surname" }), isAlphabetic({message: "Can only contain letters"}))(),
+    username: composeValidators(isRequired({ message: "Add a username" }), matchesPattern(/^[a-zA-Z0-9]+$/))({message: "Can only contain letters and numbers"}),
+    email: composeValidators(isRequired({ message: "Add an email" }), matchesPattern(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/))({message: "Doesn't match email format"})
+  });
 
+  const handleFinalFormSubmit = (values: any) => {
     setEditing(true);
 
     let profileDetails: IUserFormGeneral = {
@@ -28,25 +35,26 @@ const ProfileEditDetails: React.FC<IProps> = ({ setActive }) => {
     };
 
     editProfile(profileDetails)
-    .then(() => {
-      user!.username = profileDetails!.username!;
-      user!.first_name = profileDetails.first_name!;
-      user!.surname = profileDetails.surname!;
-      user!.email = profileDetails.email!;
-    })
-    .then(() => {
-      setEditing(false);
-    })
-    .then(() => {
-      setActive("Your Profile");
-    });
+      .then(() => {
+        user!.username = profileDetails!.username!;
+        user!.first_name = profileDetails.first_name!;
+        user!.surname = profileDetails.surname!;
+        user!.email = profileDetails.email!;
+      })
+      .then(() => {
+        setEditing(false);
+      })
+      .then(() => {
+        setActive("Your Profile");
+      });
   };
 
   return (
     <div>
       <FinalForm
+        validate={validate}
         onSubmit={handleFinalFormSubmit}
-        render={({ handleSubmit }) => {
+        render={({ handleSubmit, invalid, pristine }) => {
           return (
             <Form onSubmit={handleSubmit}>
               <Form.Group widths="equal">
@@ -80,7 +88,12 @@ const ProfileEditDetails: React.FC<IProps> = ({ setActive }) => {
                 type="email"
                 initialValue={user?.email}
               />
-              <Button loading={editing} className="mainButton ticketNewSubmit" type="submit">
+              <Button
+                disabled={invalid || pristine}
+                loading={editing}
+                className="mainButton ticketNewSubmit"
+                type="submit"
+              >
                 Submit
               </Button>
             </Form>

@@ -8,6 +8,7 @@ import { IStatus } from "../../../../../Models/status";
 import ColorPicker from "../../../../Utility/Final Form Fields/ColorPicker";
 import "./statusListCardEditForm.css";
 import SelectInput from "../../../../Utility/Final Form Fields/DropdownInput";
+import { combineValidators, isRequired } from "revalidate";
 
 interface IProps {
   status: IStatus;
@@ -29,6 +30,10 @@ const StatusListCardEditForm: React.FC<IProps> = ({
   const [selectingColor, setSelectingColor] = useState<boolean>(false);
 
   const [editing, setEditing] = useState<boolean>(false);
+
+  const validate = combineValidators({
+    name: isRequired({ message: "A name is required" }),
+  });
 
   //Form handler
   const handleFinalFormSubmit = (values: any) => {
@@ -65,8 +70,9 @@ const StatusListCardEditForm: React.FC<IProps> = ({
 
   return (
     <FinalForm
+      validate={validate}
       onSubmit={handleFinalFormSubmit}
-      render={({ handleSubmit }) => {
+      render={({ handleSubmit, invalid, pristine }) => {
         return (
           <Form onSubmit={handleSubmit}>
             <Form.Group>
@@ -96,6 +102,7 @@ const StatusListCardEditForm: React.FC<IProps> = ({
               </div>
               <Button.Group>
                 <Button
+                  disabled={invalid || pristine}
                   className="mainButton cardEditButton"
                   type="submit"
                   content="Save"

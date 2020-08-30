@@ -5,6 +5,7 @@ import TextInput from "../../../../Utility/Final Form Fields/TextInput";
 import { Form as FinalForm, Field } from "react-final-form";
 import Store from "../../../../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
+import { combineValidators, isRequired } from "revalidate";
 
 interface IProps {
   product: IProduct;
@@ -18,7 +19,11 @@ const ProductListCardEditForm: React.FC<IProps> = ({
   const store = useContext(Store);
   const { editProduct } = store.productStore;
 
-    const [editing, setEditing] = useState<boolean>(false);
+  const [editing, setEditing] = useState<boolean>(false);
+
+  const validate = combineValidators({
+    name: isRequired({ message: "A name is required" }),
+  });
 
   const handleFinalFormSubmit = (values: any) => {
     setEditing(true);
@@ -42,8 +47,9 @@ const ProductListCardEditForm: React.FC<IProps> = ({
   };
   return (
     <FinalForm
+      validate={validate}
       onSubmit={handleFinalFormSubmit}
-      render={({ handleSubmit }) => {
+      render={({ handleSubmit, invalid, pristine }) => {
         return (
           <Form onSubmit={handleSubmit}>
             <Form.Group widths="equal">
@@ -53,7 +59,12 @@ const ProductListCardEditForm: React.FC<IProps> = ({
                 component={TextInput}
                 initialValue={product.product_name}
               />
-              <Button loading={editing} className="mainButton" type="submit">
+              <Button
+                disabled={invalid || pristine}
+                loading={editing}
+                className="mainButton"
+                type="submit"
+              >
                 Submit
               </Button>
               <Button

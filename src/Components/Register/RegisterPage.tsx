@@ -5,25 +5,61 @@ import TextInput from "../Utility/Final Form Fields/TextInput";
 import Store from "../App/Store/rootStore";
 import { IUserForm } from "../../Models/userForm";
 import "./registerPage.css";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import {
+  combineValidators,
+  composeValidators,
+  isRequired,
+  isAlphabetic,
+  matchesPattern,
+  hasLengthGreaterThan,
+} from "revalidate";
+import PasswordRequirments from "../Utility/Password Requirements/PasswordRequirments";
 
 const RegisterPage = () => {
-  let history = useHistory();
 
   const store = useContext(Store);
   const { register } = store.userStore;
 
+  const validate = combineValidators({
+    first_name: composeValidators(
+      isRequired({ message: "Add a first name" }),
+      isAlphabetic({ message: "Can only contain letters" })
+    )(),
+    surname: composeValidators(
+      isRequired({ message: "Add a surname" }),
+      isAlphabetic({ message: "Can only contain letters" })
+    )(),
+    username: composeValidators(
+      isRequired({ message: "Add a username" }),
+      matchesPattern(/^[a-zA-Z0-9]+$/)
+    )({ message: "Can only contain letters and numbers" }),
+    email: composeValidators(
+      isRequired({ message: "Add an email" }),
+      matchesPattern(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
+    )({ message: "Doesn't match email format" }),
+    password: composeValidators(
+      isRequired({ message: "Enter a password" }),
+      hasLengthGreaterThan(7)({
+        message: "A valid password must be 8 or more characters long",
+      }),
+      matchesPattern(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/
+      )({ message: "Your password doesn't satisfy all requirments" })
+    )(),
+  });
+
   const handleFinalFormSubmit = (values: IUserForm) => {
     register(values);
-    history.push("/tickets");
   };
 
   return (
     <div>
       <div>
         <FinalForm
+          validate={validate}
           onSubmit={handleFinalFormSubmit}
-          render={({ handleSubmit }) => {
+          render={({ handleSubmit, invalid, pristine }) => {
             return (
               <div className="register-page-body">
                 <Grid>
@@ -42,20 +78,20 @@ const RegisterPage = () => {
                 </Grid>
                 <hr />
                 <Form onSubmit={handleSubmit}>
-                <Form.Group widths='equal'>
-                <Field
-                    inputLabel="First Name"
-                    name="first_name"
-                    placeholder="First Name"
-                    component={TextInput}
-                  />
-                  <Field
-                    inputLabel="Surname"
-                    name="surname"
-                    placeholder="Surname"
-                    component={TextInput}
-                  />
-                </Form.Group>
+                  <Form.Group widths="equal">
+                    <Field
+                      inputLabel="First Name"
+                      name="first_name"
+                      placeholder="First Name"
+                      component={TextInput}
+                    />
+                    <Field
+                      inputLabel="Surname"
+                      name="surname"
+                      placeholder="Surname"
+                      component={TextInput}
+                    />
+                  </Form.Group>
                   <Field
                     type="email"
                     inputLabel="Email"
@@ -69,6 +105,7 @@ const RegisterPage = () => {
                     placeholder="Username"
                     component={TextInput}
                   />
+                  <PasswordRequirments/>
                   <Field
                     inputLabel="Password"
                     name="password"
@@ -76,7 +113,11 @@ const RegisterPage = () => {
                     component={TextInput}
                     type="password"
                   />
-                  <Button className="mainButton ticketNewSubmit" type="submit">
+                  <Button
+                    disabled={invalid || pristine}
+                    className="mainButton ticketNewSubmit"
+                    type="submit"
+                  >
                     Register
                   </Button>
                 </Form>

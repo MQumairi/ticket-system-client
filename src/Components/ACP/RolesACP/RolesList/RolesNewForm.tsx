@@ -4,6 +4,7 @@ import { Form as FinalForm, Field } from "react-final-form";
 import TextInput from "../../../Utility/Final Form Fields/TextInput";
 import Store from "../../../App/Store/rootStore";
 import { IRoleForm } from "../../../../Models/roleForm";
+import { combineValidators, isRequired } from "revalidate";
 
 interface IProps {
   setAddingRole: (addingRole: boolean) => void;
@@ -13,10 +14,13 @@ const RolesNewForm: React.FC<IProps> = ({ setAddingRole }) => {
   const store = useContext(Store);
   const { addRole, loadRoles } = store.userStore;
 
-    const [submitting, setSubmitting] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const validate = combineValidators({
+    name: isRequired({ message: "A name is required" }),
+  });
 
   const handleFinalFormSubmit = (values: any) => {
-    
     setSubmitting(true);
 
     let roleToAdd: IRoleForm = {
@@ -24,20 +28,21 @@ const RolesNewForm: React.FC<IProps> = ({ setAddingRole }) => {
     };
 
     addRole(roleToAdd)
-    .then(() => {
-      setSubmitting(false);
-    })
-    .then(() => {
-      loadRoles();
-      setAddingRole(false);
-    });
+      .then(() => {
+        setSubmitting(false);
+      })
+      .then(() => {
+        loadRoles();
+        setAddingRole(false);
+      });
   };
 
   return (
     <div>
       <FinalForm
+        validate={validate}
         onSubmit={handleFinalFormSubmit}
-        render={({ handleSubmit }) => {
+        render={({ handleSubmit, invalid, pristine }) => {
           return (
             <Form onSubmit={handleSubmit}>
               <Form.Group widths="equal">
@@ -46,7 +51,13 @@ const RolesNewForm: React.FC<IProps> = ({ setAddingRole }) => {
                   placeholder="Role Name"
                   component={TextInput}
                 ></Field>
-                <Button loading={submitting} className="mainButton" type="submit" content="Submit" />
+                <Button
+                  disabled={invalid || pristine}
+                  loading={submitting}
+                  className="mainButton"
+                  type="submit"
+                  content="Submit"
+                />
                 <Button
                   content="Cancel"
                   className="mainButton"
