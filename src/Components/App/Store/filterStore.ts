@@ -12,8 +12,8 @@ export default class FilterStore {
   defaultFilters: IFilters = {
     product_ids: [],
     status_ids: [],
-    date_from: format(minDate, "MM/dd/yyyy h:m:s a"),
-    date_to: format(maxDate, "MM/dd/yyyy h:m:s a"),
+    date_from: format(minDate, "MM/dd/yyyy"),
+    date_to: format(maxDate, "MM/dd/yyyy"),
   };
 
   @observable isFiltered = false;
@@ -66,12 +66,12 @@ export default class FilterStore {
   };
 
   @action setDateFrom = (date_from: number) => {
-    this.filters.date_from = format(date_from, "MM/dd/yyyy h:m:s a");
+    this.filters.date_from = format(date_from, "MM/dd/yyyy");
     console.log(toJS(this.filters));
   };
 
   @action setDateTo = (date_to: number) => {
-    this.filters.date_to = format(date_to, "MM/dd/yyyy h:m:s a");
+    this.filters.date_to = format(date_to, "MM/dd/yyyy");
     console.log(toJS(this.filters));
   };
 

@@ -186,7 +186,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
         .map((comment) => {
           return (
             <div>
-              <Comment comment={comment} />
+              <Comment parent_id={match.params.id} comment={comment} />
             </div>
           );
         })}
