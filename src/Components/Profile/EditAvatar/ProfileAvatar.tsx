@@ -5,7 +5,7 @@ import { Form as FinalForm } from "react-final-form";
 import Store from "../../App/Store/rootStore";
 
 interface IProps {
-  setActive: (active: string) => void;
+  setActive?: (active: string) => void;
 }
 
 const ProfileAvatar: React.FC<IProps> = ({ setActive }) => {
@@ -26,9 +26,9 @@ const ProfileAvatar: React.FC<IProps> = ({ setActive }) => {
     .then(() => {
       setSubmitting(false);
     })
-    .then(() => {
-      setActive("Your Profile");
-    });
+    // .then(() => {
+    //   setActive("Your Profile");
+    // });
   };
   return (
     <div>

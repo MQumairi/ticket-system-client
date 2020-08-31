@@ -8,7 +8,7 @@ import PasswordRequirments from "../../Utility/Password Requirements/PasswordReq
 import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan, matchesPattern } from "revalidate";
 
 interface IProps {
-  setActive: (active: string) => void;
+  setActive?: (active: string) => void;
 }
 
 const ProfilePassword: React.FC<IProps> = ({ setActive }) => {
@@ -36,9 +36,9 @@ const ProfilePassword: React.FC<IProps> = ({ setActive }) => {
     .then(() => {
       setSubmitting(false);
     })
-    .then(() => {
-      setActive("Your Profile");
-    });
+    // .then(() => {
+    //   setActive("Your Profile");
+    // });
   };
 
   return (

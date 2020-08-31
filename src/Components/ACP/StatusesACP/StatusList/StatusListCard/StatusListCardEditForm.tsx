@@ -97,6 +97,7 @@ const StatusListCardEditForm: React.FC<IProps> = ({
                     options={statusIsDefaultOptions}
                     name="is_default"
                     defaultValue={status?.is_default}
+                    disabled={status?.is_default}
                   />
                 </Form.Group>
               </div>

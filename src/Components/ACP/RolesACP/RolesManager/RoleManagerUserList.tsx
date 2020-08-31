@@ -6,7 +6,7 @@ import LoadingComp from '../../../Utility/Loader/LoadingComp';
 const RoleManagerUserList = () => {
 
     const store = useContext(Store);
-    const {currentRoleUsers, currentRole: role} = store.userStore;
+    const {currentRole: role} = store.userStore;
 
     const {resourceLoading} = store.commonStore;
 
@@ -15,7 +15,7 @@ const RoleManagerUserList = () => {
     return (
         <div>
           <label>Users currently in role:</label>
-          {Array.from(currentRoleUsers.values()).sort((u1, u2) => ('' + u1.username).localeCompare(u2.username)).map((user) => {
+          {Array.from(role!.roleUsers).sort((u1, u2) => ('' + u1.username).localeCompare(u2.username)).map((user) => {
             return (
               <RolesManagerUserItem
                 user={user}

@@ -23,7 +23,8 @@ axios.interceptors.response.use(undefined, (error) => {
   }
 
   if(status === 400) {
-    toast.error("Authorization Error");
+    let error_message : string = String(Object.values(error.response.data.errors)[0]);
+    throw Error(error_message);
   }
 
   if(status === 401) {
