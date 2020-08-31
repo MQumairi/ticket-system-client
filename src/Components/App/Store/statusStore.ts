@@ -14,6 +14,9 @@ export default class StatusStore {
   @action loadStatuses = async () => {
     try {
       this.statuses = await Status.list();
+      runInAction(() => {
+        this.statuses = this.statuses.sort((s1, s2) => ('' + s1.status_text).localeCompare(s2.status_text));
+      })
     } catch (e) {
       console.log(e);
     }
@@ -65,6 +68,8 @@ export default class StatusStore {
         value: status,
       });
     });
+
+    returnArr = returnArr.sort((s1, s2) => ('' + s1.text).localeCompare(s2.text));
 
     return returnArr;
   }
