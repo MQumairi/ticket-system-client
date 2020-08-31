@@ -30,6 +30,11 @@ axios.interceptors.response.use(undefined, (error) => {
     toast.error("Login Error");
   }
 
+  if(status === 403) {
+    toast.error("Unauthorized");
+    history.push("/unauthorized");
+  }
+
   if(status === 500) {
     toast.error("Server error");
   }
