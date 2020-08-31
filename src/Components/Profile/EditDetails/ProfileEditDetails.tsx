@@ -8,7 +8,7 @@ import { IUserFormGeneral } from "../../../Models/userFormGeneral";
 import { combineValidators, isRequired, composeValidators, isAlphabetic, matchesPattern } from "revalidate";
 
 interface IProps {
-  setActive: (active: string) => void;
+  setActive?: (active: string) => void;
 }
 
 const ProfileEditDetails: React.FC<IProps> = ({ setActive }) => {
@@ -44,9 +44,6 @@ const ProfileEditDetails: React.FC<IProps> = ({ setActive }) => {
       .then(() => {
         setEditing(false);
       })
-      .then(() => {
-        setActive("Your Profile");
-      });
   };
 
   return (

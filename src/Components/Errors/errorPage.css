@@ -1,0 +1,10 @@
+@import "../../Assets/Styles/style.css";
+
+.errorPageBody {
+    background: var(--body-bg-color-1);
+    padding: var(--default-padding);
+    border-radius: var(--container-border-radius);
+    width: var(--med-container-width);
+    margin: auto auto;
+    margin-top: 40px;
+}

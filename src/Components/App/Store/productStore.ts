@@ -15,6 +15,9 @@ export default class ProductStore {
   @action loadProducts = async () => {
     try {
       this.products = await Products.list();
+      runInAction(() => {
+        this.products = this.products.sort((p1, p2) => ('' + p1.product_name).localeCompare(p2.product_name));
+      })
     } catch (e) {
       console.log(e);
     }
@@ -30,6 +33,8 @@ export default class ProductStore {
         value: product,
       });
     });
+
+    returnArr = returnArr.sort((p1, p2) => ('' + p1.text).localeCompare(p2.text));
 
     return returnArr;
   }

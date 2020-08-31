@@ -21,9 +21,7 @@ const RolesManager: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const {
     currentRole: role,
     loadCurrentRole,
-    // loadUserList,
-    userOptions,
-    loadCurrentRoleUsers,
+    roleFullUserListOptions,
     assignRole,
   } = store.userStore;
 
@@ -37,7 +35,7 @@ const RolesManager: React.FC<RouteComponentProps<params>> = ({ match }) => {
     };
 
     assignRole(values.user, roleToAssign).then(() => {
-      loadCurrentRoleUsers(role!.name);
+      loadCurrentRole(match.params.id);
     });
   };
 
@@ -91,7 +89,7 @@ const RolesManager: React.FC<RouteComponentProps<params>> = ({ match }) => {
                   <Form.Group widths="equal">
                     <Field
                       component={SelectInput}
-                      options={userOptions}
+                      options={roleFullUserListOptions}
                       name="user"
                       placeholder="User"
                     />

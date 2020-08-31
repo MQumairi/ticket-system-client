@@ -15,11 +15,13 @@ import {
   hasLengthGreaterThan,
 } from "revalidate";
 import PasswordRequirments from "../Utility/Password Requirements/PasswordRequirments";
+import ErrorNotice from "../Utility/Error Notice/ErrorNotice";
+import { observer } from "mobx-react-lite";
 
 const RegisterPage = () => {
 
   const store = useContext(Store);
-  const { register } = store.userStore;
+  const { register, registerationError } = store.userStore;
 
   const validate = combineValidators({
     first_name: composeValidators(
@@ -77,6 +79,7 @@ const RegisterPage = () => {
                   </GridColumn>
                 </Grid>
                 <hr />
+                {registerationError && <ErrorNotice message={registerationError}/>}
                 <Form onSubmit={handleSubmit}>
                   <Form.Group widths="equal">
                     <Field
@@ -130,4 +133,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default observer(RegisterPage);

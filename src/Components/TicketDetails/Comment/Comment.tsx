@@ -4,18 +4,17 @@ import "./comment.css";
 import { Button, Grid } from "semantic-ui-react";
 import Avatar from "../../Users/Avatar/Avatar";
 import Store from "../../App/Store/rootStore";
-import {useHistory} from "react-router-dom";
 import CommentForm from "../CommentsNew/CommentForm";
 
 interface IProps {
   comment: IComment;
+  parent_id: string;
 }
 
-const Comment: React.FC<IProps> = ({ comment }) => {
-  let history = useHistory();
+const Comment: React.FC<IProps> = ({ comment, parent_id }) => {
   const store = useContext(Store);
   const { user } = store.userStore;
-  const {currentTicket} = store.ticketStore;
+  const {currentTicket, getTicket} = store.ticketStore;
 
   const { deleteComment } = store.commentStore;
 
@@ -23,8 +22,9 @@ const Comment: React.FC<IProps> = ({ comment }) => {
   
 
   const handleDelete = () => {
-    deleteComment(comment.post_id!).then(() => {
-      history.go(0);
+    deleteComment(comment.post_id!)
+    .then(() => {
+      getTicket(parent_id);
     });
   };
 

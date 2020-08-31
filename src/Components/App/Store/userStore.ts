@@ -51,7 +51,7 @@ export default class UserStore {
   @action setLoginError = (error: boolean) => {
     this.loginError = error;
     console.log("Login error is (from store) " + this.loginError);
-  }
+  };
 
   //Logout
   @action logout = () => {
@@ -67,12 +67,23 @@ export default class UserStore {
       runInAction(() => {
         if (this.user) this.rootStore.commonStore.setToken(this.user.token);
         this.rootStore.commonStore.setAppLoaded(true);
+        this.setRegistrationError(null);
         history.push("/tickets");
       });
     } catch (e) {
       this.rootStore.commonStore.setAppLoaded(true);
-      console.log(e);
+      console.log("From store");
+      console.log(e.message);
+      runInAction(() => {
+        this.registerationError = e.message;
+      });
     }
+  };
+
+  @observable registerationError: string | null = null;
+
+  @action setRegistrationError = (toSet: string | null) => {
+    this.registerationError = toSet;
   };
 
   //Current User
@@ -225,6 +236,10 @@ export default class UserStore {
       });
     });
 
+    returnArr = returnArr.sort((d1, d2) =>
+      ("" + d1.text).localeCompare(d2.text)
+    );
+
     return returnArr;
   }
 
@@ -253,16 +268,11 @@ export default class UserStore {
 
   //Get role details
   @action loadCurrentRole = async (roleId: string) => {
-    console.log("Setting load to true");
-
     this.rootStore.commonStore.setResourceLoading(true);
     try {
       this.currentRole = await Admins.roleDetails(roleId);
       runInAction(() => {
-        this.loadCurrentRoleUsers(this.currentRole?.name!).then(() => {
-          console.log("Setting load to false");
-          this.rootStore.commonStore.setResourceLoading(false);
-        });
+        this.rootStore.commonStore.setResourceLoading(false);
       });
     } catch (e) {
       this.rootStore.commonStore.setResourceLoading(false);
@@ -271,25 +281,25 @@ export default class UserStore {
   };
 
   //Current role's users
-  @observable currentRoleUsers = observable.map(new Map<string, IUser>());
+  // @observable currentRoleUsers = observable.map(new Map<string, IUser>());
 
-  //Get role's users
-  @action loadCurrentRoleUsers = async (roleName: string) => {
-    this.rootStore.commonStore.setResourceLoading(true);
-    try {
-      let loadedRoleUsers = await Admins.listRoleUsers(roleName);
-      runInAction(() => {
-        this.currentRoleUsers.clear();
-        loadedRoleUsers.forEach((user) => {
-          this.currentRoleUsers.set(user.id!, user);
-        });
-        this.rootStore.commonStore.setResourceLoading(false);
-      });
-    } catch (e) {
-      this.rootStore.commonStore.setResourceLoading(false);
-      console.log(e);
-    }
-  };
+  // //Get role's users
+  // @action loadCurrentRoleUsers = async (roleName: string) => {
+  //   this.rootStore.commonStore.setResourceLoading(true);
+  //   try {
+  //     let loadedRoleUsers = await Admins.listRoleUsers(roleName);
+  //     runInAction(() => {
+  //       this.currentRoleUsers.clear();
+  //       loadedRoleUsers.forEach((user) => {
+  //         this.currentRoleUsers.set(user.id!, user);
+  //       });
+  //       this.rootStore.commonStore.setResourceLoading(false);
+  //     });
+  //   } catch (e) {
+  //     this.rootStore.commonStore.setResourceLoading(false);
+  //     console.log(e);
+  //   }
+  // };
 
   //Add role
   @action addRole = async (roleForm: IRoleForm) => {
@@ -342,6 +352,7 @@ export default class UserStore {
   //User options
   @computed get userOptions() {
     let returnArr: IOption[] = [];
+
     this.userList.forEach((user) => {
       returnArr.push({
         key: user.id!,
@@ -349,6 +360,28 @@ export default class UserStore {
         value: user.id!,
       });
     });
+
+    returnArr = returnArr.sort((u1, u2) =>
+      ("" + u1.text).localeCompare(u2.text)
+    );
+
+    return returnArr;
+  }
+
+  @computed get roleFullUserListOptions() {
+    let returnArr: IOption[] = [];
+
+    this.currentRole?.userList.forEach((user) => {
+      returnArr.push({
+        key: user.id!,
+        text: user.username,
+        value: user.id!,
+      });
+    });
+
+    returnArr = returnArr.sort((u1, u2) =>
+      ("" + u1.text).localeCompare(u2.text)
+    );
 
     return returnArr;
   }

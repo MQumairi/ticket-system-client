@@ -36,11 +36,9 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   }, [getTicket, match.params.id]);
 
   const handleBack = () => {
-    console.log("From handle back");
-    console.log(ticketsFromProfile);
     if (ticketsFromProfile) {
       setTicketsFromProfile(false);
-      history.push("/profile");
+      history.push("/profile/my-tickets");
     } else {
       if (currentTicket?.is_archived) {
         history.push("/archives");
@@ -186,7 +184,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
         .map((comment) => {
           return (
             <div>
-              <Comment comment={comment} />
+              <Comment parent_id={match.params.id} comment={comment} />
             </div>
           );
         })}

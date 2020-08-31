@@ -1,10 +1,12 @@
 import React from 'react'
+import "./errorPage.css";
+import ErrorNotice from '../Utility/Error Notice/ErrorNotice';
 
 const Error404 = () => {
     return (
-        <div>
-            <h1>Error 404</h1>
-            <h2>Not found</h2>
+        <div className="errorPageBody">
+            <h2>Page not found.</h2>
+            <ErrorNotice message="Error 404"/>
         </div>
     )
 }

@@ -9,7 +9,6 @@ import TextAreaInput from "../../Utility/Final Form Fields/TextAreaInput";
 import Dropzone from "../../Utility/Image Upload/Dropzone";
 import { format } from "date-fns";
 import formBuilder from "../../../Functions/buildFormData";
-import { useHistory } from "react-router-dom";
 import { IComment } from "../../../Models/comment";
 import { combineValidators, isRequired } from "revalidate";
 
@@ -26,11 +25,11 @@ const CommentForm: React.FC<IProps> = ({
   setIsReplying,
   setEditingComment,
 }) => {
-  let history = useHistory();
 
   const store = useContext(Store);
   const { addComment, editComment } = store.commentStore;
   const { user } = store.userStore;
+  const {getTicket} = store.ticketStore;
 
   const [file, setFile] = useState<File | undefined>(undefined);
 
@@ -48,16 +47,12 @@ const CommentForm: React.FC<IProps> = ({
         image: file,
       };
 
-      addComment(formBuilder(commentToPost)).then(() => {
-        let commentToPostIc: IComment = {
-          date_time: commentToPost.date_time!,
-          description: commentToPost.description!,
-          author: user!,
-          parent_post_id: commentToPost.parent_post_id,
-        };
-
+      addComment(formBuilder(commentToPost))
+      .then(() => {
+        getTicket(parent.post_id!.toString());
+      })
+      .then(() => {
         setIsReplying!(false);
-        parent.comments.push(commentToPostIc);
       });
     } else {
       let commentBeingEdited: ICommentForm = {
@@ -69,9 +64,10 @@ const CommentForm: React.FC<IProps> = ({
       editComment(
         +commentToEdit.post_id!,
         formBuilder(commentBeingEdited)
-      ).then(() => {
-        history.go(0);
-      });
+      )
+      .then(() => {
+        getTicket(parent.post_id!.toString());
+      })
     }
   };
 

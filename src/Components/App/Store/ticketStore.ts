@@ -133,6 +133,18 @@ export default class TicketStore {
   @action manageTicket = async (ticketId: number, ticket: ITicketForm) => {
     try {
       await Developers.manage(ticketId.toString(), ticket);
+      runInAction(() => {
+
+        //If the ticket is being set to archived, remove it from ticket registry
+        if(!ticket.is_archived) {
+          this.archivesRegistry.delete(ticketId);
+        }
+
+        //If the ticket is being set to current, remove it from archives registry
+        if(ticket.is_archived) {
+          this.ticketsRegistry.delete(ticketId);
+        }
+      })
     } catch(e) {
        console.log(e);
     }

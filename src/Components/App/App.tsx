@@ -13,7 +13,6 @@ import LandingPage from "../Landing Page/LandingPage";
 import RegisterPage from "../Register/RegisterPage";
 import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmationTicket";
 import { observer } from "mobx-react-lite";
-import Profile from "../Profile/Profile";
 import Archives from "../Archives/Archives";
 import DevConsole from "../Developer Console/DevConsole";
 import UsersACP from "../ACP/UsersACP/UsersACP";
@@ -29,6 +28,12 @@ import DeleteConfirmationStatus from "../DeleteConfirmation/DeleteConfirmationSt
 import LoadingPage from "../Utility/Loader/LoadingPage";
 import Error404 from "../Errors/Error404";
 import {ToastContainer} from "react-toastify";
+import Error403 from "../Errors/Error403";
+import ProfileDefaultPage from "../Profile/ProfileDefault/ProfileDefaultPage";
+import ProfileEditDetailsPage from "../Profile/EditDetails/ProfileEditDetailsPage";
+import ProfileAvatarPage from "../Profile/EditAvatar/ProfileAvatarPage"
+import ProfilePasswordPage from "../Profile/EditPassword/ProfilePasswordPage";
+import MyTicketsPage from "../Profile/MyTickets/MyTicketsPage";
 
 function App() {
   const store = useContext(Store);
@@ -61,6 +66,7 @@ function App() {
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/register" component={RegisterPage} />
             <Route path="/" component={LandingPage} />
+            <Route path="/unauthorized" component={Error403}/>
             <Route component={Error404}/>
           </Switch>
         </div>
@@ -92,8 +98,6 @@ function App() {
 
           <Route exact path="/archives" component={Archives} />
 
-          <Route exact path="/profile" component={Profile} />
-
           <Route exact path={["/acp", "/acp/users/"]} component={UsersACP} />
 
           <Route exact path="/acp/users/:id" component={UserManager} />
@@ -108,7 +112,18 @@ function App() {
 
           <Route exact path="/acp/statuses" component={StatusesACP} />
           <Route exact path="/acp/statuses/:id/delete" component={DeleteConfirmationStatus}/>
+
+          <Route exact path="/profile" component={ProfileDefaultPage} />
+          <Route exact path="/profile/edit" component={ProfileEditDetailsPage} />
+          <Route exact path="/profile/avatar" component={ProfileAvatarPage} />
+          <Route exact path="/profile/security" component={ProfilePasswordPage} />
+          <Route exact path="/profile/my-tickets" component={MyTicketsPage} />
+
+
+          <Route path="/unauthorized" component={Error403}/>
           <Route component={Error404}/>
+
+
         </Switch>
       </div>
       <Footer />

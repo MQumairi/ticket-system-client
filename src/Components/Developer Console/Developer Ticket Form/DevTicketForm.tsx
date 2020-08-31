@@ -35,7 +35,6 @@ const DevTicketForm: React.FC<IProps> = ({currentTicket}) => {
       is_archived: values.is_archived
     }
 
-
     manageTicket(currentTicket.post_id!, ticketDataToAdd)
     .then(() => {
       setSaving(false);

@@ -13,7 +13,7 @@ interface IProps {
 const RolesManagerUserItem: React.FC<IProps> = ({ user, roleName}) => {
 
     const store = useContext(Store)
-    const {unassignRole, loadCurrentRoleUsers} = store.userStore;
+    const {unassignRole, loadCurrentRole, currentRole} = store.userStore;
 
   const handleUnassignRole = () => {
       
@@ -22,7 +22,7 @@ const RolesManagerUserItem: React.FC<IProps> = ({ user, roleName}) => {
     }
 
       unassignRole(user.id!, roleToUnassign).then(() => {
-        loadCurrentRoleUsers(roleName);
+        loadCurrentRole(currentRole!.id);
       });
   };
 
