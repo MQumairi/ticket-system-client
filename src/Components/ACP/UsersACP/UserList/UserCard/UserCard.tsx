@@ -16,8 +16,8 @@ const UserCard: React.FC<IProps> = ({ user }) => {
         <Avatar avatar={user.avatar} diameter={100} borderWidth={2} />
         <div className="userInfo">
           <Card.Header>{user.username}</Card.Header>
-          {user.roles && user.roles.length > 0 && <Card.Meta>{user.roles[0]}</Card.Meta>}
-          {user.roles?.length === 0 && <Card.Meta>No role</Card.Meta>}
+          {user.role && <Card.Meta>{user.role.name}</Card.Meta>}
+          {!user.role && <Card.Meta>No role</Card.Meta>}
         </div>
         <Button
           className="mainButton ticketNewSubmit"

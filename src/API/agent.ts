@@ -28,7 +28,8 @@ axios.interceptors.response.use(undefined, (error) => {
   }
 
   if(status === 401) {
-    toast.error("Login Error");
+    toast.error("Please login");
+    history.push("/login");
   }
 
   if(status === 403) {

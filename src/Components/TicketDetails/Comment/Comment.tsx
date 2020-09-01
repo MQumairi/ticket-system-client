@@ -50,8 +50,8 @@ const Comment: React.FC<IProps> = ({ comment, parent_id }) => {
             </Grid.Column>
             <Grid.Column width={14}>
               <h2 className="posterName">{comment.author.username}</h2>
-              {comment.author.roles && (
-                <h4 className="posterRank">{comment.author.roles[0]}</h4>
+              {comment.author.role && (
+                <h4 className="posterRank">{comment.author.role.name}</h4>
               )}
             </Grid.Column>
           </Grid.Row>
@@ -68,11 +68,11 @@ const Comment: React.FC<IProps> = ({ comment, parent_id }) => {
         )}
       </div>
       {/* Comment Footer */}
-      <Grid>
+      {user && <Grid>
         <Grid.Row columns={3}>
           <Grid.Column width={12}></Grid.Column>
           <Grid.Column width={2}>
-            {(user!.id === comment.author.id || user?.roles?.includes("Admin")) && (
+            {(user!.id === comment.author.id || user?.role?.can_moderate) && (
               <Button
                 className="mainButton"
                 onClick={() => {
@@ -84,12 +84,12 @@ const Comment: React.FC<IProps> = ({ comment, parent_id }) => {
             )}
           </Grid.Column>
           <Grid.Column width={2}>
-            {(user!.id === comment.author.id || user?.roles?.includes("Admin")) && (
+            {(user!.id === comment.author.id || user?.role?.can_moderate) && (
               <Button className="mainButton" onClick={() => setEditingComment(!editingComment)}>Edit</Button>
             )}
           </Grid.Column>
         </Grid.Row>
-      </Grid>
+      </Grid>}
     </div>
   );
 };

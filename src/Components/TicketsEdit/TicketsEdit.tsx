@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import TicketsForm from "../Utility/TicketsForm/TicketsForm";
 import Store from "../App/Store/rootStore";
 import { RouteComponentProps } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
 interface params {
   id: string;
@@ -22,4 +23,4 @@ const TicketsEdit: React.FC<RouteComponentProps<params>> = ({ match }) => {
   );
 };
 
-export default TicketsEdit;
+export default observer(TicketsEdit);

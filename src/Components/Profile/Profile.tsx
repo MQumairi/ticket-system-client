@@ -5,19 +5,20 @@ import Store from "../App/Store/rootStore";
 import Avatar from "../Users/Avatar/Avatar";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
+import {history} from "../../index";
 
 interface IProps {
   currentPage: string;
 }
 
-// Don't forget to change component signature:
-// const ActivityDashboard: React.FC<IProps> = ({
-//List props here (seperated by ",")
-// }) => {
-
 const Profile: React.FC<IProps> = (props: any) => {
   const store = useContext(Store);
   const { user, logout, loadDevTickets } = store.userStore;
+
+  const handleLogout = () => {
+    logout();
+    history.push("/");
+  }
 
   return (
     <div id="profileBody">
@@ -27,7 +28,7 @@ const Profile: React.FC<IProps> = (props: any) => {
             <h1>
               {user?.first_name} {user?.surname}
             </h1>
-            <h3>{user?.roles}</h3>
+            <h3>{user?.role?.name}</h3>
             <hr></hr>
 
             {props.children}
@@ -61,8 +62,8 @@ const Profile: React.FC<IProps> = (props: any) => {
                 as={Link}
                 to="/profile/security"
               />
-              {user?.roles &&
-                user?.roles[0] === "Developer" &&
+              {user?.role &&
+                user?.role.name === "Developer" &&
                 loadDevTickets(user.id!) && (
                   <Menu.Item
                     name="My Tickets"
@@ -78,7 +79,7 @@ const Profile: React.FC<IProps> = (props: any) => {
           {props.currentPage === "Your Profile" && (
             <Button
               className="mainButton logoutButton"
-              onClick={() => logout()}
+              onClick={() => handleLogout()}
             >
               Logout
             </Button>

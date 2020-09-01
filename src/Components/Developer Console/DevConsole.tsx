@@ -13,7 +13,6 @@ interface params {
 
 const DevConsole: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const store = useContext(Store);
-  const { user } = store.userStore;
   const { currentTicket, getTicket } = store.ticketStore;
   const { loadDevelopers } = store.userStore;
   const { resourceLoading } = store.commonStore;
@@ -30,11 +29,7 @@ const DevConsole: React.FC<RouteComponentProps<params>> = ({ match }) => {
       </div>
     );
 
-  if (
-    !user?.roles ||
-    !(user.roles.includes("Developer") || user.roles.includes("Admin"))
-  )
-    return <div>No permission</div>;
+  // if (!user?.role || user.role.can_manage) return <div>No permission</div>;
 
   return (
     <div id="devConsoleBody">

@@ -11,6 +11,7 @@ const TicketDashboard = () => {
   const store = useContext(Store);
   const { sortedTickets } = store.ticketStore;
   const { resourceLoading } = store.commonStore;
+  const { user } = store.userStore;
 
   return (
     <div id="TicketDashboard">
@@ -42,13 +43,15 @@ const TicketDashboard = () => {
       {!resourceLoading && (
         <div>
           <TicketList ticketsArr={sortedTickets} />
-          <Button
-            as={Link}
-            to="/tickets/new"
-            className="mainButton postTicketButton"
-          >
-            POST TICKET
-          </Button>
+          {user && (
+            <Button
+              as={Link}
+              to="/tickets/new"
+              className="mainButton postTicketButton"
+            >
+              POST TICKET
+            </Button>
+          )}
         </div>
       )}
     </div>

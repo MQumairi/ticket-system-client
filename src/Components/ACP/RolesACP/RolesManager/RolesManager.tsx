@@ -3,7 +3,7 @@ import { RouteComponentProps, Link } from "react-router-dom";
 import Store from "../../../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
 import "./rolesManager.css";
-import { Button, Grid, Form } from "semantic-ui-react";
+import { Button, Grid, Form, Label } from "semantic-ui-react";
 import { Field } from "react-final-form";
 import SelectInput from "../../../Utility/Final Form Fields/DropdownInput";
 import { Form as FinalForm } from "react-final-form";
@@ -77,6 +77,10 @@ const RolesManager: React.FC<RouteComponentProps<params>> = ({ match }) => {
           </Grid>
           <div className="roleManagerHeader">
             <h1>{role.name}</h1>
+            <div className="roleLabels">
+            {role.can_manage && <Label>Manage</Label>}
+            {role.can_moderate && <Label>Moderate</Label>}
+            </div>
           </div>
           <hr />
 

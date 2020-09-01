@@ -68,9 +68,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               <p className="postHeaderDate">{currentTicket.display_date}</p>
             </Grid.Column>
             <Grid.Column width={2}>
-              {user?.roles &&
-                (user.roles[0] === "Developer" ||
-                  user.roles[0] === "Admin") && (
+              {user?.role && user.role.can_manage && (
                   <Button
                     floated="right"
                     className="mainButton devButton"
@@ -106,7 +104,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
             <Grid.Column width={10}>
               <h2 className="posterName">{currentTicket.author.username}</h2>
               <h4 className="posterRank">
-                {currentTicket.author.roles && currentTicket.author.roles[0]}
+                {currentTicket.author.role && currentTicket.author.role.name}
               </h4>
             </Grid.Column>
             <Grid.Column width={4}>
@@ -151,9 +149,9 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
                 </Label>
               )}
             </Grid.Column>
-            <Grid.Column width={2}>
+            {user && <Grid.Column width={2}>
               {(user!.id === currentTicket?.author.id ||
-                user?.roles?.includes("Admin")) && (
+                user?.role?.can_moderate) && (
                 <Button
                   className="mainButton"
                   as={Link}
@@ -162,10 +160,10 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
                   Delete
                 </Button>
               )}
-            </Grid.Column>
-            <Grid.Column width={2}>
+            </Grid.Column>}
+            {user && <Grid.Column width={2}>
               {(user!.id === currentTicket?.author.id ||
-                user?.roles?.includes("Admin")) && (
+                user?.role?.can_moderate) && (
                 <Button
                   className="mainButton"
                   as={Link}
@@ -174,7 +172,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
                   Edit
                 </Button>
               )}
-            </Grid.Column>
+            </Grid.Column>}
           </Grid.Row>
         </Grid>
       </div>
@@ -188,7 +186,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
             </div>
           );
         })}
-      {!isReplying && (
+      {user && !isReplying && (
         <Button
           className="mainButton commentButton"
           onClick={() => {

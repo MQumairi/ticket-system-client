@@ -45,9 +45,9 @@ const Dates = () => {
     <div className="filterDates">
       <h4 className="filterTitle">Dates</h4>
       <div className="dateSubheading">From</div>
-      <DayPickerInput inputProps={{readonly: 'readonly', placeholder: "Date From"}} onDayChange={handleChangeFrom} value={localDateFrom} />
+      <DayPickerInput inputProps={{readOnly: 'readOnly', placeholder: "Date From"}} onDayChange={handleChangeFrom} value={localDateFrom} />
       <div className="dateSubheading">To</div>
-      <DayPickerInput inputProps={{readonly: 'readonly', placeholder: "Date To"}} onDayChange={handleChangeTo} value={localDateTo} />
+      <DayPickerInput inputProps={{readOnly: 'readOnly', placeholder: "Date To"}} onDayChange={handleChangeTo} value={localDateTo} />
     </div>
   );
 };
