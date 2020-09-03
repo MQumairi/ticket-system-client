@@ -232,7 +232,7 @@ export default class UserStore {
       });
     });
 
-    returnArr = returnArr.sort((d1, d2) =>
+    returnArr = returnArr.slice().sort((d1, d2) =>
       ("" + d1.text).localeCompare(d2.text)
     );
 
@@ -357,7 +357,7 @@ export default class UserStore {
       });
     });
 
-    returnArr = returnArr.sort((u1, u2) =>
+    returnArr = returnArr.slice().sort((u1, u2) =>
       ("" + u1.text).localeCompare(u2.text)
     );
 
@@ -375,7 +375,7 @@ export default class UserStore {
       });
     });
 
-    returnArr = returnArr.sort((u1, u2) =>
+    returnArr = returnArr.slice().sort((u1, u2) =>
       ("" + u1.text).localeCompare(u2.text)
     );
 

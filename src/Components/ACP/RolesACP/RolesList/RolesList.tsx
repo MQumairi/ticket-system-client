@@ -23,7 +23,7 @@ const RolesList = () => {
     <div>
       <Card.Group itemsPerRow={2}>
         {Array.from(roles.values())
-          .sort((r1, r2) => ("" + r1.name).localeCompare(r2.name))
+          .slice().sort((r1, r2) => ("" + r1.name).localeCompare(r2.name))
           .map((role) => {
             return (
               <RolesCard role={role} key={role.id}>

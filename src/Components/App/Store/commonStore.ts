@@ -115,7 +115,7 @@ export default class CommonStore {
       });
     });
 
-    returnArr = returnArr.sort((u1, u2) =>
+    returnArr = returnArr.slice().sort((u1, u2) =>
       ("" + u1.text).localeCompare(u2.text)
     );
 

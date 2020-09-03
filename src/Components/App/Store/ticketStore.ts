@@ -36,7 +36,7 @@ export default class TicketStore {
 
   @computed get sortedTickets(): ITicket[]{
 
-    const tickets = Array.from(this.ticketsRegistry.values()).sort((t1, t2) => {
+    const tickets = Array.from(this.ticketsRegistry.values()).slice().sort((t1, t2) => {
       return Date.parse(t1.date_time) - Date.parse(t2.date_time);
     });
     
@@ -122,7 +122,7 @@ export default class TicketStore {
   };
 
   @computed get sortedArchives () : ITicket[] {
-    let archives = Array.from(this.archivesRegistry.values()).sort((a1, a2) => {
+    let archives = Array.from(this.archivesRegistry.values()).slice().sort((a1, a2) => {
       return Date.parse(a1.date_time) - Date.parse(a2.date_time); 
     })
 

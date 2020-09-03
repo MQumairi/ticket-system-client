@@ -15,7 +15,7 @@ const RoleManagerUserList = () => {
     return (
         <div>
           <label>Users currently in role:</label>
-          {Array.from(role!.roleUsers).sort((u1, u2) => ('' + u1.username).localeCompare(u2.username)).map((user) => {
+          {Array.from(role!.roleUsers).slice().sort((u1, u2) => ('' + u1.username).localeCompare(u2.username)).map((user) => {
             return (
               <RolesManagerUserItem
                 user={user}
