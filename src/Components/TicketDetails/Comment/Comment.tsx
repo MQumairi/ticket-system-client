@@ -20,9 +20,14 @@ const Comment: React.FC<IProps> = ({ comment, parent_id }) => {
 
   const [editingComment, setEditingComment] = useState<boolean>(false);
   
+    const [deletingComment, setDeletingComment] = useState<boolean>(false);
 
   const handleDelete = () => {
+    setDeletingComment(true);
     deleteComment(comment.post_id!)
+    .then(() => {
+      setDeletingComment(false);
+    })
     .then(() => {
       getTicket(parent_id);
     });
@@ -78,6 +83,8 @@ const Comment: React.FC<IProps> = ({ comment, parent_id }) => {
                 onClick={() => {
                   handleDelete();
                 }}
+                loading={deletingComment}
+                disabled={deletingComment}
               >
                 Delete
               </Button>
