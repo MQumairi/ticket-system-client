@@ -44,3 +44,7 @@
 .devButton {
     margin-right: -10px !important;
 }
+
+.description {
+    white-space: pre;
+}

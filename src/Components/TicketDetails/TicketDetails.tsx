@@ -115,7 +115,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
-            <p>{currentTicket.description}</p>
+            <p className="description">{currentTicket.description}</p>
           </Grid.Row>
           {currentTicket.attachment && (
             <Grid.Row>
