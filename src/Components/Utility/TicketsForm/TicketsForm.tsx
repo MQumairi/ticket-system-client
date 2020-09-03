@@ -38,9 +38,6 @@ const TicketsForm: React.FC<IProps> = (props) => {
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  //Don't forget to pass this into FinalForm as validate={validate},
-  //and destructure params of render prop (handleSubmit, invalid, pristine)
-  //then set the submit button to disabled if invalid or pristine
   const validate = combineValidators({
     title: isRequired({ message: "A title is required" }),
     product: isRequired({ message: "Please select a product" }),
@@ -176,7 +173,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
                   defaultAttach={props.ticket?.attachment}
                 />
                 <Button
-                  disabled={invalid || pristine}
+                  disabled={invalid || pristine || submitting}
                   loading={submitting}
                   className="mainButton ticketNewSubmit"
                   type="submit"

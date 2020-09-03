@@ -62,17 +62,13 @@ export default class UserStore {
   //Register
   @action register = async (values: IUserForm) => {
     try {
-      this.rootStore.commonStore.setAppLoaded(false);
       this.user = await Users.register(values);
       runInAction(() => {
         if (this.user) this.rootStore.commonStore.setToken(this.user.token);
-        this.rootStore.commonStore.setAppLoaded(true);
         this.setRegistrationError(null);
         history.push("/tickets");
       });
     } catch (e) {
-      this.rootStore.commonStore.setAppLoaded(true);
-      console.log("From store");
       console.log(e.message);
       runInAction(() => {
         this.registerationError = e.message;

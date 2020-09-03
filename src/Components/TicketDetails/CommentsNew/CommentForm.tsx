@@ -25,19 +25,22 @@ const CommentForm: React.FC<IProps> = ({
   setIsReplying,
   setEditingComment,
 }) => {
-
   const store = useContext(Store);
   const { addComment, editComment } = store.commentStore;
   const { user } = store.userStore;
-  const {getTicket} = store.ticketStore;
+  const { getTicket } = store.ticketStore;
 
   const [file, setFile] = useState<File | undefined>(undefined);
+
+  const [postingComment, setPostingComment] = useState<boolean>(false);
 
   const validate = combineValidators({
     description: isRequired({ message: "A description is required" }),
   });
 
   const handleFinalFormSubmit = (values: any) => {
+    setPostingComment(true);
+    
     if (!commentToEdit) {
       let commentToPost: ICommentForm = {
         date_time: format(Date.now(), "MM/dd/yyyy h:m:s a"),
@@ -48,12 +51,15 @@ const CommentForm: React.FC<IProps> = ({
       };
 
       addComment(formBuilder(commentToPost))
-      .then(() => {
-        getTicket(parent.post_id!.toString());
-      })
-      .then(() => {
-        setIsReplying!(false);
-      });
+        .then(() => {
+          getTicket(parent.post_id!.toString());
+        })
+        .then(() => {
+          setPostingComment(false);
+        })
+        .then(() => {
+          setIsReplying!(false);
+        });
     } else {
       let commentBeingEdited: ICommentForm = {
         parent_post_id: parent.post_id!,
@@ -66,8 +72,11 @@ const CommentForm: React.FC<IProps> = ({
         formBuilder(commentBeingEdited)
       )
       .then(() => {
-        getTicket(parent.post_id!.toString());
+        setPostingComment(false);
       })
+      .then(() => {
+        getTicket(parent.post_id!.toString());
+      });
     }
   };
 
@@ -104,7 +113,8 @@ const CommentForm: React.FC<IProps> = ({
                 <Button
                   className="mainButton"
                   type="submit"
-                  disabled={invalid || pristine}
+                  disabled={invalid || pristine || postingComment}
+                  loading={postingComment}
                 >
                   Submit
                 </Button>

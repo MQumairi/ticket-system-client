@@ -43,7 +43,7 @@ const ACPSettingsEdit: React.FC<IProps> = ({ setEditing }) => {
     <div className="acpSettingsListBody">
       <FinalForm
         onSubmit={handleFinalFormSubmit}
-        render={({ handleSubmit, pristine }) => {
+        render={({ handleSubmit }) => {
           return (
             <Form onSubmit={handleSubmit}>
               <Field

@@ -21,9 +21,6 @@ const RoleCreatorForm: React.FC<IProps> = ({ role }) => {
 
   const [roleFormSubmitting, setRoleFormSubmitting] = useState<boolean>(false);
 
-  //Don't forget to pass this into FinalForm as validate={validate},
-  //and destructure params of render prop (handleSubmit, invalid, pristine)
-  //then set the submit button to disabled if invalid or pristine
   const validate = combineValidators({
     role_name: isRequired({ message: "A name is required for the role" }),
   });
@@ -114,7 +111,7 @@ const RoleCreatorForm: React.FC<IProps> = ({ role }) => {
                 loading={roleFormSubmitting}
                 className="mainButton ticketNewSubmit"
                 type="submit"
-                disabled={role?.name === "Admin" || role?.name === "Developer" || invalid || pristine}
+                disabled={role?.name === "Admin" || role?.name === "Developer" || invalid || pristine || roleFormSubmitting}
               >
                 Submit
               </Button>

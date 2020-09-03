@@ -103,7 +103,7 @@ const StatusListCardEditForm: React.FC<IProps> = ({
               </div>
               <Button.Group>
                 <Button
-                  disabled={invalid || pristine}
+                  disabled={invalid || pristine || editing}
                   className="mainButton cardEditButton"
                   type="submit"
                   content="Save"

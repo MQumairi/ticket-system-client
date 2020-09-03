@@ -86,7 +86,7 @@ const ProfileEditDetails: React.FC<IProps> = ({ setActive }) => {
                 initialValue={user?.email}
               />
               <Button
-                disabled={invalid || pristine}
+                disabled={invalid || pristine || editing}
                 loading={editing}
                 className="mainButton ticketNewSubmit"
                 type="submit"

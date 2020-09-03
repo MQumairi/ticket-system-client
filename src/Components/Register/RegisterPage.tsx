@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Form as FinalForm, Field } from "react-final-form";
 import { Form, Button, GridColumn, Grid } from "semantic-ui-react";
 import TextInput from "../Utility/Final Form Fields/TextInput";
@@ -27,6 +27,8 @@ const RegisterPage = () => {
     loadRegitrationLocked,
     resourceLoading,
   } = store.commonStore;
+
+    const [registering, setRegistering] = useState<boolean>(false);
 
   useEffect(() => {
     loadRegitrationLocked();
@@ -61,7 +63,10 @@ const RegisterPage = () => {
   });
 
   const handleFinalFormSubmit = (values: IUserForm) => {
-    register(values);
+    setRegistering(true);
+    register(values).then(() => {
+      setRegistering(false);
+    });
   };
 
   if (resourceLoading)
@@ -143,9 +148,10 @@ const RegisterPage = () => {
                     type="password"
                   />
                   <Button
-                    disabled={invalid || pristine}
+                    disabled={invalid || pristine || registering}
                     className="mainButton ticketNewSubmit"
                     type="submit"
+                    loading={registering}
                   >
                     Register
                   </Button>
