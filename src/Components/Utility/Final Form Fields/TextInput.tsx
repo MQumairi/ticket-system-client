@@ -6,6 +6,7 @@ interface IProps
   extends FieldRenderProps<string, HTMLElement>,
     FormFieldProps {
       inputLabel : string;
+      readOnly: boolean;
     }
 
 const TextInput : React.FC<IProps> = ({
@@ -13,13 +14,14 @@ const TextInput : React.FC<IProps> = ({
   width,
   type,
   placeholder,
+  readOnly,
   meta: { touched, error },
   inputLabel
 }) => {
   return (
     <Form.Field error={touched && error} type={type} width={width}>
       <label>{inputLabel}</label>
-      <input {...input} placeholder={placeholder} value={input.value}></input>
+      <input disabled={readOnly} readOnly={readOnly} {...input} placeholder={placeholder} value={input.value}></input>
       {touched && error && <Label>{error}</Label>}
     </Form.Field>
   );

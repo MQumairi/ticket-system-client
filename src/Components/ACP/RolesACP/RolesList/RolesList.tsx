@@ -1,25 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Store from "../../../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
 import { Card, Button } from "semantic-ui-react";
 import RolesCard from "./RolesCard/RolesCard";
-import RolesNewForm from "./RolesNewForm";
 import LoadingComp from "../../../Utility/Loader/LoadingComp";
+import { Link } from "react-router-dom";
 
 const RolesList = () => {
   const store = useContext(Store);
   const { loadRoles, roles } = store.userStore;
-  const {resourceLoading} = store.commonStore;
-
-  const [addingRole, setAddingRole] = useState<boolean>(false);
+  const { resourceLoading } = store.commonStore;
 
   useEffect(() => {
     console.log("renders");
     loadRoles();
   }, [loadRoles]);
 
-  if(resourceLoading) return (
-    <LoadingComp loadingText="Loading Roles"></LoadingComp>)
+  if (resourceLoading)
+    return <LoadingComp loadingText="Loading Roles"></LoadingComp>;
 
   return (
     <div>
@@ -36,14 +34,12 @@ const RolesList = () => {
       </Card.Group>
       <div className="acpAddButton">
         <hr />
-        {!addingRole && (
-          <Button
-            className="mainButton addRoleButton"
-            content="Add Role"
-            onClick={() => setAddingRole(true)}
-          />
-        )}
-        {addingRole && <RolesNewForm setAddingRole={setAddingRole} />}
+        <Button
+          className="mainButton addRoleButton"
+          content="Add Role"
+          as={Link}
+          to="/acp/roles/new"
+        />
       </div>
     </div>
   );

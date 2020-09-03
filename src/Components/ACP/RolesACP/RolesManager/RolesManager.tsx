@@ -114,7 +114,7 @@ const RolesManager: React.FC<RouteComponentProps<params>> = ({ match }) => {
           <hr className="roleManagerHR" />
 
           {!editingRole && role.name !== "Admin" && role.name !== "Developer" && <div className="roleManagerButtonGroup">
-            <Button className="mainButton rolesManagerBtn" onClick={() => setEditingRole(true)}>Edit Role</Button>
+            <Button className="mainButton rolesManagerBtn" as={Link} to={"/acp/roles/" + match.params.id + "/edit"}>Edit Role</Button>
             <Button className="mainButton rolesManagerBtn" as={Link} to={"/acp/roles/" + role.id + "/delete"}>Delete Role</Button>
           </div>}
 

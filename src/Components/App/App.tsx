@@ -34,6 +34,8 @@ import ProfileEditDetailsPage from "../Profile/EditDetails/ProfileEditDetailsPag
 import ProfileAvatarPage from "../Profile/EditAvatar/ProfileAvatarPage"
 import ProfilePasswordPage from "../Profile/EditPassword/ProfilePasswordPage";
 import MyTicketsPage from "../Profile/MyTickets/MyTicketsPage";
+import RoleCreator from "../ACP/RolesACP/RolesManager/RoleCreator/RoleCreator";
+import RoleEditor from "../ACP/RolesACP/RolesManager/RoleEditor/RoleEditor";
 
 function App() {
   const store = useContext(Store);
@@ -123,8 +125,10 @@ function App() {
           <Route exact path="/acp/users/:id/delete" component={DeleteConfirmationUser}/>
 
           <Route exact path="/acp/roles" component={RolesACP} />
+          <Route exact path="/acp/roles/new" component={RoleCreator} />
           <Route exact path="/acp/roles/:id" component={RolesManager} />
           <Route exact path="/acp/roles/:id/delete" component={DeleteConfirmationRole}/>
+          <Route exact path="/acp/roles/:id/edit" component={RoleEditor}/>
 
           <Route exact path="/acp/products" component={ProductsACP} />
           <Route exact path="/acp/products/:id/delete" component={DeleteConfirmationProduct}/>
