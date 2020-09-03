@@ -36,6 +36,7 @@ import ProfilePasswordPage from "../Profile/EditPassword/ProfilePasswordPage";
 import MyTicketsPage from "../Profile/MyTickets/MyTicketsPage";
 import RoleCreator from "../ACP/RolesACP/RolesManager/RoleCreator/RoleCreator";
 import RoleEditor from "../ACP/RolesACP/RolesManager/RoleEditor/RoleEditor";
+import ACPSettings from "../ACP/ACPSettings/ACPSettings";
 
 function App() {
   const store = useContext(Store);
@@ -57,25 +58,6 @@ function App() {
   if(!appLoaded) {
     return(<LoadingPage loadingText="Loading"></LoadingPage>)
   } else {
-
-  // if (appLoaded && !isLogged) {
-  //   return (
-  //     <div id="App">
-  //       <Navbar />
-  //       <div id="mainContentBody">
-  //       <ToastContainer position="top-right"/>
-  //         <Switch>
-  //           <Route exact path="/login" component={LoginPage} />
-  //           <Route exact path="/register" component={RegisterPage} />
-  //           <Route path="/" component={LandingPage} />
-  //           <Route path="/unauthorized" component={Error403}/>
-  //           <Route component={Error404}/>
-  //         </Switch>
-  //       </div>
-  //       <Footer />
-  //     </div>
-  //   );
-  // }
 
   if(!user) {
     return (
@@ -106,9 +88,6 @@ function App() {
       <ToastContainer position="top-right"/>
         <Switch>
           <Route exact path="/" component={LandingPage} />
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/register" component={RegisterPage} />
-
           <Route exact path="/tickets" component={Tickets} />
           <Route exact path="/tickets/new" component={TicketsNew} />
           <Route exact path="/tickets/:id" component={TicketDetails} />
@@ -119,8 +98,8 @@ function App() {
           
           <Route exact path="/archives" component={Archives} />
 
-          <Route exact path={["/acp", "/acp/users/"]} component={UsersACP} />
-
+          <Route exact path={["/acp", "/acp/settings"]} component={ACPSettings} />
+          <Route exact path="/acp/users" component={UsersACP} />
           <Route exact path="/acp/users/:id" component={UserManager} />
           <Route exact path="/acp/users/:id/delete" component={DeleteConfirmationUser}/>
 

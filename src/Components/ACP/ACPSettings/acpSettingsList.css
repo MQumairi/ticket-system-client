@@ -1,0 +1,26 @@
+.acpSettingsListBody {
+    padding-left: 30px;
+}
+.acpSettingsListBody h4 {
+    font-weight: normal;
+}
+
+.acpSettingsListBody hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.acpSettingsListBody h2 {
+    margin-top: -10px;
+}
+
+.acpSettingsButtonGroup {
+    text-align: center !important;
+    margin: auto auto !important;
+}
+
+.acpSettingsButtonGroup button {
+    display: inline-block !important;
+    margin-left: 10px !important;
+    border-radius: 5px !important;
+}

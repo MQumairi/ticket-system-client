@@ -13,6 +13,13 @@ const ACPMenu: React.FC<IProps> = ({active, setActive}) => {
   return (
     <Menu vertical id="avatarColMenu">
       <Menu.Item
+        name="Settings"
+        active={active === "Settings"}
+        onClick={() => setActive("Settings")}
+        as={Link}
+        to="/acp/settings"
+      />
+      <Menu.Item
         name="Users"
         active={active === "Users"}
         onClick={() => setActive("Users")}

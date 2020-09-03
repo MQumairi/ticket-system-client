@@ -10,9 +10,10 @@ const LandingPage = () => {
 
   return (
     <div className="landing-box">
-      <h1>Welcome to our ticketing system</h1>
+      <h1>Welcome to our ticketing system {user && ", " + user.username}</h1>
       <h3>
-        To proceed, please login or register an account
+        {!user && "To proceed, please either login, register an account, or access the system as a guest"}
+        {user && "To proceed, click below"}
       </h3>
       {!user && <Button className="mainButton" as={Link} to="/login">Login</Button>}
       {!user && <Button className="mainButton" as={Link} to="/tickets">Guest Access</Button>}
