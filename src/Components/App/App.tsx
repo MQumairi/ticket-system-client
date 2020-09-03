@@ -34,11 +34,14 @@ import ProfileEditDetailsPage from "../Profile/EditDetails/ProfileEditDetailsPag
 import ProfileAvatarPage from "../Profile/EditAvatar/ProfileAvatarPage"
 import ProfilePasswordPage from "../Profile/EditPassword/ProfilePasswordPage";
 import MyTicketsPage from "../Profile/MyTickets/MyTicketsPage";
+import RoleCreator from "../ACP/RolesACP/RolesManager/RoleCreator/RoleCreator";
+import RoleEditor from "../ACP/RolesACP/RolesManager/RoleEditor/RoleEditor";
+import ACPSettings from "../ACP/ACPSettings/ACPSettings";
 
 function App() {
   const store = useContext(Store);
   const { token, appLoaded, setAppLoaded } = store.commonStore;
-  const { getCurrentUser, isLogged } = store.userStore;
+  const { getCurrentUser, user } = store.userStore;
   const { loadProducts } = store.productStore;
   const { loadStatuses } = store.statusStore;
 
@@ -54,25 +57,28 @@ function App() {
 
   if(!appLoaded) {
     return(<LoadingPage loadingText="Loading"></LoadingPage>)
-  }
+  } else {
 
-  if (appLoaded && !isLogged) {
+  if(!user) {
     return (
       <div id="App">
-        <Navbar />
-        <div id="mainContentBody">
-        <ToastContainer position="top-right"/>
-          <Switch>
-            <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/register" component={RegisterPage} />
-            <Route path="/" component={LandingPage} />
-            <Route path="/unauthorized" component={Error403}/>
-            <Route component={Error404}/>
-          </Switch>
-        </div>
-        <Footer />
+      <Navbar />
+      <div id="mainContentBody">
+      <ToastContainer position="top-right"/>
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/register" component={RegisterPage} />
+          <Route exact path="/tickets" component={Tickets} />
+          <Route exact path="/tickets/:id" component={TicketDetails} />
+          <Route exact path="/archives" component={Archives} />
+          <Route path="/unauthorized" component={Error403}/>
+          <Route component={Error404}/>
+        </Switch>
       </div>
-    );
+      <Footer />
+    </div>
+    )
   }
 
   return (
@@ -81,31 +87,27 @@ function App() {
       <div id="mainContentBody">
       <ToastContainer position="top-right"/>
         <Switch>
-          <Route exact path={["/", "/tickets"]} component={Tickets} />
+          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/tickets" component={Tickets} />
           <Route exact path="/tickets/new" component={TicketsNew} />
           <Route exact path="/tickets/:id" component={TicketDetails} />
-          <Route
-            exact
-            path="/tickets/:id/delete"
-            component={DeleteConfirmation}
-          />
+          <Route exact path="/tickets/:id/delete" component={DeleteConfirmation}/>
           <Route exact path="/tickets/:id/edit" component={TicketsEdit} />
-          <Route
-            exact
-            path="/tickets/:id/developer-console"
-            component={DevConsole}
-          />
-
+          <Route exact path="/tickets/:id/developer-console" component={DevConsole} />
+          
+          
           <Route exact path="/archives" component={Archives} />
 
-          <Route exact path={["/acp", "/acp/users/"]} component={UsersACP} />
-
+          <Route exact path={["/acp", "/acp/settings"]} component={ACPSettings} />
+          <Route exact path="/acp/users" component={UsersACP} />
           <Route exact path="/acp/users/:id" component={UserManager} />
           <Route exact path="/acp/users/:id/delete" component={DeleteConfirmationUser}/>
 
           <Route exact path="/acp/roles" component={RolesACP} />
+          <Route exact path="/acp/roles/new" component={RoleCreator} />
           <Route exact path="/acp/roles/:id" component={RolesManager} />
           <Route exact path="/acp/roles/:id/delete" component={DeleteConfirmationRole}/>
+          <Route exact path="/acp/roles/:id/edit" component={RoleEditor}/>
 
           <Route exact path="/acp/products" component={ProductsACP} />
           <Route exact path="/acp/products/:id/delete" component={DeleteConfirmationProduct}/>
@@ -122,13 +124,12 @@ function App() {
 
           <Route path="/unauthorized" component={Error403}/>
           <Route component={Error404}/>
-
-
         </Switch>
       </div>
       <Footer />
     </div>
   );
+  }
 }
 
 export default observer(App);

@@ -75,7 +75,7 @@ const StatusAddForm: React.FC<IProps> = ({ setAddingStatus }) => {
                 />
               </div>
               <Button
-                disabled={invalid || pristine}
+                disabled={invalid || pristine || submitting}
                 loading={submitting}
                 className="mainButton"
                 type="submit"

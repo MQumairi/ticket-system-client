@@ -15,7 +15,7 @@
     align-items: center;
 }
 
-.logo {
+.logo a {
     color: var(--navbar-text);
 }
 

@@ -23,27 +23,24 @@ const ProductAddForm: React.FC<IProps> = ({ setAddingProduct }) => {
     };
 
     addProduct(productToAdd)
-    .then(() => {
-      loadProducts();
-    })
-    .then(() => {
-      setSubmitting(false);
-    })
-    .then(() => {
-      setAddingProduct(false);
-    });
+      .then(() => {
+        loadProducts();
+      })
+      .then(() => {
+        setSubmitting(false);
+      })
+      .then(() => {
+        setAddingProduct(false);
+      });
   };
 
-  //Don't forget to pass this into FinalForm as validate={validate}, 
-    //and destructure params of render prop (handleSubmit, invalid, pristine)
-    //then set the submit button to disabled if invalid or pristine
-    const validate = combineValidators({
-      name: isRequired({ message: "A name is required" })
-    });
+  const validate = combineValidators({
+    name: isRequired({ message: "A name is required" }),
+  });
 
   return (
     <FinalForm
-    validate={validate}
+      validate={validate}
       onSubmit={handleFinalFormSubmit}
       render={({ handleSubmit, invalid, pristine }) => {
         return (
@@ -54,7 +51,12 @@ const ProductAddForm: React.FC<IProps> = ({ setAddingProduct }) => {
                 placeholder="Product name"
                 component={TextInput}
               />
-              <Button disabled={invalid || pristine} loading={submitting} className="mainButton" type="submit">
+              <Button
+                disabled={invalid || pristine || submitting}
+                loading={submitting}
+                className="mainButton"
+                type="submit"
+              >
                 Submit
               </Button>
               <Button

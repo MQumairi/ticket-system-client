@@ -16,6 +16,7 @@ import { useHistory } from "react-router-dom";
 import formBuilder from "../../../Functions/buildFormData";
 import Dropzone from "../../Utility/Image Upload/Dropzone";
 import { combineValidators, isRequired } from "revalidate";
+import LoadingComp from "../Loader/LoadingComp";
 
 interface IProps {
   ticket?: ITicket;
@@ -29,6 +30,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
   const { productOptions } = store.productStore;
   const { statusOptions } = store.statusStore;
   const { user } = store.userStore;
+  const { resourceLoading } = store.commonStore;
 
   const [ticketToEdit, setTicketToEdit] = useState<ITicket | null>(null);
 
@@ -36,14 +38,11 @@ const TicketsForm: React.FC<IProps> = (props) => {
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  //Don't forget to pass this into FinalForm as validate={validate}, 
-  //and destructure params of render prop (handleSubmit, invalid, pristine)
-  //then set the submit button to disabled if invalid or pristine
   const validate = combineValidators({
     title: isRequired({ message: "A title is required" }),
-    product: isRequired({message: "Please select a product"}),
-    status: isRequired({message: "Please select a status"}),
-    description: isRequired({message: "A description is required"})
+    product: isRequired({ message: "Please select a product" }),
+    status: isRequired({ message: "Please select a status" }),
+    description: isRequired({ message: "A description is required" }),
   });
 
   useEffect(() => {
@@ -95,6 +94,16 @@ const TicketsForm: React.FC<IProps> = (props) => {
     }
   };
 
+  if (resourceLoading) {
+    return (
+      <div id="ticketsNewContianer">
+        <div id="ticketsNewHeader">
+          <LoadingComp loadingText="Loading"></LoadingComp>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div id="ticketsNewContianer">
       <div id="ticketsNewHeader">
@@ -104,7 +113,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
         {!props.ticket && (
           <Button
             as={Link}
-            to={"/"}
+            to={"/tickets"}
             className="mainButton backButton"
             content="Back"
           />
@@ -139,7 +148,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
                     component={DropwdownInput}
                     options={productOptions}
                     name="product"
-                    defaultValue={ticketToEdit?.product || productOptions[0].value}
+                    defaultValue={ticketToEdit?.product || undefined}
                     placeholder="Product"
                   />
                   <Field
@@ -147,7 +156,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
                     component={SelectInput}
                     options={statusOptions}
                     name="status"
-                    defaultValue={ticketToEdit?.status || statusOptions[0].value}
+                    defaultValue={ticketToEdit?.status || undefined}
                     placeholder="Status"
                   />
                 </Form.Group>
@@ -164,7 +173,7 @@ const TicketsForm: React.FC<IProps> = (props) => {
                   defaultAttach={props.ticket?.attachment}
                 />
                 <Button
-                  disabled={invalid || pristine}
+                  disabled={invalid || pristine || submitting}
                   loading={submitting}
                   className="mainButton ticketNewSubmit"
                   type="submit"

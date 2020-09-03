@@ -5,7 +5,13 @@ import TextInput from "../../Utility/Final Form Fields/TextInput";
 import Store from "../../App/Store/rootStore";
 import { IUserForm } from "../../../Models/userForm";
 import PasswordRequirments from "../../Utility/Password Requirements/PasswordRequirments";
-import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan, matchesPattern } from "revalidate";
+import {
+  combineValidators,
+  isRequired,
+  composeValidators,
+  hasLengthGreaterThan,
+  matchesPattern,
+} from "revalidate";
 
 interface IProps {
   setActive?: (active: string) => void;
@@ -17,13 +23,26 @@ const ProfilePassword: React.FC<IProps> = ({ setActive }) => {
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  //Don't forget to pass this into FinalForm as validate={validate}, 
-    //and destructure params of render prop (handleSubmit, invalid, pristine)
-    //then set the submit button to disabled if invalid or pristine
-    const validate = combineValidators({
-      current_password: composeValidators(isRequired({ message: "Enter your current password" }), hasLengthGreaterThan(7)({message: "A valid password must be 8 or more characters long"}), matchesPattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/)({message: "Your password doesn't satisfy all requirments"}))(),
-      new_password: composeValidators(isRequired({ message: "Enter a new password" }), hasLengthGreaterThan(7)({message: "A valid password must be 8 or more characters long"}), matchesPattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/)({message: "Your password doesn't satisfy all requirments"}))()
-    });
+  const validate = combineValidators({
+    current_password: composeValidators(
+      isRequired({ message: "Enter your current password" }),
+      hasLengthGreaterThan(7)({
+        message: "A valid password must be 8 or more characters long",
+      }),
+      matchesPattern(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/
+      )({ message: "Your password doesn't satisfy all requirments" })
+    )(),
+    new_password: composeValidators(
+      isRequired({ message: "Enter a new password" }),
+      hasLengthGreaterThan(7)({
+        message: "A valid password must be 8 or more characters long",
+      }),
+      matchesPattern(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/
+      )({ message: "Your password doesn't satisfy all requirments" })
+    )(),
+  });
 
   const handleFinalFormSubmit = (values: any) => {
     setSubmitting(true);
@@ -32,20 +51,16 @@ const ProfilePassword: React.FC<IProps> = ({ setActive }) => {
       new_password: values.new_password,
     };
 
-    editProfile(password_obj)
-    .then(() => {
+    editProfile(password_obj).then(() => {
       setSubmitting(false);
-    })
-    // .then(() => {
-    //   setActive("Your Profile");
-    // });
+    });
   };
 
   return (
     <div>
-      <PasswordRequirments/>
+      <PasswordRequirments />
       <FinalForm
-      validate={validate}
+        validate={validate}
         onSubmit={handleFinalFormSubmit}
         render={({ handleSubmit, invalid, pristine }) => {
           return (
@@ -65,7 +80,12 @@ const ProfilePassword: React.FC<IProps> = ({ setActive }) => {
                 type="password"
               ></Field>
 
-              <Button disabled={invalid || pristine} loading={submitting} className="mainButton ticketNewSubmit" type="submit">
+              <Button
+                disabled={invalid || pristine || submitting}
+                loading={submitting}
+                className="mainButton ticketNewSubmit"
+                type="submit"
+              >
                 Submit
               </Button>
             </Form>

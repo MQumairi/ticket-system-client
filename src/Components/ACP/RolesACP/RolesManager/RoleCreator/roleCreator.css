@@ -1,0 +1,14 @@
+@import "../../../../../Assets/Styles/style.css";
+
+.roleCreatorBody {
+    margin: auto auto;
+    margin-top: 50px;
+    width: var(--small-container-width);
+    background: var(--body-bg-color-1);
+    padding: var(--default-padding);
+    border-radius: var(--container-border-radius);
+}
+
+.roleBackButton {
+    margin-top: -5px !important;
+}

@@ -58,7 +58,7 @@ const RolesManagerEditForm: React.FC<IProps> = ({ setEditingRole, role }) => {
               ></Field>
               <Form.Group widths="equal">
                 <Button
-                  disabled={invalid || pristine}
+                  disabled={invalid || pristine || saving}
                   className="mainButton fullWidth"
                   type="submit"
                   content="Save"

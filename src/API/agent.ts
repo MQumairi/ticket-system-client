@@ -9,41 +9,38 @@ import { ITicketForm } from "../Models/ticketForm";
 import { IRole } from "../Models/role";
 import { IRoleForm } from "../Models/roleForm";
 import { IFilters } from "../Models/filters";
-import {history} from "../index";
+import { history } from "../index";
 import { toast } from "react-toastify";
+import { IACPSettings, IACPSettingsForm } from "../Models/acpSettings";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
 axios.interceptors.response.use(undefined, (error) => {
+  const { status } = error.response;
 
-  const {status} = error.response;
-
-  if(status === 404) {
-    history.push("/notfound")
+  if (status === 404) {
+    history.push("/notfound");
   }
 
-  if(status === 400) {
-    let error_message : string = String(Object.values(error.response.data.errors)[0]);
+  if (status === 400) {
+    let error_message: string = String(
+      Object.values(error.response.data.errors)[0]
+    );
     throw Error(error_message);
   }
 
-  if(status === 401) {
-    toast.error("Login Error");
-  }
-
-  if(status === 403) {
+  if (status === 403) {
     toast.error("Unauthorized");
     history.push("/unauthorized");
   }
 
-  if(status === 500) {
+  if (status === 500) {
     toast.error("Server error");
   }
 
-  if(error.message === "Network Error") {
-    toast.error("Failed to connect to server.")
+  if (error.message === "Network Error") {
+    toast.error("Failed to connect to server.");
   }
-
 });
 
 axios.interceptors.request.use(
@@ -75,13 +72,16 @@ const requests = {
   get: (url: string) => axios.get(url).then(sleep(1000)).then(responseBody),
   get_with_body: (url: string, body: {}) =>
     axios.post(url, body).then(sleep(1000)).then(responseBody),
-  post: (url: string, body: {}) => axios.post(url, body).then(sleep(1000)).then(responseBody),
+  post: (url: string, body: {}) =>
+    axios.post(url, body).then(sleep(1000)).then(responseBody),
   post_form: (url: string, body: {}) =>
     axios.post(url, body, config).then(sleep(1000)).then(responseBody),
-  put: (url: string, body: {}) => axios.put(url, body).then(sleep(1000)).then(responseBody),
+  put: (url: string, body: {}) =>
+    axios.put(url, body).then(sleep(1000)).then(responseBody),
   put_form: (url: string, body: {}) =>
     axios.put(url, body, config).then(sleep(1000)).then(responseBody),
-  delete: (url: string) => axios.delete(url).then(sleep(1000)).then(responseBody),
+  delete: (url: string) =>
+    axios.delete(url).then(sleep(1000)).then(responseBody),
 };
 
 const Tickets = {
@@ -142,6 +142,11 @@ const Developers = {
 };
 
 const Admins = {
+  listACPSettings: (): Promise<IACPSettings> => requests.get("/ACP"),
+  getACPRegistrationLocked: (): Promise<boolean> =>
+    requests.get("/ACP/registration-locked"),
+  editACPSettings: (settings: IACPSettingsForm) =>
+    requests.put("/ACP", settings),
   listUsers: (): Promise<IUser[]> => requests.get("/users/list"),
   userDetails: (userId: string): Promise<IUser> =>
     requests.get("/users/" + userId),

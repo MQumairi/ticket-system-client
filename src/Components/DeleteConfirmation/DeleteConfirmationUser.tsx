@@ -53,7 +53,7 @@ const DeleteConfirmationUser: React.FC<RouteComponentProps<params>> = ({
       </div>
     );
 
-  if (user == null || user.roles == null || !user.roles.includes("Admin"))
+  if (user == null || !user.role || user.role.name !== "Admin")
     return <div>Error 403</div>;
 
   return (

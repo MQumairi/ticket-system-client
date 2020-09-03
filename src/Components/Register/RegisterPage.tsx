@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Form as FinalForm, Field } from "react-final-form";
 import { Form, Button, GridColumn, Grid } from "semantic-ui-react";
 import TextInput from "../Utility/Final Form Fields/TextInput";
@@ -17,11 +17,22 @@ import {
 import PasswordRequirments from "../Utility/Password Requirements/PasswordRequirments";
 import ErrorNotice from "../Utility/Error Notice/ErrorNotice";
 import { observer } from "mobx-react-lite";
+import LoadingComp from "../Utility/Loader/LoadingComp";
 
 const RegisterPage = () => {
-
   const store = useContext(Store);
   const { register, registerationError } = store.userStore;
+  const {
+    registration_is_locked,
+    loadRegitrationLocked,
+    resourceLoading,
+  } = store.commonStore;
+
+    const [registering, setRegistering] = useState<boolean>(false);
+
+  useEffect(() => {
+    loadRegitrationLocked();
+  }, [loadRegitrationLocked]);
 
   const validate = combineValidators({
     first_name: composeValidators(
@@ -52,8 +63,26 @@ const RegisterPage = () => {
   });
 
   const handleFinalFormSubmit = (values: IUserForm) => {
-    register(values);
+    setRegistering(true);
+    register(values).then(() => {
+      setRegistering(false);
+    });
   };
+
+  if (resourceLoading)
+    return (
+      <div className="register-page-body">
+        <LoadingComp loadingText="Loading..." />
+      </div>
+    );
+
+  if (registration_is_locked)
+    return (
+      <div className="register-page-body">
+        <ErrorNotice message="Registration is currently locked to protect the system from spammers. Feel free to browse around as Guest!" />
+       <Button className="mainButton ticketNewSubmit" as={Link} to="/tickets">Guest Access</Button>
+      </div>
+    );
 
   return (
     <div>
@@ -79,7 +108,9 @@ const RegisterPage = () => {
                   </GridColumn>
                 </Grid>
                 <hr />
-                {registerationError && <ErrorNotice message={registerationError}/>}
+                {registerationError && (
+                  <ErrorNotice message={registerationError} />
+                )}
                 <Form onSubmit={handleSubmit}>
                   <Form.Group widths="equal">
                     <Field
@@ -108,7 +139,7 @@ const RegisterPage = () => {
                     placeholder="Username"
                     component={TextInput}
                   />
-                  <PasswordRequirments/>
+                  <PasswordRequirments />
                   <Field
                     inputLabel="Password"
                     name="password"
@@ -117,9 +148,10 @@ const RegisterPage = () => {
                     type="password"
                   />
                   <Button
-                    disabled={invalid || pristine}
+                    disabled={invalid || pristine || registering}
                     className="mainButton ticketNewSubmit"
                     type="submit"
+                    loading={registering}
                   >
                     Register
                   </Button>

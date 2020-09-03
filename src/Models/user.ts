@@ -1,4 +1,5 @@
 import { IAvatar } from "./avatar";
+import { IRole } from "./role";
 
 export interface IUser {
   id?: string;
@@ -8,6 +9,5 @@ export interface IUser {
   surname: string;
   token: string;
   avatar: IAvatar;
-  roles?: string[];
-
+  role?: IRole;
 }

@@ -16,7 +16,7 @@ const UserList = () => {
 
   return (
     <Card.Group itemsPerRow={3}>
-      {Array.from(userList.values()).sort((u1, u2) => ('' + u1.username).localeCompare(u2.username)).map((user) => {
+      {Array.from(userList.values()).slice().sort((u1, u2) => ('' + u1.username).localeCompare(u2.username)).map((user) => {
         return (
           <UserCard key={user.id} user={user} />
         );

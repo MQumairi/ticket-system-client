@@ -62,17 +62,13 @@ export default class UserStore {
   //Register
   @action register = async (values: IUserForm) => {
     try {
-      this.rootStore.commonStore.setAppLoaded(false);
       this.user = await Users.register(values);
       runInAction(() => {
         if (this.user) this.rootStore.commonStore.setToken(this.user.token);
-        this.rootStore.commonStore.setAppLoaded(true);
         this.setRegistrationError(null);
         history.push("/tickets");
       });
     } catch (e) {
-      this.rootStore.commonStore.setAppLoaded(true);
-      console.log("From store");
       console.log(e.message);
       runInAction(() => {
         this.registerationError = e.message;
@@ -236,7 +232,7 @@ export default class UserStore {
       });
     });
 
-    returnArr = returnArr.sort((d1, d2) =>
+    returnArr = returnArr.slice().sort((d1, d2) =>
       ("" + d1.text).localeCompare(d2.text)
     );
 
@@ -361,7 +357,7 @@ export default class UserStore {
       });
     });
 
-    returnArr = returnArr.sort((u1, u2) =>
+    returnArr = returnArr.slice().sort((u1, u2) =>
       ("" + u1.text).localeCompare(u2.text)
     );
 
@@ -379,7 +375,7 @@ export default class UserStore {
       });
     });
 
-    returnArr = returnArr.sort((u1, u2) =>
+    returnArr = returnArr.slice().sort((u1, u2) =>
       ("" + u1.text).localeCompare(u2.text)
     );
 

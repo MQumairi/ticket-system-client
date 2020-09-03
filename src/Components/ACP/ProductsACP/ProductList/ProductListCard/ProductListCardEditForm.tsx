@@ -60,7 +60,7 @@ const ProductListCardEditForm: React.FC<IProps> = ({
                 initialValue={product.product_name}
               />
               <Button
-                disabled={invalid || pristine}
+                disabled={invalid || pristine || editing}
                 loading={editing}
                 className="mainButton"
                 type="submit"

@@ -16,6 +16,7 @@
 .commentDescription {
     margin: 20px 0px;
     padding-top: 20px;
+    white-space: pre;
 }
 
 .comment_attachment {

@@ -32,7 +32,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   const [isReplying, setIsReplying] = useState<boolean>(false);
 
   useEffect(() => {
-    getTicket(match.params.id)
+    getTicket(match.params.id);
   }, [getTicket, match.params.id]);
 
   const handleBack = () => {
@@ -68,19 +68,17 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               <p className="postHeaderDate">{currentTicket.display_date}</p>
             </Grid.Column>
             <Grid.Column width={2}>
-              {user?.roles &&
-                (user.roles[0] === "Developer" ||
-                  user.roles[0] === "Admin") && (
-                  <Button
-                    floated="right"
-                    className="mainButton devButton"
-                    content="Manage"
-                    as={Link}
-                    to={
-                      "/tickets/" + currentTicket.post_id + "/developer-console"
-                    }
-                  />
-                )}
+              {user?.role && user.role.can_manage && (
+                <Button
+                  floated="right"
+                  className="mainButton devButton"
+                  content="Manage"
+                  as={Link}
+                  to={
+                    "/tickets/" + currentTicket.post_id + "/developer-console"
+                  }
+                />
+              )}
             </Grid.Column>
             <Grid.Column width={2}>
               <Button
@@ -106,7 +104,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
             <Grid.Column width={10}>
               <h2 className="posterName">{currentTicket.author.username}</h2>
               <h4 className="posterRank">
-                {currentTicket.author.roles && currentTicket.author.roles[0]}
+                {currentTicket.author.role && currentTicket.author.role.name}
               </h4>
             </Grid.Column>
             <Grid.Column width={4}>
@@ -117,7 +115,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
-            <p>{currentTicket.description}</p>
+            <p className="description">{currentTicket.description}</p>
           </Grid.Row>
           {currentTicket.attachment && (
             <Grid.Row>
@@ -151,36 +149,40 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
                 </Label>
               )}
             </Grid.Column>
-            <Grid.Column width={2}>
-              {(user!.id === currentTicket?.author.id ||
-                user?.roles?.includes("Admin")) && (
-                <Button
-                  className="mainButton"
-                  as={Link}
-                  to={"/tickets/" + match.params.id + "/delete"}
-                >
-                  Delete
-                </Button>
-              )}
-            </Grid.Column>
-            <Grid.Column width={2}>
-              {(user!.id === currentTicket?.author.id ||
-                user?.roles?.includes("Admin")) && (
-                <Button
-                  className="mainButton"
-                  as={Link}
-                  to={"/tickets/" + match.params.id + "/edit"}
-                >
-                  Edit
-                </Button>
-              )}
-            </Grid.Column>
+            {user && (
+              <Grid.Column width={2}>
+                {(user!.id === currentTicket?.author.id ||
+                  user?.role?.can_moderate) && (
+                  <Button
+                    className="mainButton"
+                    as={Link}
+                    to={"/tickets/" + match.params.id + "/delete"}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </Grid.Column>
+            )}
+            {user && (
+              <Grid.Column width={2}>
+                {(user!.id === currentTicket?.author.id ||
+                  user?.role?.can_moderate) && (
+                  <Button
+                    className="mainButton"
+                    as={Link}
+                    to={"/tickets/" + match.params.id + "/edit"}
+                  >
+                    Edit
+                  </Button>
+                )}
+              </Grid.Column>
+            )}
           </Grid.Row>
         </Grid>
       </div>
       {/* {revealReplyForm()} */}
       {currentTicket.comments
-        .sort((c1, c2) => Date.parse(c1.date_time) - Date.parse(c2.date_time))
+        .slice().sort((c1, c2) => Date.parse(c1.date_time) - Date.parse(c2.date_time))
         .map((comment) => {
           return (
             <div>
@@ -188,7 +190,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
             </div>
           );
         })}
-      {!isReplying && (
+      {user && !isReplying && (
         <Button
           className="mainButton commentButton"
           onClick={() => {
