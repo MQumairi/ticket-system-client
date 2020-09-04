@@ -6,7 +6,6 @@ import { Form, Button } from "semantic-ui-react";
 import { ITicket } from "../../../Models/ticket";
 import { ITicketForm } from "../../../Models/ticketForm";
 import { useHistory } from "react-router-dom";
-import { observer } from "mobx-react-lite";
 
 interface IProps {
   currentTicket : ITicket
@@ -91,4 +90,4 @@ const DevTicketForm: React.FC<IProps> = ({currentTicket}) => {
   );
 };
 
-export default observer(DevTicketForm);
+export default DevTicketForm;

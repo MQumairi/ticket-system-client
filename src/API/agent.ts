@@ -94,6 +94,7 @@ const Tickets = {
   delete: (post_id: string) => requests.delete("/tickets/" + post_id),
   filter: (filters: IFilters): Promise<ITicket[]> =>
     requests.get_with_body("/tickets/filter", filters),
+  search: (search_query: string): Promise<ITicket[]> => requests.get_with_body("/tickets/search", {search_query: search_query})
 };
 
 const Comments = {

@@ -185,9 +185,7 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
         .slice().sort((c1, c2) => Date.parse(c1.date_time) - Date.parse(c2.date_time))
         .map((comment) => {
           return (
-            <div>
-              <Comment parent_id={match.params.id} comment={comment} />
-            </div>
+              <Comment key={comment.post_id} parent_id={match.params.id} comment={comment} />
           );
         })}
       {user && !isReplying && (

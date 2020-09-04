@@ -16,7 +16,7 @@ const StatusList = () => {
     <div className="statusListContainer">
       <Card.Group itemsPerRow={1}>
         {statuses.slice().sort((s1, s2) => ('' + s1.status_text).localeCompare(s2.status_text)).map((status) => {
-          return (<ProductListCard status={status}/>);
+          return (<ProductListCard key={status.status_id} status={status}/>);
         })}
       </Card.Group>
       <hr/>
