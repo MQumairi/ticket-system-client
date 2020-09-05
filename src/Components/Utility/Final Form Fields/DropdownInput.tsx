@@ -25,7 +25,7 @@ const SelectInput: React.FC<IProps> = ({
     <Form.Field error={touched && error} width={width}>
       <label>{inputLabel}</label>
       <Dropdown
-        value={input.value}
+        value={input.value && input.value}
         options={options}
         onChange={(e, data) => input.onChange(data.value)}
         placeholder={placeholder}

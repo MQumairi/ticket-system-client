@@ -1,28 +1,87 @@
 @import "../../../Assets/Styles/style.css";
 
 #TicketDashboard {
-    background-color: var(--body-bg-color-2);
-    border: 1px solid var(--body-border-color);
-    background-image: linear-gradient(var(--body-bg-color-1) , var(--body-bg-color-2));
-    border-radius: 10px;
-    padding: 25px 40px;
-    height: 100%;
+  background-color: var(--body-bg-color-2);
+  border: 1px solid var(--body-border-color);
+  background-image: linear-gradient(
+    var(--body-bg-color-1),
+    var(--body-bg-color-2)
+  );
+  border-radius: 10px;
+  padding: 25px 40px;
+  height: 100%;
 }
 
 #ticketsHeader {
-    margin: 0px;
-    padding: 0px;
-    font-weight: bold;
+  margin: 0px;
+  padding: 0px;
+  font-weight: bold;
 }
 
 .table-header {
-    text-align: center;
+  text-align: center;
 }
 
 .postTicketButton {
-    margin: 0px auto !important;
-    margin-top: 50px !important;
-    display: block !important;
-    min-width: 200px;
-    max-width: 300px;
+  margin: 0px auto !important;
+  margin-top: 20px !important;
+  display: block !important;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.searchContainer {
+  display: flex;
+  background: var(--body-bg-color-4);
+  border-radius: 50px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  width: min-content;
+  height: 45px;
+  margin-left: auto;
+}
+
+.searchContainer input {
+    border-radius: 20px !important;
+    width: 150px !important;
+    margin-left: 3px !important;
+}
+
+.searchButton {
+  background: var(--body-bg-color-4) !important;
+  width: 45px;
+}
+
+.pageNumbers {
+  padding: 10px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  border-top: 1px solid var(--body-border-color);
+  border-bottom: 1px solid var(--body-border-color);
+}
+
+.currentPage {
+  font-size: 20px;
+  padding-left: 10px;
+  padding-right: 13px;
+}
+
+.arrow.alternate.circle.right.big.link.icon {
+  color: var(--primary-color);
+}
+
+.arrow.alternate.circle.left.big.link.icon {
+  color: var(--primary-color);
+}
+
+.ticketDashboardFoot {
+  margin-top: auto;
+}
+
+.ticketsCompContainer {
+  min-height: 450px;
 }

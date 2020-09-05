@@ -1,4 +1,4 @@
-import { observable, action, toJS } from "mobx";
+import { observable, action } from "mobx";
 import { Store } from "./rootStore";
 import { IFilters } from "../../../Models/filters";
 import { format } from "date-fns";
@@ -20,7 +20,6 @@ export default class FilterStore {
 
   @action setIsFiltered = (isFiltered: boolean) => {
     this.isFiltered = isFiltered;
-    console.log(toJS(this.isFiltered));
   };
 
   @observable filters: IFilters = { ...this.defaultFilters };
@@ -41,8 +40,6 @@ export default class FilterStore {
         }
       );
     }
-
-    console.log(toJS(this.filters));
   };
 
   @action filterStatuses = (status_id: number, action: string) => {
@@ -61,18 +58,14 @@ export default class FilterStore {
         }
       );
     }
-
-    console.log(toJS(this.filters));
   };
 
   @action setDateFrom = (date_from: number) => {
     this.filters.date_from = format(date_from, "MM/dd/yyyy");
-    console.log(toJS(this.filters));
   };
 
   @action setDateTo = (date_to: number) => {
     this.filters.date_to = format(date_to, "MM/dd/yyyy");
-    console.log(toJS(this.filters));
   };
 
   @action defaultProducts = () => {

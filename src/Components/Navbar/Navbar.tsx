@@ -10,19 +10,6 @@ const Navbar = () => {
 
   const store = useContext(Store);
   const { user } = store.userStore;
-  // const {appLoaded} = store.commonStore;
-
-  // if (!user) {
-  //   return (
-  //     <Segment inverted>
-  //     <div id="navbarMeu">
-  //       <div className="logoBar">
-  //         <h1 className="logo">YourCompany</h1>
-  //       </div>
-  //     </div>
-  //     </Segment>
-  //   );
-  // }
   
   return (
     <Segment inverted>

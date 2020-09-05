@@ -1,3 +1,52 @@
+/* #ticketDashboardGrid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    min-height: 650px;
+}
+
+#filterCol {
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 250px;
+    margin-right: -60px;
+    margin-top: -20px;
+}
+
+#ticketsCol {
+    padding-left: 0px;
+    padding-right: 0px;
+    flex-grow: 2;
+    min-height: 650px;
+}
+
+.dashBoardMain {
+    display: flex;
+    align-items: center;
+    padding-left: 0px;
+    padding-right: 0px;
+    min-height: 650px;
+}
+
+.arrowLeft {
+    width: 60px;
+    height: 150px;
+    background-color: var(--primary-color);
+    border-radius: 60px 0px 0px 60px;
+}
+
+.arrowRight {
+    width: 60px;
+    height: 150px;
+    background-color: var(--primary-color);
+    border-radius: 0px 60px 60px 0px;
+}
+
+.theTicketList {
+    width: 100%;
+} */
+
 #ticketDashboardGrid {
     margin-top: 40px;
     min-height: 650px;

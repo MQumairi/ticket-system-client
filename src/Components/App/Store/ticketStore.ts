@@ -8,8 +8,27 @@ import { IComment } from "../../../Models/comment";
 import { ITicketForm } from "../../../Models/ticketForm";
 import { IFilters } from "../../../Models/filters";
 
+const LIMIT = 5;
+
 export default class TicketStore {
   constructor(public rootStore: Store) {}
+
+  //Pagination
+  @observable isFiltered = false;
+  @observable ticketCount: number = 0;
+  @observable page: number = 0;
+
+  @computed get totalPages() {
+    return Math.ceil(this.ticketCount / LIMIT);
+  }
+
+  @action setPage = (page: number) => {
+    this.page = page;
+  };
+
+  @action setIsFiltered = (isFiltered : boolean) => {
+    this.isFiltered = isFiltered;
+  }
 
   //Initialize the Ticket Registry
   @observable ticketsRegistry = observable.map(new Map<number, ITicket>());
@@ -18,14 +37,18 @@ export default class TicketStore {
   @action loadTickets = async () => {
     try {
       this.rootStore.commonStore.setResourceLoading(true);
-      const loadedTickets = await Tickets.list();
+      this.setIsFiltered(false);
+      const loadedTicketsEnvelop = await Tickets.list(LIMIT, this.page);
       runInAction(() => {
+        const loadedTickets = loadedTicketsEnvelop.tickets;
+        this.ticketsRegistry.clear();
         loadedTickets.forEach((ticket) => {
           let ticketDate = Date.parse(ticket.date_time);
           ticket.display_date = format(ticketDate, "dd/MM/yyyy");
           this.ticketsRegistry.set(ticket.post_id!, ticket);
         });
 
+        this.ticketCount = loadedTicketsEnvelop.ticketCount;
         this.rootStore.commonStore.setResourceLoading(false);
       });
     } catch (e) {
@@ -34,12 +57,13 @@ export default class TicketStore {
     }
   };
 
-  @computed get sortedTickets(): ITicket[]{
+  @computed get sortedTickets(): ITicket[] {
+    const tickets = Array.from(this.ticketsRegistry.values())
+      .slice()
+      .sort((t1, t2) => {
+        return Date.parse(t1.date_time) - Date.parse(t2.date_time);
+      });
 
-    const tickets = Array.from(this.ticketsRegistry.values()).slice().sort((t1, t2) => {
-      return Date.parse(t1.date_time) - Date.parse(t2.date_time);
-    });
-    
     return tickets;
   }
 
@@ -53,18 +77,17 @@ export default class TicketStore {
       let loadedTicket = await Tickets.details(id);
 
       runInAction(() => {
-      let ticketDate = Date.parse(loadedTicket.date_time);
-      loadedTicket.display_date = format(ticketDate, "dd/MM/yyyy");
+        let ticketDate = Date.parse(loadedTicket.date_time);
+        loadedTicket.display_date = format(ticketDate, "dd/MM/yyyy");
 
-      loadedTicket.comments.forEach((comment: IComment) => {
-        let commentDate = Date.parse(comment.date_time);
-        comment.display_date = format(commentDate, "dd/MM/yyyy");
+        loadedTicket.comments.forEach((comment: IComment) => {
+          let commentDate = Date.parse(comment.date_time);
+          comment.display_date = format(commentDate, "dd/MM/yyyy");
+        });
+
+        this.currentTicket = loadedTicket;
+        this.rootStore.commonStore.setResourceLoading(false);
       });
-
-      this.currentTicket = loadedTicket;
-      this.rootStore.commonStore.setResourceLoading(false);
-      })
-      
     } catch (e) {
       this.rootStore.commonStore.setResourceLoading(false);
       console.log(e);
@@ -108,12 +131,12 @@ export default class TicketStore {
       this.rootStore.commonStore.setResourceLoading(true);
       const loadedArchives = await Archives.list();
       runInAction(() => {
-        loadedArchives.forEach((ticket : ITicket) => {
+        loadedArchives.forEach((ticket: ITicket) => {
           let ticketDate = Date.parse(ticket.date_time);
           ticket.display_date = format(ticketDate, "dd/MM/yyyy");
           this.archivesRegistry.set(ticket.post_id!, ticket);
         });
-      this.rootStore.commonStore.setResourceLoading(false);
+        this.rootStore.commonStore.setResourceLoading(false);
       });
     } catch (e) {
       this.rootStore.commonStore.setResourceLoading(false);
@@ -121,10 +144,12 @@ export default class TicketStore {
     }
   };
 
-  @computed get sortedArchives () : ITicket[] {
-    let archives = Array.from(this.archivesRegistry.values()).slice().sort((a1, a2) => {
-      return Date.parse(a1.date_time) - Date.parse(a2.date_time); 
-    })
+  @computed get sortedArchives(): ITicket[] {
+    let archives = Array.from(this.archivesRegistry.values())
+      .slice()
+      .sort((a1, a2) => {
+        return Date.parse(a1.date_time) - Date.parse(a2.date_time);
+      });
 
     return archives;
   }
@@ -134,26 +159,26 @@ export default class TicketStore {
     try {
       await Developers.manage(ticketId.toString(), ticket);
       runInAction(() => {
-
         //If the ticket is being set to archived, remove it from ticket registry
-        if(!ticket.is_archived) {
+        if (!ticket.is_archived) {
           this.archivesRegistry.delete(ticketId);
         }
 
         //If the ticket is being set to current, remove it from archives registry
-        if(ticket.is_archived) {
+        if (ticket.is_archived) {
           this.ticketsRegistry.delete(ticketId);
         }
-      })
-    } catch(e) {
-       console.log(e);
+      });
+    } catch (e) {
+      console.log(e);
     }
-  }
+  };
 
   //Filter Tickets
   @action loadFilteredTickets = async (filters: IFilters) => {
     try {
       this.rootStore.commonStore.setResourceLoading(true);
+      this.setIsFiltered(true);
       const loadedFilteredTickets = await Tickets.filter(filters);
       runInAction(() => {
         this.ticketsRegistry.clear();
@@ -168,5 +193,27 @@ export default class TicketStore {
       this.rootStore.commonStore.setResourceLoading(false);
       console.log(e);
     }
-  }
+  };
+
+  //Search Tickets
+  @action loadSearchedTickets = async (search_query: string) => {
+    try {
+      this.rootStore.commonStore.setResourceLoading(true);
+      this.rootStore.filterStore.resetFilters();
+      this.setIsFiltered(true);
+      const loadedSearchedTickets = await Tickets.search(search_query);
+      runInAction(() => {
+        this.ticketsRegistry.clear();
+        loadedSearchedTickets.forEach((ticket) => {
+          let ticketDate = Date.parse(ticket.date_time);
+          ticket.display_date = format(ticketDate, "dd/MM/yyyy");
+          this.ticketsRegistry.set(ticket.post_id!, ticket);
+        });
+        this.rootStore.commonStore.setResourceLoading(false);
+      });
+    } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
+      console.log(e);
+    }
+  };
 }

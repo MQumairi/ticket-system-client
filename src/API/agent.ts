@@ -12,6 +12,7 @@ import { IFilters } from "../Models/filters";
 import { history } from "../index";
 import { toast } from "react-toastify";
 import { IACPSettings, IACPSettingsForm } from "../Models/acpSettings";
+import { ITicketEnvelop } from "../Models/ticketEnvelop";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -85,7 +86,7 @@ const requests = {
 };
 
 const Tickets = {
-  list: (): Promise<ITicket[]> => requests.get("/tickets"),
+  list: (limit: number, page: number): Promise<ITicketEnvelop> => requests.get("/tickets?offset=" + (limit * page) + "&limit=" + limit),
   details: (post_id: string): Promise<ITicket> =>
     requests.get("/tickets/" + post_id),
   create: (ticket: FormData) => requests.post_form("/tickets", ticket),
@@ -94,6 +95,7 @@ const Tickets = {
   delete: (post_id: string) => requests.delete("/tickets/" + post_id),
   filter: (filters: IFilters): Promise<ITicket[]> =>
     requests.get_with_body("/tickets/filter", filters),
+  search: (search_query: string): Promise<ITicket[]> => requests.get_with_body("/tickets/search", {search_query: search_query})
 };
 
 const Comments = {
