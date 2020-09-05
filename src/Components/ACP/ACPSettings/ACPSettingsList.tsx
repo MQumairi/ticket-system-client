@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import Store from "../../App/Store/rootStore";
-import { Grid, GridColumn, Button, Icon, Label } from "semantic-ui-react";
+import { Grid, GridColumn, Button, Label } from "semantic-ui-react";
 import LoadingComp from "../../Utility/Loader/LoadingComp";
 import { observer } from "mobx-react-lite";
 import "./acpSettingsList.css";
