@@ -6,17 +6,23 @@ import TextInput from "../../../Utility/Final Form Fields/TextInput";
 import { observer } from "mobx-react-lite";
 
 interface IProps {
-  loadSearchedTickets: (search_query: string) => Promise<void>,
-  loadTickets: () => Promise<void>
+  loadSearchedTickets: (search_query: string) => Promise<void>;
+  loadTickets: () => Promise<void>;
+  setSearchBarOpen: (searchBarOpen: boolean) => void;
 }
 
-const SearchBar:React.FC<IProps> = ({ loadSearchedTickets, loadTickets }) => {
+const SearchBar: React.FC<IProps> = ({
+  loadSearchedTickets,
+  loadTickets,
+  setSearchBarOpen,
+}) => {
 
   const handleFinalFormSubmit = (values: any) => {
     if (values.search_query) {
-      loadSearchedTickets(values.search_query);
+      loadSearchedTickets(values.search_query)
     } else {
-      loadTickets();
+      loadTickets()
+        .then(() => setSearchBarOpen(false));
     }
   };
 

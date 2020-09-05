@@ -21,6 +21,7 @@ const SearchContainer: React.FC<IProps> = ({
         <SearchBar
           loadSearchedTickets={loadSearchedTickets}
           loadTickets={loadTickets}
+          setSearchBarOpen={setSearchBarOpen}
         />
       )}
       <Button
