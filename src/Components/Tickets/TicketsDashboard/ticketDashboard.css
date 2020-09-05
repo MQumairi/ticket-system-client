@@ -24,7 +24,7 @@
 
 .postTicketButton {
   margin: 0px auto !important;
-  margin-top: 50px !important;
+  margin-top: 20px !important;
   display: block !important;
   min-width: 200px;
   max-width: 300px;
@@ -52,17 +52,36 @@
   width: 45px;
 }
 
-/* .searchInput {
-    margin-top: -5px;
-    margin-bottom: 10px;
+.pageNumbers {
+  padding: 10px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  border-top: 1px solid var(--body-border-color);
+  border-bottom: 1px solid var(--body-border-color);
 }
 
-.i.inverted.bordered.icon, i.inverted.circular.icon {
-    background: var(--primary-color) !important;
+.currentPage {
+  font-size: 20px;
+  padding-left: 10px;
+  padding-right: 13px;
 }
 
+.arrow.alternate.circle.right.big.link.icon {
+  color: var(--primary-color);
+}
 
+.arrow.alternate.circle.left.big.link.icon {
+  color: var(--primary-color);
+}
 
-.searchField {
-    background: var(--body-bg-color-4) !important;
-} */
+.ticketDashboardFoot {
+  margin-top: auto;
+}
+
+.ticketsCompContainer {
+  min-height: 450px;
+}

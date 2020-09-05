@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import Store from "../../App/Store/rootStore";
-import { Grid, GridColumn, Button } from "semantic-ui-react";
+import { Grid, GridColumn, Button, Icon, Label } from "semantic-ui-react";
 import LoadingComp from "../../Utility/Loader/LoadingComp";
 import { observer } from "mobx-react-lite";
 import "./acpSettingsList.css";
@@ -23,11 +23,11 @@ const ACPSettingsList: React.FC<IProps> = ({ setEditing }) => {
     <div className="acpSettingsListBody">
       <Grid>
         <GridColumn width={16}>
-          <h4><span aria-label="Founder" role="img">👑</span> Founder</h4>
-          <h2>{ACPSettings?.founder.username}</h2>
+        <Label size="big" icon='chess king' content='Founder'/>
+        <h2>{ACPSettings?.founder.username}</h2>
         </GridColumn>
         <GridColumn width={16}>
-          <h4><span aria-label="Founder" role="img">👤</span> Registeration of New Users</h4>
+        <Label size="big" icon='users' content='Registration'/>
           <h2>{ACPSettings?.registration_locked ? "Disabled" : "Enabled"}</h2>
         </GridColumn>
       </Grid>

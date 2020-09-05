@@ -95,6 +95,7 @@ const UserManager: React.FC<RouteComponentProps<params>> = ({
                 </Button>
               )}
               <Button
+              disabled={inspectedUser.role?.name === "Admin" || inspectedUser.role?.name === "Developer"}
                 className="mainButton fullWidth userManagerButton"
                 onClick={() =>
                   history.push(

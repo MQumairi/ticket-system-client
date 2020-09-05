@@ -32,7 +32,7 @@ const Tickets = () => {
     loadFilteredTickets,
     filters,
     loadStatuses,
-    loadProducts  
+    loadProducts,
   ]);
 
   return (
@@ -42,7 +42,11 @@ const Tickets = () => {
           <FilterByDashboard />
         </Grid.Column>
         <Grid.Column width={13} id="ticketsCol">
-          <TicketDashboard />
+          <div className="dashBoardMain">
+            <div className="arrowLeft"></div>
+            <TicketDashboard />
+            <div className="arrowRight"></div>
+          </div>
         </Grid.Column>
       </Grid>
     </div>

@@ -8,8 +8,27 @@ import { IComment } from "../../../Models/comment";
 import { ITicketForm } from "../../../Models/ticketForm";
 import { IFilters } from "../../../Models/filters";
 
+const LIMIT = 5;
+
 export default class TicketStore {
   constructor(public rootStore: Store) {}
+
+  //Pagination
+  @observable isFiltered = false;
+  @observable ticketCount: number = 0;
+  @observable page: number = 0;
+
+  @computed get totalPages() {
+    return Math.ceil(this.ticketCount / LIMIT);
+  }
+
+  @action setPage = (page: number) => {
+    this.page = page;
+  };
+
+  @action setIsFiltered = (isFiltered : boolean) => {
+    this.isFiltered = isFiltered;
+  }
 
   //Initialize the Ticket Registry
   @observable ticketsRegistry = observable.map(new Map<number, ITicket>());
@@ -18,14 +37,18 @@ export default class TicketStore {
   @action loadTickets = async () => {
     try {
       this.rootStore.commonStore.setResourceLoading(true);
-      const loadedTickets = await Tickets.list();
+      this.setIsFiltered(false);
+      const loadedTicketsEnvelop = await Tickets.list(LIMIT, this.page);
       runInAction(() => {
+        const loadedTickets = loadedTicketsEnvelop.tickets;
+        this.ticketsRegistry.clear();
         loadedTickets.forEach((ticket) => {
           let ticketDate = Date.parse(ticket.date_time);
           ticket.display_date = format(ticketDate, "dd/MM/yyyy");
           this.ticketsRegistry.set(ticket.post_id!, ticket);
         });
 
+        this.ticketCount = loadedTicketsEnvelop.ticketCount;
         this.rootStore.commonStore.setResourceLoading(false);
       });
     } catch (e) {
@@ -155,6 +178,7 @@ export default class TicketStore {
   @action loadFilteredTickets = async (filters: IFilters) => {
     try {
       this.rootStore.commonStore.setResourceLoading(true);
+      this.setIsFiltered(true);
       const loadedFilteredTickets = await Tickets.filter(filters);
       runInAction(() => {
         this.ticketsRegistry.clear();
@@ -175,6 +199,8 @@ export default class TicketStore {
   @action loadSearchedTickets = async (search_query: string) => {
     try {
       this.rootStore.commonStore.setResourceLoading(true);
+      this.rootStore.filterStore.resetFilters();
+      this.setIsFiltered(true);
       const loadedSearchedTickets = await Tickets.search(search_query);
       runInAction(() => {
         this.ticketsRegistry.clear();
