@@ -12,7 +12,7 @@ import { IFilters } from "../Models/filters";
 import { history } from "../index";
 import { toast } from "react-toastify";
 import { IACPSettings, IACPSettingsForm } from "../Models/acpSettings";
-import { ITicketEnvelop } from "../Models/ticketEnvelop";
+import { ITicketEnvelop, IArchiveEnvelop } from "../Models/ticketEnvelop";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -95,7 +95,7 @@ const Tickets = {
   delete: (post_id: string) => requests.delete("/tickets/" + post_id),
   filter: (filters: IFilters): Promise<ITicket[]> =>
     requests.get_with_body("/tickets/filter", filters),
-  search: (search_query: string): Promise<ITicket[]> => requests.get_with_body("/tickets/search", {search_query: search_query})
+  search: (search_query: string): Promise<ITicket[]> => requests.get_with_body("/tickets/search", {search_query: search_query, search_archive: false})
 };
 
 const Comments = {
@@ -172,7 +172,7 @@ const Admins = {
 };
 
 const Archives = {
-  list: () => requests.get("/archives"),
+  list: (limit: number, page: number): Promise<IArchiveEnvelop> => requests.get("/archives?offset=" + (limit * page) + "&limit=" + limit),
 };
 
 export {

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import "./ticketDashboard.css";
-import { Grid, Button, Icon } from "semantic-ui-react";
+import { Grid, Button } from "semantic-ui-react";
 import TicketList from "./TicketList/TicketList";
 import { Link } from "react-router-dom";
 import Store from "../../App/Store/rootStore";
@@ -8,6 +8,7 @@ import { observer } from "mobx-react-lite";
 import LoadingComp from "../../Utility/Loader/LoadingComp";
 import SearchBar from "./SearchBar";
 import TicketDashboardTR from "./TicketDashboardTR";
+import PageController from "./PageController";
 
 const TicketDashboard = () => {
   const store = useContext(Store);
@@ -24,26 +25,6 @@ const TicketDashboard = () => {
 
   const [searchBarOpen, setSearchBarOpen] = useState<boolean>(false);
 
-  const onMinPage = !(page > 0);
-  const onMaxPage = !(page + 1 < totalPages);
-
-  const handlePageDown = () => {
-    console.log("clciked down");
-
-    if (!onMinPage) {
-      setPage(page - 1);
-      loadTickets();
-    }
-  };
-
-  const handlePageUp = () => {
-    console.log("clciked up");
-
-    if (!onMaxPage) {
-      setPage(page + 1);
-      loadTickets();
-    }
-  };
 
   return (
     <div id="TicketDashboard">
@@ -76,23 +57,7 @@ const TicketDashboard = () => {
 
       <div className="ticketDashboardFoot">
         {!isFiltered && (
-          <div className="pageNumbers">
-            <Icon
-              name="arrow alternate circle left"
-              size="big"
-              link
-              disabled={onMinPage}
-              onClick={() => handlePageDown()}
-            />
-            <div className="currentPage">{page + 1}</div>
-            <Icon
-              name="arrow alternate circle right"
-              size="big"
-              link
-              disabled={onMaxPage}
-              onClick={() => handlePageUp()}
-            />
-          </div>
+          <PageController page={page} totalPages={totalPages} setPage={setPage} loadTickets={loadTickets}/>
         )}
 
         {user && (

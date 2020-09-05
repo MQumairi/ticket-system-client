@@ -6,42 +6,40 @@ import { Form, Button } from "semantic-ui-react";
 import { ITicket } from "../../../Models/ticket";
 import { ITicketForm } from "../../../Models/ticketForm";
 import { useHistory } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
-  currentTicket : ITicket
+  currentTicket: ITicket;
 }
 
-const DevTicketForm: React.FC<IProps> = ({currentTicket}) => {
-    
+const DevTicketForm: React.FC<IProps> = ({ currentTicket }) => {
   const store = useContext(Store);
 
   const { statusOptions } = store.statusStore;
   const { isArchivedOptions } = store.commonStore;
-  const {developerOptions} = store.userStore;
-  const {manageTicket} = store.ticketStore;
+  const { developerOptions } = store.userStore;
+  const { manageTicket } = store.ticketStore;
 
   const [saving, setSaving] = useState<boolean>(false);
-
 
   let history = useHistory();
 
   const handleFinalFormSubmit = (values: any) => {
-
     setSaving(true);
 
-    let ticketDataToAdd : ITicketForm = {
+    let ticketDataToAdd: ITicketForm = {
       status_id: values.status.status_id,
       developer_id: values.developer,
-      is_archived: values.is_archived
-    }
+      is_archived: values.is_archived,
+    };
 
     manageTicket(currentTicket.post_id!, ticketDataToAdd)
-    .then(() => {
-      setSaving(false);
-    })
-    .then(() => {
-      history.push("/tickets/" + currentTicket.post_id);
-    });
+      .then(() => {
+        setSaving(false);
+      })
+      .then(() => {
+        history.push("/tickets/" + currentTicket.post_id);
+      });
   };
 
   return (
@@ -90,4 +88,4 @@ const DevTicketForm: React.FC<IProps> = ({currentTicket}) => {
   );
 };
 
-export default DevTicketForm;
+export default observer(DevTicketForm);

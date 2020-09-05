@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
 import Store from "../../App/Store/rootStore";
-import { Grid } from "semantic-ui-react";
 import TicketList from "../../Tickets/TicketsDashboard/TicketList/TicketList";
 import { observer } from "mobx-react-lite";
 import LoadingComp from "../../Utility/Loader/LoadingComp";
+import TicketDashboardTR from "../../Tickets/TicketsDashboard/TicketDashboardTR";
+import PageController from "../../Tickets/TicketsDashboard/PageController";
 
 const ArchivesDashboard = () => {
   const store = useContext(Store);
-  const { sortedArchives } = store.ticketStore;
+  const { sortedArchives, isFilteredArchive, page_archive, totalArchivePages, setArchivePage, loadArchives } = store.ticketStore;
   const { resourceLoading } = store.commonStore;
 
   return (
@@ -16,31 +17,12 @@ const ArchivesDashboard = () => {
       {!resourceLoading && (
         <div>
           <hr />
-          <Grid columns={6} id="ticketsHeader">
-            <Grid.Column width={2} className="remove-padding table-header">
-              Author
-            </Grid.Column>
-            <Grid.Column width={3} className="remove-padding table-header">
-              Status
-            </Grid.Column>
-            <Grid.Column width={2} className="remove-padding table-header">
-              Product
-            </Grid.Column>
-            <Grid.Column width={4} className="remove-padding table-header">
-              Title
-            </Grid.Column>
-            <Grid.Column width={3} className="remove-padding table-header">
-              Date
-            </Grid.Column>
-            <Grid.Column
-              width={2}
-              className="remove-padding table-header"
-            ></Grid.Column>
-          </Grid>
+          <TicketDashboardTR />
           <hr />
           <TicketList ticketsArr={sortedArchives} />{" "}
         </div>
       )}
+      {!isFilteredArchive && <PageController page={page_archive} totalPages={totalArchivePages} setPage={setArchivePage} loadTickets={loadArchives} />}
       {resourceLoading && <LoadingComp loadingText="Loading Archives" />}
     </div>
   );
