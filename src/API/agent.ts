@@ -173,6 +173,7 @@ const Admins = {
 
 const Archives = {
   list: (limit: number, page: number): Promise<IArchiveEnvelop> => requests.get("/archives?offset=" + (limit * page) + "&limit=" + limit),
+  search: (search_query: string): Promise<ITicket[]> => requests.get_with_body("/tickets/search", {search_query: search_query, search_archive: true})
 };
 
 export {

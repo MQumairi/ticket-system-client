@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import "./ticketDashboard.css";
 import { Grid, Button } from "semantic-ui-react";
 import TicketList from "./TicketList/TicketList";
@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import Store from "../../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
 import LoadingComp from "../../Utility/Loader/LoadingComp";
-import SearchBar from "./SearchBar";
 import TicketDashboardTR from "./TicketDashboardTR";
 import PageController from "./PageController";
+import SearchContainer from "./Search/SearchContainer";
 
 const TicketDashboard = () => {
   const store = useContext(Store);
@@ -19,12 +19,10 @@ const TicketDashboard = () => {
     setPage,
     loadTickets,
     isFiltered,
+    loadSearchedTickets
   } = store.ticketStore;
   const { resourceLoading } = store.commonStore;
   const { user } = store.userStore;
-
-  const [searchBarOpen, setSearchBarOpen] = useState<boolean>(false);
-
 
   return (
     <div id="TicketDashboard">
@@ -33,15 +31,7 @@ const TicketDashboard = () => {
           <h2>Tickets</h2>
         </Grid.Column>
         <Grid.Column width={4}>
-          <div className="searchContainer">
-            {searchBarOpen && <SearchBar />}
-            <Button
-              className="searchButton"
-              circular
-              icon="search"
-              onClick={() => setSearchBarOpen(!searchBarOpen)}
-            />
-          </div>
+          <SearchContainer loadSearchedTickets={loadSearchedTickets} loadTickets={loadTickets}/>
         </Grid.Column>
       </Grid>
 

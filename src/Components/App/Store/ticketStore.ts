@@ -146,6 +146,7 @@ export default class TicketStore {
   @action loadArchives = async () => {
     try {
       this.rootStore.commonStore.setResourceLoading(true);
+      this.setIsFilteredArchive(false);
       const loadedArchivesEnvelop = await Archives.list(LIMIT, this.page_archive);
       runInAction(() => {
         const loadedArchives = loadedArchivesEnvelop.archive;
@@ -227,6 +228,27 @@ export default class TicketStore {
           let ticketDate = Date.parse(ticket.date_time);
           ticket.display_date = format(ticketDate, "dd/MM/yyyy");
           this.ticketsRegistry.set(ticket.post_id!, ticket);
+        });
+        this.rootStore.commonStore.setResourceLoading(false);
+      });
+    } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
+      console.log(e);
+    }
+  };
+
+  //Search arhives
+  @action loadSearchedArchives = async (search_query: string) => {
+    try {
+      this.rootStore.commonStore.setResourceLoading(true);
+      this.setIsFilteredArchive(true);
+      const loadedSearchArchives = await Archives.search(search_query);
+      runInAction(() => {
+        this.archivesRegistry.clear();
+        loadedSearchArchives.forEach((ticket) => {
+          let ticketDate = Date.parse(ticket.date_time);
+          ticket.display_date = format(ticketDate, "dd/MM/yyyy");
+          this.archivesRegistry.set(ticket.post_id!, ticket);
         });
         this.rootStore.commonStore.setResourceLoading(false);
       });
