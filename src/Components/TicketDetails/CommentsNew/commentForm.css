@@ -26,3 +26,9 @@
 .commentButtons .mainButton {
     margin-left: 20px !important;
 }
+
+@media only screen and (max-width: 768px) {
+    .commentFormContainer {
+        border-radius: 0px;
+    }
+}

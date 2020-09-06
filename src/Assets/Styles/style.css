@@ -1,100 +1,145 @@
 :root {
-    /* Sizes */
-    --body-width: 70%;
-    min-height: 100vh;
-    
-    --small-container-width: 40%;
-    --med-container-width: 60%;
+  /* Sizes */
+  --body-width: 70%;
+  min-height: 100vh;
 
-    --default-padding: 30px;
+  --small-container-width: 40%;
+  --med-container-width: 60%;
 
-    --container-border-radius: 10px;
+  --default-padding: 30px;
 
-    /* Colors */
-    --primary-color: #B31E1E;
-    --primary-color-hover: #851616;
-    --bg-color: #4C4B4B;
-    --navbar-text: #FFF8F8;
+  --container-border-radius: 10px;
 
-    --body-bg-color-1: #FEFEFE;
-    --body-bg-color-2: #F1F1F1;
-    --body-bg-color-3: #ebebeb;
-    --body-bg-color-4: #d6d6d6;
+  /* Colors */
+  --primary-color: #b31e1e;
+  --primary-color-hover: #851616;
+  --bg-color: #4c4b4b;
+  --navbar-text: #fff8f8;
 
-    --body-border-color: #c5c5c5;
+  --body-bg-color-1: #fefefe;
+  --body-bg-color-2: #f1f1f1;
+  --body-bg-color-3: #ebebeb;
+  --body-bg-color-4: #d6d6d6;
 
-    --subheader-color: #5e5e5e;
+  --body-border-color: #c5c5c5;
 
-    --label-color: #7a7a7a;
+  --subheader-color: #5e5e5e;
+
+  --label-color: #7a7a7a;
 }
 
-
 html {
-    min-height:100%;
-    position: relative;
-    min-height: 100vh;
+  min-height: 100%;
+  position: relative;
+  min-height: 100vh;
 }
 
 body {
-    background-color: var(--bg-color);
-    height: 100%;
-    min-height: 100vh;
+  background-color: var(--bg-color);
+  height: 100%;
+  min-height: 100vh;
 }
 
 .remove-padding {
-    padding: 0px !important;
+  padding: 0px !important;
 }
 
 .fullWidth {
-    width: 100%;
+  width: 100%;
 }
 
 .fullHeight {
-    height: 100%;
+  height: 100%;
 }
 
 hr {
-    border-top: 1px solid var(--body-border-color);
+  border-top: 1px solid var(--body-border-color);
 }
 
 .mainButton {
-    background-color: var(--primary-color) !important;
-    color: var(--navbar-text) !important;
+  background-color: var(--primary-color) !important;
+  color: var(--navbar-text) !important;
 }
 
 .mainButton:hover {
-    background-color:var(--primary-color-hover)!important;
+  background-color: var(--primary-color-hover) !important;
 }
 
 .backButton {
-    height: min-content;
+  height: min-content;
 }
 
 .no-style {
-    background-color: transparent !important;
-    padding: 0px !important;
-    width: 100% !important;
+  background-color: transparent !important;
+  padding: 0px !important;
+  width: 100% !important;
 }
 
 button:focus {
-    /* outline: var(--primary-color) thin dotted; */
-    outline: none;
+  /* outline: var(--primary-color) thin dotted; */
+  outline: none;
 }
 
 .clickable {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .productButton {
-    background-color: var(--body-bg-color-4);
-    margin-top: 10px;
-    padding: 7px;
-    border-radius: 20px;
-    text-align: center;
-    border: none;
+  background-color: var(--body-bg-color-4);
+  margin-top: 10px;
+  padding: 7px;
+  border-radius: 20px;
+  text-align: center;
+  border: none;
 }
 
 .centerX {
-    margin: 0px auto !important;
-    display: block !important;
+  margin: 0px auto !important;
+  display: block !important;
+}
+
+.left {
+  margin-left: auto;
+}
+
+@media only screen and (max-width: 1570px) {
+  :root {
+    --body-width: 90%;
+    --small-container-width: 70%;
+    --med-container-width: 80%;
+  }
+}
+
+@media only screen and (max-width: 1224px) {
+  :root {
+    --body-width: 95%;
+    --small-container-width: 75%;
+    --med-container-width: 85%;
+
+    --default-padding: 30px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  :root {
+    --body-width: 100%;
+    --small-container-width: 100%;
+    --med-container-width: 100%;
+    --container-border-radius: 0px;
+
+    --default-padding: 20px;
+  }
+
+  .mainButton {
+    font-size: 18px !important;
+  }
+
+  label, h5 {
+    font-size: 16px !important;
+  }
+
+  textarea, input, div.ui.selection.dropdown {
+    font-size: 18px !important;
+  }
+
 }

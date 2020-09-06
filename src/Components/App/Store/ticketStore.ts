@@ -123,19 +123,40 @@ export default class TicketStore {
     }
   };
 
+  //Archive pagination
+  @observable isFilteredArchive = false;
+  @observable archiveCount: number = 0;
+  @observable page_archive: number = 0;
+
+  @computed get totalArchivePages() {
+    return Math.ceil(this.archiveCount / LIMIT);
+  }
+
+  @action setArchivePage = (page_archive: number) => {
+    this.page_archive = page_archive;
+  };
+
+  @action setIsFilteredArchive = (isFilteredArchive : boolean) => {
+    this.isFilteredArchive = isFilteredArchive;
+  }
+
   //Archives
   @observable archivesRegistry = observable.map(new Map<number, ITicket>());
 
   @action loadArchives = async () => {
     try {
       this.rootStore.commonStore.setResourceLoading(true);
-      const loadedArchives = await Archives.list();
+      this.setIsFilteredArchive(false);
+      const loadedArchivesEnvelop = await Archives.list(LIMIT, this.page_archive);
       runInAction(() => {
+        const loadedArchives = loadedArchivesEnvelop.archive;
+        this.archivesRegistry.clear();
         loadedArchives.forEach((ticket: ITicket) => {
           let ticketDate = Date.parse(ticket.date_time);
           ticket.display_date = format(ticketDate, "dd/MM/yyyy");
           this.archivesRegistry.set(ticket.post_id!, ticket);
         });
+        this.archiveCount = loadedArchivesEnvelop.archiveCount;
         this.rootStore.commonStore.setResourceLoading(false);
       });
     } catch (e) {
@@ -199,7 +220,6 @@ export default class TicketStore {
   @action loadSearchedTickets = async (search_query: string) => {
     try {
       this.rootStore.commonStore.setResourceLoading(true);
-      this.rootStore.filterStore.resetFilters();
       this.setIsFiltered(true);
       const loadedSearchedTickets = await Tickets.search(search_query);
       runInAction(() => {
@@ -208,6 +228,27 @@ export default class TicketStore {
           let ticketDate = Date.parse(ticket.date_time);
           ticket.display_date = format(ticketDate, "dd/MM/yyyy");
           this.ticketsRegistry.set(ticket.post_id!, ticket);
+        });
+        this.rootStore.commonStore.setResourceLoading(false);
+      });
+    } catch (e) {
+      this.rootStore.commonStore.setResourceLoading(false);
+      console.log(e);
+    }
+  };
+
+  //Search arhives
+  @action loadSearchedArchives = async (search_query: string) => {
+    try {
+      this.rootStore.commonStore.setResourceLoading(true);
+      this.setIsFilteredArchive(true);
+      const loadedSearchArchives = await Archives.search(search_query);
+      runInAction(() => {
+        this.archivesRegistry.clear();
+        loadedSearchArchives.forEach((ticket) => {
+          let ticketDate = Date.parse(ticket.date_time);
+          ticket.display_date = format(ticketDate, "dd/MM/yyyy");
+          this.archivesRegistry.set(ticket.post_id!, ticket);
         });
         this.rootStore.commonStore.setResourceLoading(false);
       });

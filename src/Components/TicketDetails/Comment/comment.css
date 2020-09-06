@@ -1,31 +1,52 @@
 @import "../../../Assets/Styles/style.css";
 
 .commentContainer {
-    background-color: var(--body-bg-color-1);
-    margin-top: 10px;
-    padding: 30px;
-    border-radius: 15px;
-    border: 1px solid var(--body-border-color);
+  background-color: var(--body-bg-color-1);
+  margin-top: 10px;
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid var(--body-border-color);
 }
 
 .commentBody {
-    padding: 0px 50px;
-    margin: 20px 0px;
+  margin: 20px 0px;
 }
 
 .commentDescription {
-    margin: 20px 0px;
-    padding-top: 20px;
-    white-space: pre;
+  margin: 20px 0px;
+  padding-top: 20px;
+  white-space: pre-wrap;
 }
 
 .comment_attachment {
-    margin-top: 20px;
-    width: 100%;
-    overflow: hidden;
+  margin-top: 20px;
+  width: 100%;
+  overflow: hidden;
 }
 
 .comment_attachment img {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
+}
+
+.commentFooter {
+    display: flex;
+}
+
+@media only screen and (max-width: 768px) {
+  .commentHeader {
+    text-align: center;
+  }
+
+  .commentContainer {
+      border-radius: 0px;
+  }
+
+  .commentDescription {
+    font-size: 18px;
+  }
+
+  .postHeaderDate {
+    font-size: 16px;
+  }
 }

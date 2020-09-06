@@ -126,4 +126,11 @@ export default class CommonStore {
     {key: 0, text: "Enabled", value: false},
     {key: 1, text: "Disabled", value: true}
   ]
+
+
+  @observable width =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
+  
 }

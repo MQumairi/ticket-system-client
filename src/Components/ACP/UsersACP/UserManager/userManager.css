@@ -36,3 +36,8 @@
   margin-top: 10px !important;
 }
 
+@media only screen and (max-width: 768px) {
+  .userManagerBody {
+    margin: 0px;
+  }
+}

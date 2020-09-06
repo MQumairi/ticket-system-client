@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Grid, GridColumn, Form } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 import Store from "../App/Store/rootStore";
 import { RouteComponentProps, Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
@@ -58,21 +58,19 @@ const DeleteConfirmationUser: React.FC<RouteComponentProps<params>> = ({
 
   return (
     <div className="deleteConfirmBody">
-      <Grid>
-        <GridColumn width={10}>
-          <h2>User Deletion</h2>
-        </GridColumn>
-        <GridColumn width={2} />
-        <GridColumn width={2}>
+
+      <div className="deleteConfirmHead">
+        <h2>User Deletion</h2>
+        <div className="backButton left">
           <Button
             className="mainButton"
             as={Link}
             to={"/acp/users/" + match.params.id}
-          >
-            Back
-          </Button>
-        </GridColumn>
-      </Grid>
+            content="Back"
+          />
+        </div>
+      </div>
+
       <hr />
       {inspectedUser && (
         <div>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Form as FinalForm, Field } from "react-final-form";
-import { Form, Button, GridColumn, Grid } from "semantic-ui-react";
+import { Form, Button } from "semantic-ui-react";
 import TextInput from "../Utility/Final Form Fields/TextInput";
 import Store from "../App/Store/rootStore";
 import { IUserForm } from "../../Models/userForm";
@@ -46,23 +46,26 @@ const LoginPage = () => {
         render={({ handleSubmit, invalid, pristine }) => {
           return (
             <div className="login-page-body">
-              <Grid>
-                <GridColumn width={5} key={1}>
-                  <h2>Login</h2>
-                </GridColumn>
-                <GridColumn width={7} key={2} />
-                <GridColumn width={3} key={3}>
+
+              <div className="loginHeader">
+                <h2>Login</h2>
+                <div className="loginButtons left">
                   <Button
                     className="mainButton"
                     content="Back"
                     as={Link}
                     to="/"
                   />
-                </GridColumn>
-              </Grid>
+                </div>
+              </div>
+
               <hr />
               {loginError && (
-                <ErrorNotice message={"Email/Password combination unrecognized. Try again."} />
+                <ErrorNotice
+                  message={
+                    "Email/Password combination unrecognized. Try again."
+                  }
+                />
               )}
               <Form onSubmit={handleSubmit}>
                 <Field

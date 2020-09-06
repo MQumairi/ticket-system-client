@@ -17,7 +17,7 @@ const ACPSettingsList: React.FC<IProps> = ({ setEditing }) => {
     loadACPSettings();
   }, [loadACPSettings]);
 
-  if (resourceLoading) return <LoadingComp loadingText="Loading settings" />;
+  if (resourceLoading) return <LoadingComp loadingText="Loading Settings" />;
 
   return (
     <div className="acpSettingsListBody">

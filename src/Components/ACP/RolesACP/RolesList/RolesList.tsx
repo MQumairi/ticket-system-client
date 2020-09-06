@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const RolesList = () => {
   const store = useContext(Store);
   const { loadRoles, roles } = store.userStore;
-  const { resourceLoading } = store.commonStore;
+  const { resourceLoading, width } = store.commonStore;
 
   useEffect(() => {
     console.log("renders");
@@ -21,7 +21,7 @@ const RolesList = () => {
 
   return (
     <div>
-      <Card.Group itemsPerRow={2}>
+      <Card.Group itemsPerRow={width < 768 ? 1: 2}>
         {Array.from(roles.values())
           .slice().sort((r1, r2) => ("" + r1.name).localeCompare(r2.name))
           .map((role) => {

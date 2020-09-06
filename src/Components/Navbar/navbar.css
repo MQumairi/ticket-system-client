@@ -1,6 +1,97 @@
 @import "../../Assets/Styles/style.css";
 
-.ui.inverted.segment {
+#navbar {
+  background: var(--primary-color);
+  display: flex;
+  align-items: center;
+  font-family: "Futura";
+  font-size: 1.3em;
+  padding-left: 15%;
+  padding-right: 15%;
+  min-height: 80px;
+}
+
+#navbar a {
+  margin-left: 40px;
+  color: var(--navbar-text);
+}
+
+.navLinks a {
+  margin-left: 40px;
+  color: var(--navbar-text);
+  padding: 5px 10px;
+  margin-bottom: -5px;
+  border-radius: var(--container-border-radius);
+}
+
+.navLinks a:hover {
+  background: var(--primary-color-hover);
+  transition: all 0.2s;
+}
+
+.navLinks {
+  margin-left: auto;
+}
+
+.navAvatar {
+  height: 100%;
+  padding: 10px;
+}
+
+.navBurger {
+  color: var(--navbar-text);
+  padding: 5px 5px;
+  margin-bottom: -5px;
+  border-radius: var(--container-border-radius);
+  display: none;
+}
+
+.navBurger:hover {
+  background: var(--primary-color-hover);
+  transition: all 0.2s;
+}
+
+@media only screen and (max-width: 768px) {
+  .navLinks {
+    display: none;
+  }
+
+  .navAvatar {
+    display: none;
+  }
+
+  #navbar {
+    padding: 10px;
+    height: 80px;
+  }
+
+  .navBurger {
+    display: inline;
+    margin-left: auto;
+  }
+
+  .navLinksMobile {
+    display: flex;
+    flex-direction: column;
+    background: var(--primary-color-hover);
+    text-align: center;
+    padding-bottom: 20px;
+  }
+
+  .navLinksMobile a {
+    font-family: "Futura";
+    font-size: 1.3em;
+    color: var(--navbar-text);
+    margin-top: 20px;
+    padding: 10px;
+  }
+
+  .navLinksMobile a:hover {
+      background: var(--primary-color);
+  }
+}
+
+/* .ui.inverted.segment {
     background-color:var(--primary-color);
     border-radius: 0px;
     display: flex;
@@ -39,4 +130,4 @@
     border: 3px solid var(--body-bg-color-3);
     background-size: 100% 100%;
     background-repeat: no-repeat;
-}
+} */

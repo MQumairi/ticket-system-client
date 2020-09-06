@@ -1,23 +1,50 @@
 @import "../../Assets/Styles/style.css";
 
 #adminPanelBody {
-    background-color: var(--body-bg-color-1);
-    padding: var(--default-padding);
-    border-radius: var(--container-border-radius);
-    margin: auto auto;
-    margin-top: 55px;
-    width: var(--body-width);
+  background-color: var(--body-bg-color-1);
+  padding: var(--default-padding);
+  border-radius: var(--container-border-radius);
+  margin: auto auto;
+  margin-top: 55px;
+  width: var(--body-width);
 }
 
 .ACPmainContent {
-    padding-top: 10px !important;
+  padding-top: 10px !important;
 }
 
 .acpAddButton {
-    margin-top: 20px !important;
-    text-align: center !important;
+  margin-top: 20px !important;
+  text-align: center !important;
 }
 
 .acpAddButton hr {
-    margin-bottom: 20px !important;
+  margin-bottom: 20px !important;
+}
+
+.adminPanelContentContainer {
+  display: flex;
+}
+
+.adminPanelContent {
+  width: 60%;
+}
+
+.adminPanelMenu {
+  width: 40%;
+}
+
+@media only screen and (max-width: 768px) {
+  .adminPanelMenu {
+    width: 0%;
+  }
+  .adminPanelContent {
+    width: 100%;
+  }
+
+  #adminPanelBody {
+    margin-top: 0px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
 }

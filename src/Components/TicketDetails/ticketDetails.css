@@ -41,10 +41,80 @@
     padding: 10px !important;
 }
 
-.devButton {
-    margin-right: -10px !important;
+.description {
+    white-space: pre-wrap;
 }
 
-.description {
-    white-space: pre;
+.ticketHeaderTitle {
+    display: flex;
+}
+
+.authorInfo {
+    display: flex;
+}
+
+.authorNameAndRank {
+    margin-left: 15px;
+}
+
+.ticketMeta {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.productAndStatus {
+    margin-left: auto;
+    width: 150px;
+}
+
+.ticketBody {
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+.ticketFooter {
+    display: flex;
+    padding: 0px;
+}
+
+
+@media only screen and (max-width: 768px) {
+
+    #ticketDetailsBody {
+        margin-top: 0px;
+    }
+
+    #ticketDetailsMainPost {
+        border-radius: 0px;
+    }
+
+    .ticketHeaderTitle {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .ticketDetailsButtons {
+        margin: auto;
+    }
+
+    .ticketDetailsHeader p {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .ticketDeveloper {
+        margin: auto;
+        margin-bottom: 20px;
+    }
+
+    .ticketFooter {
+        flex-direction: column;
+    }
+
+    .description {
+        margin-top: 40px;
+        font-size: 18px;
+        width: 100%;
+    }
 }

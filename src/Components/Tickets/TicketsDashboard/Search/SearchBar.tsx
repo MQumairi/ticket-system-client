@@ -1,19 +1,28 @@
-import React, { useContext } from "react";
-import "./ticketDashboard.css";
+import React from "react";
+import "../ticketDashboard.css";
 import { Form as FinalForm, Field } from "react-final-form";
 import { Form } from "semantic-ui-react";
-import TextInput from "../../Utility/Final Form Fields/TextInput";
-import Store from "../../App/Store/rootStore";
+import TextInput from "../../../Utility/Final Form Fields/TextInput";
+import { observer } from "mobx-react-lite";
 
-const SearchBar = () => {
-  const store = useContext(Store);
-  const { loadSearchedTickets, loadTickets } = store.ticketStore;
+interface IProps {
+  loadSearchedTickets: (search_query: string) => Promise<void>;
+  loadTickets: () => Promise<void>;
+  setSearchBarOpen: (searchBarOpen: boolean) => void;
+}
+
+const SearchBar: React.FC<IProps> = ({
+  loadSearchedTickets,
+  loadTickets,
+  setSearchBarOpen,
+}) => {
 
   const handleFinalFormSubmit = (values: any) => {
     if (values.search_query) {
-      loadSearchedTickets(values.search_query);
+      loadSearchedTickets(values.search_query)
     } else {
-      loadTickets();
+      loadTickets()
+        .then(() => setSearchBarOpen(false));
     }
   };
 
@@ -37,4 +46,4 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+export default observer(SearchBar);

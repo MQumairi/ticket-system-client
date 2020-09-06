@@ -3,3 +3,9 @@
 #archiveBox {
     margin-top: 55px;
 }
+
+@media only screen and (max-width: 768px) {
+    #archiveBox {
+        margin-top: 0px;
+    }
+}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button, Label, Grid } from "semantic-ui-react";
+import { Card, Button, Grid, Icon } from "semantic-ui-react";
 import "./statusListCard.css";
 import StatusListCardEditForm from "./StatusListCardEditForm";
 import { observer } from "mobx-react-lite";
@@ -14,20 +14,23 @@ const StatusListCard: React.FC<IProps> = ({ status }) => {
   const [editingStatus, setEditingStatus] = useState<boolean>(false);
 
   return (
-    <Card>
+    <Card className="statusCard">
       {!editingStatus && (
         <Card.Content>
           <div className="cardRow">
             <div className="cardName">
               <Grid columns={3}>
                 <Grid.Column>
-                  <div className="statusACPCircle" style={{backgroundColor: status.status_color}}></div>
+                  <div
+                    className="statusACPCircle"
+                    style={{ backgroundColor: status.status_color }}
+                  ></div>
                 </Grid.Column>
                 <Grid.Column>
                   <h4>{status.status_text}</h4>
                 </Grid.Column>
                 <Grid.Column>
-                  {status.is_default && <Label>Default</Label>}
+                  {status.is_default && <Icon circular inverted name="star" />}
                 </Grid.Column>
               </Grid>
             </div>

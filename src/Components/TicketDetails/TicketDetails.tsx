@@ -2,15 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import Store from "../App/Store/rootStore";
 import { RouteComponentProps, Link } from "react-router-dom";
 import "./ticketDetails.css";
-import { Grid, Button, Label } from "semantic-ui-react";
+import { Button, Label } from "semantic-ui-react";
 import StatusIcon from "../Tickets/FilterByDashboard/Status/StatusIcon/SatusIcon";
-import Avatar from "../Users/Avatar/Avatar";
 import { observer } from "mobx-react-lite";
 import Comment from "./Comment/Comment";
 import defaultAvatar from "../../Assets/Images/defaultAvatar.png";
 import CommentsForm from "./CommentsNew/CommentForm";
 import { useHistory } from "react-router-dom";
 import LoadingComp from "../Utility/Loader/LoadingComp";
+import AuthorAvatar from "./AuthorAvatar";
 
 interface params {
   id: string;
@@ -60,18 +60,16 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
   return (
     <div id="ticketDetailsBody">
       <div id="ticketDetailsMainPost">
+
         {/* Header starts here */}
-        <Grid>
-          <Grid.Row columns={3}>
-            <Grid.Column width={12}>
-              <h1>{currentTicket.title}</h1>
-              <p className="postHeaderDate">{currentTicket.display_date}</p>
-            </Grid.Column>
-            <Grid.Column width={2}>
+        <div className="ticketDetailsHeader">
+          <div className="ticketHeaderTitle">
+            <h1>{currentTicket.title}</h1>
+            <div className="ticketDetailsButtons left">
               {user?.role && user.role.can_manage && (
                 <Button
                   floated="right"
-                  className="mainButton devButton"
+                  className="mainButton"
                   content="Manage"
                   as={Link}
                   to={
@@ -79,55 +77,91 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
                   }
                 />
               )}
-            </Grid.Column>
-            <Grid.Column width={2}>
               <Button
                 floated="right"
                 className="mainButton"
                 content="Back"
                 onClick={() => handleBack()}
               />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+            </div>
+          </div>
+          <p className="postHeaderDate">{currentTicket.display_date}</p>
+        </div>
+
         <hr />
+
         {/* Body starts here */}
-        <Grid id="ticketDetailsMainPostContent">
-          <Grid.Row columns={3}>
-            <Grid.Column width={2}>
-              <Avatar
-                avatar={currentTicket.author.avatar}
-                diameter={80}
-                borderWidth={4}
-              />
-            </Grid.Column>
-            <Grid.Column width={10}>
-              <h2 className="posterName">{currentTicket.author.username}</h2>
-              <h4 className="posterRank">
-                {currentTicket.author.role && currentTicket.author.role.name}
-              </h4>
-            </Grid.Column>
-            <Grid.Column width={4}>
+        <div className="ticketBody">
+          <div className="ticketMeta">
+            <AuthorAvatar user={currentTicket.author} />
+            <div className="productAndStatus">
               <StatusIcon status={currentTicket.status} clickAble={false} />
               <div className="productButton">
                 {currentTicket.product.product_name}
               </div>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns={1}>
-            <p className="description">{currentTicket.description}</p>
-          </Grid.Row>
+            </div>
+          </div>
+          <p className="description">{currentTicket.description}</p>
           {currentTicket.attachment && (
-            <Grid.Row>
-              <img
-                alt={currentTicket.attachment.id}
-                src={currentTicket.attachment.url}
-              />
-            </Grid.Row>
+            <img
+              alt={currentTicket.attachment.id}
+              src={currentTicket.attachment.url}
+            />
           )}
-        </Grid>
+        </div>
+
         {/* Footer starts here */}
-        <Grid>
+
+        <div className="ticketFooter">
+          <div className="ticketDeveloper">
+            {currentTicket.developer && (
+              <Label as="a" image>
+                {!currentTicket.developer.avatar && (
+                  <img
+                    alt={currentTicket.developer.username}
+                    src={defaultAvatar}
+                  />
+                )}
+                {currentTicket.developer.avatar && (
+                  <img
+                    alt={currentTicket.developer.username}
+                    src={currentTicket.developer.avatar.url}
+                  />
+                )}
+                Assigned to {currentTicket.developer.username}
+              </Label>
+            )}
+          </div>
+
+          <div className="ticketDetailsButtons left">
+            {/* Delte button */}
+            {user && (user!.id === currentTicket?.author.id ||
+              user?.role?.can_moderate) && (
+              <Button
+                className="mainButton"
+                as={Link}
+                to={"/tickets/" + match.params.id + "/delete"}
+              >
+                Delete
+              </Button>
+            )}
+
+            {/* Edit button */}
+            {user &&
+              (user!.id === currentTicket?.author.id ||
+                user?.role?.can_moderate) && (
+                <Button
+                  className="mainButton"
+                  as={Link}
+                  to={"/tickets/" + match.params.id + "/edit"}
+                >
+                  Edit
+                </Button>
+              )}
+          </div>
+        </div>
+
+        {/* <Grid>
           <Grid.Row columns={3}>
             <Grid.Column width={12}>
               {currentTicket.developer && (
@@ -178,14 +212,21 @@ const TicketDetails: React.FC<RouteComponentProps<params>> = ({ match }) => {
               </Grid.Column>
             )}
           </Grid.Row>
-        </Grid>
+        </Grid> */}
+
+
       </div>
       {/* {revealReplyForm()} */}
       {currentTicket.comments
-        .slice().sort((c1, c2) => Date.parse(c1.date_time) - Date.parse(c2.date_time))
+        .slice()
+        .sort((c1, c2) => Date.parse(c1.date_time) - Date.parse(c2.date_time))
         .map((comment) => {
           return (
-              <Comment key={comment.post_id} parent_id={match.params.id} comment={comment} />
+            <Comment
+              key={comment.post_id}
+              parent_id={match.params.id}
+              comment={comment}
+            />
           );
         })}
       {user && !isReplying && (

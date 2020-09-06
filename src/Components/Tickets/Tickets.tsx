@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import FilterByDashboard from "./FilterByDashboard/FilterByDashboard";
 import TicketDashboard from "./TicketsDashboard/TicketDashboard";
-import { Grid } from "semantic-ui-react";
 import "./tickets.css";
 import Store from "../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
@@ -37,18 +36,14 @@ const Tickets = () => {
 
   return (
     <div>
-      <Grid columns={2} id="ticketDashboardGrid">
-        <Grid.Column width={3} id="filterCol">
+      <div id="ticketsPageBody">
+        <div id="filterCol">
           <FilterByDashboard />
-        </Grid.Column>
-        <Grid.Column width={13} id="ticketsCol">
-          <div className="dashBoardMain">
-            <div className="arrowLeft"></div>
-            <TicketDashboard />
-            <div className="arrowRight"></div>
-          </div>
-        </Grid.Column>
-      </Grid>
+        </div>
+        <div id="ticketsCol">
+          <TicketDashboard />
+        </div>
+      </div>
     </div>
   );
 };

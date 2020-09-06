@@ -19,12 +19,14 @@ const UserCard: React.FC<IProps> = ({ user }) => {
           {user.role && <Card.Meta>{user.role.name}</Card.Meta>}
           {!user.role && <Card.Meta>No role</Card.Meta>}
         </div>
+        <div className="userManageButton">
         <Button
-          className="mainButton ticketNewSubmit"
+          className="mainButton"
           content="Manage"
           as={Link}
           to={"/acp/users/" + user.id}
         />
+        </div>
       </Card.Content>
     </Card>
   );

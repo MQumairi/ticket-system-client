@@ -3,6 +3,8 @@ import { Grid } from "semantic-ui-react";
 
 const TicketDashboardTR = () => {
   return (
+    <div className="ticketsTR">
+      <hr/>
     <Grid columns={6} id="ticketsHeader">
       <Grid.Column width={2} className="remove-padding table-header">
         Author
@@ -24,6 +26,8 @@ const TicketDashboardTR = () => {
         className="remove-padding table-header"
       ></Grid.Column>
     </Grid>
+    <hr/>
+    </div>
   );
 };
 

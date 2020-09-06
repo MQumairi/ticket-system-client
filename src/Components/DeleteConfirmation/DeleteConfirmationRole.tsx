@@ -3,7 +3,7 @@ import { RouteComponentProps, Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useEffect, useContext } from "react";
 import Store from "../App/Store/rootStore";
-import { Grid, GridColumn, Button, Form } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 import { Form as FinalForm } from "react-final-form";
 import "./deleteconfirm.css";
 import LoadingComp from "../Utility/Loader/LoadingComp";
@@ -29,12 +29,12 @@ const DeleteConfirmationRole: React.FC<RouteComponentProps<params>> = ({
   const handleFinalFormSubmit = (values: any) => {
     setDeleting(true);
     deleteRole(match.params.id)
-    .then(() => {
-      setDeleting(false);
-    })
-    .then(() => {
-      history.push("/acp/roles");
-    });
+      .then(() => {
+        setDeleting(false);
+      })
+      .then(() => {
+        history.push("/acp/roles");
+      });
   };
 
   if (resourceLoading || !role)
@@ -46,20 +46,19 @@ const DeleteConfirmationRole: React.FC<RouteComponentProps<params>> = ({
 
   return (
     <div className="deleteConfirmBody">
-      <Grid>
-        <GridColumn width={12}>
-          <h2>Role Deletion</h2>
-        </GridColumn>
-        <GridColumn width={3}>
+
+      <div className="deleteConfirmHead">
+        <h2>Role Deletion</h2>
+        <div className="backButton left">
           <Button
             className="mainButton"
             as={Link}
             to={"/acp/roles/" + match.params.id}
-          >
-            Back
-          </Button>
-        </GridColumn>
-      </Grid>
+            content="Back"
+          />
+        </div>
+      </div>
+      
       <hr />
       {role && (
         <div>
@@ -74,7 +73,11 @@ const DeleteConfirmationRole: React.FC<RouteComponentProps<params>> = ({
               render={({ handleSubmit }) => {
                 return (
                   <Form onSubmit={handleSubmit}>
-                    <Button loading={deleting} className="mainButton" type="submit">
+                    <Button
+                      loading={deleting}
+                      className="mainButton"
+                      type="submit"
+                    >
                       Delete
                     </Button>
                   </Form>
