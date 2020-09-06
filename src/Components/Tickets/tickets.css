@@ -47,7 +47,21 @@
     width: 100%;
 } */
 
-#ticketDashboardGrid {
+#ticketsPageBody {
+    width: 100%;
+    display: flex;
+    margin-top: 50px;
+}
+
+#filterCol {
+    width: 20%;
+}
+
+#ticketsCol {
+    width: 80%;
+}
+
+/* #ticketDashboardGrid {
     margin-top: 40px;
     min-height: 650px;
 }
@@ -60,4 +74,19 @@
 #ticketsCol {
     padding-left: 0px;
     padding-right: 0px;
+} */
+
+@media only screen and (max-width: 768px) {
+
+    #ticketsPageBody {
+        margin-top: 0px;
+    }
+
+    #filterCol {
+        display: none;
+    }
+
+    #ticketsCol {
+        width: 100%;
+    }
 }

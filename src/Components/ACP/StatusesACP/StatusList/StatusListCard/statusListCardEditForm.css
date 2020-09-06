@@ -1,6 +1,49 @@
 @import "../../../../../Assets/Styles/style.css";
 
+.statusEditFormGroup {
+    display: flex;
+}
+
+.statusEditColor {
+    width: 10%;
+}
+
 .statusEditName {
-    width: 56%;
-    height: 42px;
+    width: 25%;
+}
+
+.statusEditDefault {
+    width: 25%;
+    margin-left: 2%;
+}
+
+.statusEditButtons {
+    width: 25%;
+    display: flex;
+}
+
+@media only screen and (max-width: 768px) {
+    .statusEditFormGroup {
+        flex-direction: column;
+        justify-content: center !important;
+    }
+
+    .statusEditColor, .statusEditName, .statusEditDefault, .statusEditButtons {
+        margin: auto;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .statusEditColor {
+        width: 10%;
+    }
+
+    .statusEditButtons {
+        width: 100%;
+        text-align: center;
+        justify-content: center !important;
+    }
+
 }

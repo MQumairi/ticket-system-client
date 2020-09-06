@@ -3,7 +3,7 @@ import { RouteComponentProps, Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useEffect, useContext } from "react";
 import Store from "../App/Store/rootStore";
-import { Grid, GridColumn, Button, Form } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 import { Form as FinalForm } from "react-final-form";
 import "./deleteconfirm.css";
 import { IProduct } from "../../Models/product";
@@ -52,16 +52,19 @@ const DeleteConfirmationProduct: React.FC<RouteComponentProps<params>> = ({
 
   return (
     <div className="deleteConfirmBody">
-      <Grid>
-        <GridColumn width={12}>
-          <h2>Product Deletion</h2>
-        </GridColumn>
-        <GridColumn width={3}>
-          <Button className="mainButton" as={Link} to={"/acp/products"}>
-            Back
-          </Button>
-        </GridColumn>
-      </Grid>
+
+       <div className="deleteConfirmHead">
+        <h2>Product Deletion</h2>
+        <div className="backButton left">
+          <Button
+            className="mainButton"
+            as={Link}
+            to={"/acp/products"}
+            content="Back"
+          />
+        </div>
+      </div>
+      
       <hr />
       {product && (
         <div>

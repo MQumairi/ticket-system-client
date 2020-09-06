@@ -75,33 +75,38 @@ const StatusListCardEditForm: React.FC<IProps> = ({
       render={({ handleSubmit, invalid, pristine }) => {
         return (
           <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <Field
-                name="color"
-                placeholder="Status name"
-                component={ColorPicker}
-                statusOriginalColor={status.status_color}
-                selectingColor={selectingColor}
-                setSelectingColor={setSelectingColor}
-              />
-              <div className="statusEditName">
-                <Form.Group widths="equal">
-                  <Field
-                    name="name"
-                    placeholder="Status name"
-                    component={TextInput}
-                    initialValue={status.status_text}
-                  />
-                  <Field
-                    component={SelectInput}
-                    options={statusIsDefaultOptions}
-                    name="is_default"
-                    defaultValue={status?.is_default}
-                    disabled={status?.is_default}
-                  />
-                </Form.Group>
+            <div className="statusEditFormGroup">
+              
+              <div className="statusEditColor">
+                <Field
+                  name="color"
+                  placeholder="Status name"
+                  component={ColorPicker}
+                  statusOriginalColor={status.status_color}
+                  selectingColor={selectingColor}
+                  setSelectingColor={setSelectingColor}
+                />
               </div>
-              <Button.Group>
+
+              <div className="statusEditName">
+                <Field
+                  name="name"
+                  placeholder="Status name"
+                  component={TextInput}
+                  initialValue={status.status_text}
+                />
+              </div>
+              <div className="statusEditDefault">
+                <Field
+                  component={SelectInput}
+                  options={statusIsDefaultOptions}
+                  name="is_default"
+                  defaultValue={status?.is_default}
+                  disabled={status?.is_default}
+                />
+              </div>
+
+              <div className="statusEditButtons">
                 <Button
                   disabled={invalid || pristine || editing}
                   className="mainButton cardEditButton"
@@ -115,8 +120,8 @@ const StatusListCardEditForm: React.FC<IProps> = ({
                   content="Cancel"
                   onClick={() => handleCancel()}
                 />
-              </Button.Group>
-            </Form.Group>
+              </div>
+            </div>
           </Form>
         );
       }}

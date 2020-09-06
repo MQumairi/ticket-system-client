@@ -8,6 +8,7 @@
   font-size: 1.3em;
   padding-left: 15%;
   padding-right: 15%;
+  min-height: 80px;
 }
 
 #navbar a {

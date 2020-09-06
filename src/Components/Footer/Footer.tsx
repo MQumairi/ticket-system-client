@@ -26,7 +26,7 @@ const Footer = () => {
           <Grid.Column id="footerGap" />
           <Grid.Column width={4}>
             <h2>Contact</h2>
-            <Grid columns={3} stackable id="contactDetails">
+            <Grid columns={3} id="contactDetails">
               <Grid.Column>
                 <div className="contactCircle"><div className="contactPic contactEmail"></div></div>
                 Email

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./ticketDashboard.css";
-import { Grid, Button } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import TicketList from "./TicketList/TicketList";
 import { Link } from "react-router-dom";
 import Store from "../../App/Store/rootStore";
@@ -26,18 +26,23 @@ const TicketDashboard = () => {
 
   return (
     <div id="TicketDashboard">
-      <Grid>
-        <Grid.Column width={12}>
+
+      <div className="ticketDashboardHeader">
+        <h2>Tickets</h2>
+        <SearchContainer loadSearchedTickets={loadSearchedTickets} loadTickets={loadTickets}/>
+      </div>
+      
+      {/* <Grid>
+        <Grid.Column width={11}>
           <h2>Tickets</h2>
         </Grid.Column>
         <Grid.Column width={4}>
           <SearchContainer loadSearchedTickets={loadSearchedTickets} loadTickets={loadTickets}/>
         </Grid.Column>
-      </Grid>
-
-      <hr />
+      </Grid> */}
+      
       <TicketDashboardTR />
-      <hr />
+
       {resourceLoading && <div className="ticketsCompContainer"><LoadingComp loadingText="Loading Tickets" /></div>}
       {!resourceLoading && (
         <div className="ticketsCompContainer">

@@ -11,3 +11,17 @@
 .register-page-content {
     padding: 20px;
 }
+
+.register-header {
+    display: flex;
+}
+
+.register-header h2 {
+    margin-bottom: -5px;
+}
+
+@media only screen and (max-width: 768px) {
+    .register-page-body {
+        margin: 0px;
+    }
+}

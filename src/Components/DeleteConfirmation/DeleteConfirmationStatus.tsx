@@ -3,7 +3,7 @@ import { RouteComponentProps, Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useEffect, useContext } from "react";
 import Store from "../App/Store/rootStore";
-import { Grid, GridColumn, Button, Form } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 import { Form as FinalForm } from "react-final-form";
 import "./deleteconfirm.css";
 import { IStatus } from "../../Models/status";
@@ -34,12 +34,12 @@ const DeleteConfirmationStatus: React.FC<RouteComponentProps<params>> = ({
   const handleFinalFormSubmit = (values: any) => {
     setDeleting(true);
     deleteStatus(match.params.id)
-    .then(() => {
-      setDeleting(false);
-    })
-    .then(() => {
-      history.push("/acp/statuses");
-    });
+      .then(() => {
+        setDeleting(false);
+      })
+      .then(() => {
+        history.push("/acp/statuses");
+      });
   };
 
   if (resourceLoading || !status || !statuses)
@@ -51,16 +51,20 @@ const DeleteConfirmationStatus: React.FC<RouteComponentProps<params>> = ({
 
   return (
     <div className="deleteConfirmBody">
-      <Grid>
-        <GridColumn width={12}>
-          <h2>Product Deletion</h2>
-        </GridColumn>
-        <GridColumn width={3}>
-          <Button className="mainButton" as={Link} to={"/acp/statuses"}>
-            Back
-          </Button>
-        </GridColumn>
-      </Grid>
+
+
+      <div className="deleteConfirmHead">
+        <h2>Status Deletion</h2>
+        <div className="backButton left">
+          <Button
+            className="mainButton"
+            as={Link}
+            to={"/acp/statuses"}
+            content="Back"
+          />
+        </div>
+      </div>
+
       <hr />
       {status && (
         <div>
@@ -76,7 +80,11 @@ const DeleteConfirmationStatus: React.FC<RouteComponentProps<params>> = ({
               render={({ handleSubmit }) => {
                 return (
                   <Form onSubmit={handleSubmit}>
-                    <Button loading={deleting} className="mainButton" type="submit">
+                    <Button
+                      loading={deleting}
+                      className="mainButton"
+                      type="submit"
+                    >
                       Delete
                     </Button>
                   </Form>

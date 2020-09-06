@@ -3,7 +3,7 @@ import { RouteComponentProps, Link } from "react-router-dom";
 import Store from "../App/Store/rootStore";
 import { observer } from "mobx-react-lite";
 import "./devConsole.css";
-import { Grid, Button } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import DevTicketForm from "./Developer Ticket Form/DevTicketForm";
 import LoadingComp from "../Utility/Loader/LoadingComp";
 
@@ -34,19 +34,17 @@ const DevConsole: React.FC<RouteComponentProps<params>> = ({ match }) => {
   return (
     <div id="devConsoleBody">
       {/* Header */}
-      <Grid>
-        <Grid.Column floated="left" width={13}>
-          <h1>Manage</h1>
-        </Grid.Column>
-        <Grid.Column floated="right" width={2}>
-          <Button
+
+      <div className="devConsoleHeader">
+        <h1>Manage</h1>
+        <div className="devConsoleBackButton"><Button
             className="mainButton"
             as={Link}
             to={"/tickets/" + match.params.id}
             content="Back"
-          />
-        </Grid.Column>
-      </Grid>
+          /></div> 
+      </div>
+
       <hr />
       {/* Ticket Info */}
       <div className="ticketInformation">

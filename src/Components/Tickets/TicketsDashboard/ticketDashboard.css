@@ -37,14 +37,15 @@
   margin-top: -10px;
   margin-bottom: 10px;
   width: min-content;
-  height: 45px;
   margin-left: auto;
+  padding: 3px;
+  padding-top: 0px;
 }
 
 .searchContainer input {
-    border-radius: 20px !important;
-    width: 150px !important;
-    margin-left: 3px !important;
+  border-radius: 20px !important;
+  width: 150px !important;
+  margin-left: 3px !important;
 }
 
 .searchButton {
@@ -53,7 +54,7 @@
 }
 
 .pageNumbers {
-  padding: 10px;
+  padding: 20px;
   margin: auto;
   display: flex;
   justify-content: center;
@@ -70,12 +71,18 @@
   padding-right: 13px;
 }
 
-.arrow.alternate.circle.right.big.link.icon {
+.arrow.alternate.circle.right {
   color: var(--primary-color);
+  font-size: 40px;
+  width: min-content;
+  height: min-content;
 }
 
-.arrow.alternate.circle.left.big.link.icon {
+.arrow.alternate.circle.left {
   color: var(--primary-color);
+  font-size: 40px;
+  width: min-content;
+  height: min-content;
 }
 
 .ticketDashboardFoot {
@@ -84,4 +91,31 @@
 
 .ticketsCompContainer {
   min-height: 450px;
+}
+
+.ticketDashboardHeader {
+  display: flex;
+}
+
+@media only screen and (max-width: 768px) {
+  .ticketsTR {
+    display: none;
+  }
+
+  #TicketDashboard { 
+    border-radius: 0px;
+    padding-bottom: 60px;
+  }
+
+  .searchButton {
+    font-size: 18px !important;
+  }
+
+  .pageNumbers {
+    padding: 40px;
+  }
+  
+  .arrow.alternate.circle.right, .arrow.alternate.circle.left{
+    font-size: 60px;
+  }
 }

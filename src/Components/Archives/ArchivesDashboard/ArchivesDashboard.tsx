@@ -5,7 +5,6 @@ import { observer } from "mobx-react-lite";
 import LoadingComp from "../../Utility/Loader/LoadingComp";
 import TicketDashboardTR from "../../Tickets/TicketsDashboard/TicketDashboardTR";
 import PageController from "../../Tickets/TicketsDashboard/PageController";
-import { Grid } from "semantic-ui-react";
 import SearchContainer from "../../Tickets/TicketsDashboard/Search/SearchContainer";
 
 const ArchivesDashboard = () => {
@@ -23,22 +22,18 @@ const ArchivesDashboard = () => {
 
   return (
     <div id="TicketDashboard">
-      <Grid>
-        <Grid.Column width={12}>
-          <h2>Archives</h2>
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <SearchContainer
-            loadSearchedTickets={loadSearchedArchives}
-            loadTickets={loadArchives}
-          />
-        </Grid.Column>
-      </Grid>
+
+      <div className="ticketDashboardHeader">
+        <h2>Archives</h2>
+        <SearchContainer
+          loadSearchedTickets={loadSearchedArchives}
+          loadTickets={loadArchives}
+        />
+      </div>
+
       {!resourceLoading && (
         <div>
-          <hr />
           <TicketDashboardTR />
-          <hr />
           <TicketList ticketsArr={sortedArchives} />{" "}
         </div>
       )}

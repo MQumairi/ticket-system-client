@@ -7,7 +7,7 @@
     background-image: linear-gradient(var(--body-bg-color-1) , var(--body-bg-color-2));
     border-radius: 10px;
     padding: 25px 40px;
-    width: 60%;
+    width: var(--med-container-width);
     height: 100%;
 }
 
@@ -32,4 +32,11 @@
 
 label {
     color: var(--label-color) !important;
+}
+
+@media only screen and (max-width: 768px) {
+    #ticketsNewContianer {
+        margin: 0px;
+        border-radius: 0px;
+    }
 }

@@ -1,65 +1,140 @@
 @import "../../Assets/Styles/style.css";
 
-
-
 #profileBody {
-    background-color: var(--body-bg-color-1);
-    border-radius: var(--container-border-radius);
-    width: var(--med-container-width);
-    min-height: 200px;
-    margin: 100px auto;
-    padding: 50px;
+  background-color: var(--body-bg-color-1);
+  border-radius: var(--container-border-radius);
+  width: var(--med-container-width);
+  min-height: 200px;
+  margin: 100px auto;
+  padding: 50px;
 }
 
 #profileBody h1 {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 #profileBody h3 {
-    margin-top: 5px;
-    color: var(--label-color);
-    font-weight: normal;
+  margin-top: 5px;
+  color: var(--label-color);
+  font-weight: normal;
 }
 
 #profileBody hr {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 #userData label {
-    font-size: 16px;
+  font-size: 16px;
 }
 
-#userData p{
-    font-weight: bold;
-    font-size: 18px;
+#userData p {
+  font-weight: bold;
+  font-size: 18px;
 }
 
-#avatarCol {
-    background-color: var(--body-bg-color-2);
-    border-radius: var(--container-border-radius);
-    padding-top: 20px;
+.profileHeader {
+  display: flex;
+}
+
+.profileInfo {
+  width: 60%;
+  padding-right: 50px;
+}
+
+.avatarCol {
+  background-color: var(--body-bg-color-2);
+  border-radius: var(--container-border-radius);
+  padding-top: 20px;
+  width: 40%;
 }
 
 #avatarColMenu {
-    margin: auto auto !important;
-    margin-top: 10px !important;
-    margin-bottom: 20px !important;
+  margin: auto auto !important;
+  margin-top: 10px !important;
+  margin-bottom: 20px !important;
 }
 
 #avatarColMenu .item {
-    text-align: center;
-    background-color: var(--body-bg-color-1);
+  text-align: center;
+  background-color: var(--body-bg-color-1);
 }
 
 #avatarColMenu .active {
-    background-color: var(--body-bg-color-2);
+  background-color: var(--body-bg-color-2);
 }
 
 .logoutButton {
-    margin: auto auto !important;
-    margin-top: 20px !important;
-    padding-left: 50px !important;
-    padding-right: 50px !important;
-    font-size: 18px !important;
+  margin: auto auto !important;
+  margin-top: 20px !important;
+  padding-left: 50px !important;
+  padding-right: 50px !important;
+  font-size: 18px !important;
 }
 
+.mobileProfileMenu {
+  display: none;
+}
+
+.logRow {
+    text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+  #profileBody {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  #avatarCol {
+    height: min-content;
+    background: none;
+  }
+
+  #avatarColMenu {
+    display: none;
+  }
+
+  .mobileProfileMenu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: stretch;
+  }
+
+  .mobileProfileMenuItem {
+    flex-grow: 1;
+    background: var(--body-bg-color-1);
+    border: 1px solid var(--body-border-color);
+    flex-basis: auto;
+    padding: 20px 15px;
+    text-align: center;
+    font-size: 16px;
+    color: var(--subheader-color);
+  }
+
+  .mobileProfileMenuItem:hover {
+    color: var(--primary-color);
+    background: var(--body-bg-color-2);
+    transition: all 0.2s;
+  }
+
+  .mobileProfileMenuItem.active {
+    color: var(--primary-color);
+    background: var(--body-bg-color-2);
+  }
+
+  .mobileProfileMenuItem i.icon {
+    display: block;
+    margin: auto;
+    font-size: 40px;
+  }
+
+  .avatarCol {
+      display: none;
+  }
+
+  .profileInfo {
+      width: 100%;
+      padding: 20px;
+  }
+}

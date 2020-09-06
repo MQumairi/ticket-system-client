@@ -39,7 +39,6 @@ const PageController: React.FC<IProps> = ({
     <div className="pageNumbers">
       <Icon
         name="arrow alternate circle left"
-        size="big"
         link
         disabled={onMinPage}
         onClick={() => handlePageDown()}
@@ -47,7 +46,6 @@ const PageController: React.FC<IProps> = ({
       <div className="currentPage">{page + 1}</div>
       <Icon
         name="arrow alternate circle right"
-        size="big"
         link
         disabled={onMaxPage}
         onClick={() => handlePageUp()}

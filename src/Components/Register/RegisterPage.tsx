@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Form as FinalForm, Field } from "react-final-form";
-import { Form, Button, GridColumn, Grid } from "semantic-ui-react";
+import { Form, Button } from "semantic-ui-react";
 import TextInput from "../Utility/Final Form Fields/TextInput";
 import Store from "../App/Store/rootStore";
 import { IUserForm } from "../../Models/userForm";
@@ -28,7 +28,7 @@ const RegisterPage = () => {
     resourceLoading,
   } = store.commonStore;
 
-    const [registering, setRegistering] = useState<boolean>(false);
+  const [registering, setRegistering] = useState<boolean>(false);
 
   useEffect(() => {
     loadRegitrationLocked();
@@ -80,7 +80,9 @@ const RegisterPage = () => {
     return (
       <div className="register-page-body">
         <ErrorNotice message="Registration is currently locked to protect the system from spammers. Feel free to browse around as Guest!" />
-       <Button className="mainButton ticketNewSubmit" as={Link} to="/tickets">Guest Access</Button>
+        <Button className="mainButton ticketNewSubmit" as={Link} to="/tickets">
+          Guest Access
+        </Button>
       </div>
     );
 
@@ -93,7 +95,19 @@ const RegisterPage = () => {
           render={({ handleSubmit, invalid, pristine }) => {
             return (
               <div className="register-page-body">
-                <Grid>
+                <div className="register-header">
+                  <h2>Register</h2>
+                  <div className="register-back-button left">
+                  <Button
+                      className="mainButton"
+                      content="Back"
+                      as={Link}
+                      to="/"
+                    />
+                  </div>
+                </div>
+
+                {/* <Grid>
                   <GridColumn width={5} key={1}>
                     <h2>Register</h2>
                   </GridColumn>
@@ -106,7 +120,8 @@ const RegisterPage = () => {
                       to="/"
                     />
                   </GridColumn>
-                </Grid>
+                </Grid> */}
+
                 <hr />
                 {registerationError && (
                   <ErrorNotice message={registerationError} />

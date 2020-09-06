@@ -30,3 +30,9 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+@media only screen and (max-width: 768px) {
+    .ticketItem {
+        font-size: 18px;
+    }
+}

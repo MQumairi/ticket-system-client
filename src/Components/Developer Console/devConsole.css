@@ -9,6 +9,15 @@
     border-radius: var(--container-border-radius);
 }
 
+.devConsoleHeader {
+    display: flex;
+    align-items: center;
+}
+
+.devConsoleBackButton {
+    margin-left: auto;
+}
+
 .ticketInformation {
     padding: 0px 50px;
     margin-top: 20px;
@@ -24,4 +33,14 @@
     margin-top: 30px !important;
     padding-left: 50px !important;
     padding-right: 50px !important;
+}
+
+@media only screen and (max-width: 768px) {
+    #devConsoleBody {
+        margin-top: 0px;
+    }
+
+    .ticketInformation p {
+        font-size: 16px;
+    }
 }

@@ -1,5 +1,8 @@
 @import "../../../../../Assets/Styles/style.css";
 
+/* .statusCard {
+} */
+
 .cardRow {
     display: flex;
     align-items: center;
@@ -14,9 +17,9 @@
     margin-top: 3px;
 }
 
-.cardName .label {
-    /* color: red !important; */
-    text-align: right;
+.cardName i.inverted.circular.icon {
+    background: var(--primary-color) !important;
+    text-align: center;
 }
 
 .statusACPCircle {

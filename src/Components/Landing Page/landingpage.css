@@ -10,3 +10,23 @@
 .landing-box h3 {
     margin-bottom: 50px;
 }
+
+.landingPageButtons {
+    display: flex;
+    justify-content: center;
+}
+
+.landingPageButtons .ui {
+    margin-left: 5px;
+}
+
+@media only screen and (max-width: 768px) {
+    .landingPageButtons {
+        flex-direction: column;
+    }
+
+    .landingPageButtons .ui {
+        margin-left: 0px;
+        margin-top: 10px !important;
+    }
+}

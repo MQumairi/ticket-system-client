@@ -12,3 +12,9 @@
 .roleBackButton {
     margin-top: -5px !important;
 }
+
+@media only screen and (max-width: 768px) {
+    .roleCreatorBody {
+        margin: 0px;
+    }
+}

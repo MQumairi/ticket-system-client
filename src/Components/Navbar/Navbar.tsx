@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Menu, Segment, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import "./navbar.css";
 import Avatar from "../Users/Avatar/Avatar";
 import Store from "../App/Store/rootStore";
@@ -49,24 +49,6 @@ const Navbar = () => {
             name="bars"
           />
         </div>
-
-        {/* <Menu stackable inverted secondary>
-          <Menu.Item name="Tickets" as={Link} to="/tickets" />
-          <Menu.Item name="Archive" as={Link} to="/archives" />
-          {user?.role && user.role.name === "Admin" && <Menu.Item name="ACP" as={Link} to="/acp" />}
-          {user && (
-            <Menu.Item as={Link} to="/profile">
-              <Avatar avatar={user.avatar} diameter={60} borderWidth={3}/>
-            </Menu.Item>
-          )}
-          {!user && (
-            <Menu.Item name="Login" as={Link} to="/login"/>
-          )}
-          {!user && (
-            <Menu.Item name="Register" as={Link} to="/register"/>
-          )}
-          
-        </Menu> */}
       </div>
       {burgerPressed && (
         <div className="mobileDropdown">
@@ -76,7 +58,7 @@ const Navbar = () => {
             {user?.role && user.role.name === "Admin" && (
               <Link to="/acp">ACP</Link>
             )}
-            <Link to="/profile">Profile</Link>
+            {user && <Link to="/profile">Profile</Link>}
             {user == null && <Link to="/login">Login</Link>}
             {user == null && <Link to="/register">Register</Link>}
           </div>
